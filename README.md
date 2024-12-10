@@ -7,7 +7,9 @@ I chose to make a 2d-platformer using SFML.
 
 
 ## Class-diagram
-
+<p align="center">
+  <img  src="https://github.com/OscarLarm/sfml-platformer/blob/docs/class-diagram.drawio.png?raw=true">
+</p>
 
 ## Getting Started
 
