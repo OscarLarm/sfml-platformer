@@ -8,13 +8,18 @@ class Game
 private:
 	int windowWidth;
 	int windowHeight;
+
 	sf::RenderWindow window;
+	
+
+	void eventHandler();	
+	void update();
+	void render();
 
 public:
-	Game(int windowWidth = 900, int windowHeight = 600);
+	Game();
 	~Game();
 	void start();
-	void end();
 };
 
 #endif // !GAME_H

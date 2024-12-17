@@ -1,7 +1,32 @@
 #include "Game.h"
 
-Game::Game(int windowWidth, int windowHeight)
-	: windowWidth(windowWidth), windowHeight(windowHeight)
+void Game::eventHandler()
+{
+	sf::Event event;
+	while (this->window.pollEvent(event))
+	{
+		if (event.type == sf::Event::Closed) 
+		{
+			this->window.close();
+		}
+	}
+}
+
+void Game::update()
+{
+}
+
+void Game::render()
+{
+	window.clear(sf::Color::Black);
+
+	//window.draw();
+
+	window.display();
+}
+
+Game::Game()
+	: window(sf::VideoMode(900, 600), "Platformer")
 {
 }
 
@@ -11,26 +36,10 @@ Game::~Game()
 
 void Game::start()
 {
-	this->window.create(sf::VideoMode(this->windowWidth, this->windowHeight), "Platformer", sf::Style::Close);
-
 	while (this->window.isOpen())
 	{
-		sf::Event event;
-		while (this->window.pollEvent(event))
-		{
-			switch (event.type)
-			{
-			case sf::Event::Closed():
-				this->end();
-
-			default:
-				break;
-			}
-		}
+		this->eventHandler();
+		this->update();
+		this->render();
 	}
-}
-
-void Game::end()
-{
-	this->window.close();
 }
