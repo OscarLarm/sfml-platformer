@@ -20,7 +20,7 @@ void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const
 void Player::setPosition(const sf::Vector2f& position)
 {
 	this->sprite.setPosition(position);
-	this->sprite.setScale(sf::Vector2f(1.5f, 1.5f));
+	
 }
 
 sf::Vector2f Player::getPosition() const // FOR DEBUGGING
