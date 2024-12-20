@@ -9,8 +9,8 @@
 class Game
 {
 private:
-	static const int VWIDTH = 1280;
-	static const int VHEIGHT = 720;
+	static const int VWIDTH = 1366;
+	static const int VHEIGHT = 768;
 
 	sf::Clock clock;
 	sf::Time timeElapsedLastFrame;
@@ -22,6 +22,7 @@ private:
 	void render();
 
 	Player player;
+	Platform* platform[10];
 
 public:
 	Game();

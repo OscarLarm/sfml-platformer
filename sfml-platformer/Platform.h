@@ -3,11 +3,23 @@
 
 #include "GameObject.h"
 
-class Platform //: public GameObject
+class Platform : public sf::Drawable//: public GameObject
 {
+private:
+	sf::Texture texture;
+	sf::Sprite sprite;
+	sf::Vector2f position;
+
 public:
-	Platform();
+	//sf::VertexArray platforms
+
+	Platform(sf::Vector2f position = sf::Vector2f(0.0f,0.0f));
 	~Platform();
+
+	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+
+
+	void setPosition(const sf::Vector2f& position);
 };
 
 #endif // !PLATFORM_H

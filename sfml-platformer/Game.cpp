@@ -31,7 +31,11 @@ void Game::render()
 {
 	window.clear();
 	window.draw(this->player);
-	
+	for (int i = 0; i < 10; i++)
+	{
+		window.draw(*this->platform[i]);
+
+	}
 	window.display();
 }
 
@@ -39,6 +43,11 @@ Game::Game()
 	: window(sf::VideoMode(VWIDTH, VHEIGHT), "Platformer", sf::Style::Close)
 {
 	this->window.setVerticalSyncEnabled(true);
+
+	for (int i = 0; i < 10; i++)
+	{
+		this->platform[i] = new Platform(sf::Vector2f(32.0f * i, 644.0f));
+	}
 }
 
 Game::~Game()
