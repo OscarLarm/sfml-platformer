@@ -22,7 +22,14 @@ public:
 
 	sf::Vector2f getPosition() const; // FOR DEBUGGING
 
+	sf::Sprite getSprite() const;
+	
 	void controller(const sf::Time& time);
+
+
+
+	//// FOR TESTING
+	//sf::RectangleShape border;
 };
 
 #endif // !PLAYER_H
