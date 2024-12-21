@@ -10,6 +10,11 @@ private:
 	sf::Sprite sprite;
 
 	float moveSpeed;
+	sf::Vector2f velocity;
+
+	float gravity = 1000.0f;
+	float jumpForce = -500.0f;
+	bool grounded;
 
 public:
 	Player();
@@ -26,7 +31,7 @@ public:
 	
 	void controller(const sf::Time& time);
 
-
+	void jump(const sf::Time& time);
 
 	//// FOR TESTING
 	//sf::RectangleShape border;

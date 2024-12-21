@@ -4,7 +4,7 @@ Platform::Platform(sf::Vector2f position)
 {
 	this->texture.loadFromFile("../assets/platform.png");
 	this->sprite.setTexture(this->texture);
-	this->sprite.setTextureRect(sf::IntRect(0, 0, 32, 32));
+	this->sprite.setTextureRect(sf::IntRect(0, 0, 512, 256));
 	this->position = position;
 	this->sprite.setPosition(this->position);
 }

@@ -11,6 +11,11 @@ void Game::eventHandler()
 			this->window.close();
 		}
 
+		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Space)
+		{
+			this->player.jump(this->timeElapsedLastFrame);
+		}
+
 		//// FOR DEBUGGING
 		//if (event.type == sf::Event::KeyReleased)
 		//{
@@ -32,39 +37,60 @@ void Game::render()
 {
 	window.clear();
 	window.draw(this->player);
-	for (int i = 0; i < 20; i++)
-	{
-		window.draw(*this->platform[i]);
-	}
+	//for (int i = 0; i < 20; i++)
+	//{
+	//	window.draw(*this->platform[i]);
+	//}
+	//window.draw(*this->platform);
 
 	window.display();
 }
 
 void Game::collision()
 {
-	for (const auto& i : platform)
-	{
-		if (player.getSprite().getGlobalBounds().intersects(i->getSprite().getGlobalBounds()))
-		{
-			std::cout << "collision!" << std::endl;
-		}
-	}
+	//if (player.getSprite().getGlobalBounds().intersects(this->platform->getSprite().getGlobalBounds()))
+	//{
+	//	std::cout << "collision!" << std::endl;
+	//}
+
+
+	//// Stops at player collision with window border
+	//if (this->player.getSprite().getGlobalBounds().left <= 0.0f)
+	//{
+	//	this->player.setPosition(sf::Vector2f(0.0f, this->player.getPosition().y));
+	//}
+	//else if (
+	//	this->player.getSprite().getGlobalBounds().left + 
+	//	this->player.getSprite().getGlobalBounds().width >= 
+	//	window.getSize().x)
+	//{
+	//	this->player.setPosition(sf::Vector2f(
+	//		this->window.getSize().x - this->player.getSprite().getGlobalBounds().width, 
+	//		this->player.getPosition().y));
+	//}
+	
+	//if (this->player.getSprite().getGlobalBounds().top <= 0.0f)
+	//{
+	//	this->player.setPosition(sf::Vector2f(this->player.getPosition().x, 0.0f));
+	//}
+	//else if (
+	//	this->player.getSprite().getGlobalBounds().top +
+	//	this->player.getSprite().getGlobalBounds().height >=
+	//	window.getSize().y)
+	//{
+	//	this->player.setPosition(sf::Vector2f(
+	//		this->player.getPosition().x,
+	//		this->window.getSize().y - this->player.getSprite().getGlobalBounds().height));
+	//}
+	
+	
 }
 
 Game::Game()
 	: window(sf::VideoMode(VWIDTH, VHEIGHT), "Platformer", sf::Style::Close)
 {
 	this->window.setVerticalSyncEnabled(true);
-
-	for (int i = 0; i < 15; i++)
-	{
-		this->platform[i] = new Platform(sf::Vector2f(31.0f * i, 696.0f));
-	}
-	for (int i = 15; i < 19; i++)
-	{
-		this->platform[i] = new Platform(sf::Vector2f(155.0f, 696.0f - (31.0f *(i-15))));
-	}
-	this->platform[19] = new Platform(sf::Vector2f(155.0f, 510.0f));
+	//this->platform = new Platform(sf::Vector2f(31.0f, 696.0f));
 }
 
 Game::~Game()

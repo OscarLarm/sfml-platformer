@@ -24,7 +24,7 @@ private:
 	void collision();
 
 	Player player;
-	Platform* platform[20];
+	Platform* platform;
 
 public:
 	Game();
