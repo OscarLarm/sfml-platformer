@@ -21,3 +21,8 @@ void Platform::draw(sf::RenderTarget& target, sf::RenderStates states) const
 void Platform::setPosition(const sf::Vector2f& position)
 {
 }
+
+sf::Sprite Platform::getSprite() const
+{
+	return this->sprite;
+}
