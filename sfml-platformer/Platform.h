@@ -20,6 +20,9 @@ public:
 
 
 	void setPosition(const sf::Vector2f& position);
+
+	sf::Sprite getSprite() const;
+
 };
 
 #endif // !PLATFORM_H

@@ -21,13 +21,16 @@ private:
 	void update();
 	void render();
 
+	void collision();
+
 	Player player;
-	Platform* platform[10];
+	Platform* platform[20];
 
 public:
 	Game();
 	~Game();
 	void start();
+
 };
 
 #endif // !GAME_H
