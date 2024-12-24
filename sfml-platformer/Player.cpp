@@ -1,24 +1,84 @@
 #include "Player.h"
 #include <iostream>
+#include <string>
 
-Player::Player() : moveSpeed(200.0f)
+void Player::updateAnimation(sf::Time time)
 {
-	this->texture.loadFromFile("../assets/playerSheet.png");
+	this->animationTimer += time.asSeconds();
+
+	if (this->currentState != this->previousState ||
+		currentState == "jumping")
+	{
+		this->animationFrame.left = 0;
+	
+		if (this->currentState == "jumping")
+		{
+			if (this->velocity.y < -40.0f)
+			{
+				this->numOfFrames = 1;
+				this->row = 6;
+				this->animationSpeed = 0.01f;
+			}
+			else if (this->velocity.y <= 60.0f && this->velocity.y >= -40.0f)
+			{
+				this->numOfFrames = 1;
+				this->row = 7;
+				this->animationSpeed = 0.01f;
+			}
+			else if (this->velocity.y > 60.0f)
+			{
+				this->numOfFrames = 1;
+				this->row = 8;
+				this->animationSpeed = 0.01f;
+			}
+		}
+		else if (this->currentState == "idle")
+		{
+			this->numOfFrames = 7;
+			this->row = 1;
+			this->animationSpeed = 0.09f;
+		}
+		else if (this->currentState == "running")
+		{
+			this->numOfFrames = 8;
+			this->row = 3;
+			this->animationSpeed = 0.08f;
+		}
+	}
+	this->animationFrame.top = 48 * (this->row - 1);
+
+
+	if (this->animationTimer >= this->animationSpeed)
+	{
+		if (this->animationFrame.left == 48 * (this->numOfFrames - 1))
+		{
+			this->animationFrame.left = 0;
+		}
+		else
+		{
+			this->animationFrame.left += 48;
+		}
+		this->sprite.setTextureRect(this->animationFrame);
+		this->animationTimer = 0.0f;
+	}
+}
+
+Player::Player()
+	: moveSpeed(125.0f),
+	animationTimer(0.0f),
+	size(48, 48),
+	facingRight(true)
+{
+
+	this->animationFrame = sf::IntRect(0, 0, this->size.x, this->size.y);
+	this->texture.loadFromFile(this->ASSETS_DIRECTORY + "playerSheet.png");
 	this->sprite.setTexture(this->texture);
-	this->sprite.setTextureRect(sf::IntRect(0, 0, 96, 84));
+	this->sprite.setTextureRect(this->animationFrame);
+	this->sprite.setOrigin(this->size.x / 2, this->size.y / 2);
 	this->setPosition(sf::Vector2f(50.0f, 400.0f));
 
 	this->velocity = sf::Vector2f(0.0f, 0.0f);
 	this->grounded = false;
-
-	//// for testing 
-	//sf::FloatRect bounds = this->sprite.getGlobalBounds();
-	//this->border.setSize(sf::Vector2f(bounds.width, bounds.height));
-	//this->border.setPosition(bounds.left, bounds.top);
-	//this->border.setOutlineColor(sf::Color::Red);
-	//this->border.setFillColor(sf::Color::Transparent);
-	//this->border.setOutlineThickness(1.0f);
-	//std::cout << bounds.getSize().x << ", " << bounds.getSize().y << std::endl;
 }
 
 Player::~Player()
@@ -28,9 +88,6 @@ Player::~Player()
 void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	target.draw(this->sprite);
-	
-	//// FOR TESTING
-	//target.draw(this->border);
 }
 
 void Player::setPosition(const sf::Vector2f& position)
@@ -51,43 +108,50 @@ sf::Sprite Player::getSprite() const
 
 void Player::controller(const sf::Time& time)
 {
-	//// Movement using move instead of velocity
-	//if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-	//{
-	//	this->sprite.move(sf::Vector2f(moveSpeed * time.asSeconds(), 0));
-	//}
-	//if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-	//{
-	//	this->sprite.move(sf::Vector2f(-moveSpeed * time.asSeconds(), 0));
-	//}
 
-	//if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
-	//{
-	//	this->jump(time);
-	//}
-
+	// GRAVITY
 	if (!this->grounded)
 	{
 		this->velocity.y += gravity * time.asSeconds();
 	}
 
+	// MOVEMENT
 	if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::D)) && 
-		!(sf::Keyboard::isKeyPressed(sf::Keyboard::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::A)))
+	!(sf::Keyboard::isKeyPressed(sf::Keyboard::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::A)))
 	{
 		this->velocity.x = this->moveSpeed;
+		this->currentState = "running";
+		if (!facingRight)
+		{
+			this->sprite.scale(-1.0f, 1.0f);
+			this->facingRight = true;
+		}
 	}
 	else if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::A)) &&
 		!(sf::Keyboard::isKeyPressed(sf::Keyboard::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::D)))
 	{
 		this->velocity.x = - this->moveSpeed;
+		this->currentState = "running";
+		if (facingRight)
+		{
+			this->sprite.scale(-1.0f, 1.0f);
+			this->facingRight = false;
+		}
 	}
 	else
 	{
 		this->velocity.x = 0;
+		this->currentState = "idle";
+	}
+	if (!grounded)
+	{
+		this->currentState = "jumping";
 	}
 
 	this->sprite.move(velocity * time.asSeconds());
-
+	std::cout << velocity.x << ", " << velocity.y << std::endl;
+	this->updateAnimation(time);
+	this->previousState = this->currentState;
 
 	// Collision for window borders
 	// TODO: Change collision to check for sprite intersect.
@@ -100,7 +164,6 @@ void Player::controller(const sf::Time& time)
 	{
 		grounded = false;
 	}
-	std::cout << "Grounded: " << this->grounded << std::endl;
 	if (this->getPosition().x <= 0.0f)
 	{
 		this->setPosition(sf::Vector2f(0.0f, this->getPosition().y));
@@ -111,6 +174,8 @@ void Player::controller(const sf::Time& time)
 		this->setPosition(sf::Vector2f(1366.0f - this->getSprite().getGlobalBounds().width, this->getPosition().y));
 		this->velocity.x = 0;
 	}
+
+	// ANIMATION
 }
 
 void Player::jump(const sf::Time& time)

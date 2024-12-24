@@ -6,15 +6,28 @@
 class Player : public sf::Drawable
 {
 private:
+	const std::string ASSETS_DIRECTORY = "../assets/";
+
 	sf::Texture texture;
 	sf::Sprite sprite;
+	sf::Vector2i size;
 
 	float moveSpeed;
 	sf::Vector2f velocity;
 
-	float gravity = 1000.0f;
-	float jumpForce = -500.0f;
+	float gravity = 900.0f;
+	float jumpForce = -350.0f;
 	bool grounded;
+
+	float animationTimer;
+	std::string currentState;
+	std::string previousState;
+	sf::IntRect animationFrame;
+	void updateAnimation(sf::Time time);
+	int numOfFrames;
+	int row;
+	float animationSpeed;
+	bool facingRight;
 
 public:
 	Player();
