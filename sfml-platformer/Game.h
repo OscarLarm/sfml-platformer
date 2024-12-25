@@ -21,8 +21,6 @@ private:
 	void update();
 	void render();
 
-	void collision();
-
 	Player player;
 	Platform* platform;
 
