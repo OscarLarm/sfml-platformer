@@ -1,27 +1,28 @@
 #ifndef PLATFORM_H
 #define PLATFORM_H
 
-#include "GameObject.h"
+#include <SFML/Graphics.hpp>
 
 class Platform : public sf::Drawable//: public GameObject
 {
 private:
+	const std::string ASSETS_DIRECTORY = "../assets/";
+
 	sf::Texture texture;
 	sf::Sprite sprite;
-	sf::Vector2f position;
+	sf::IntRect spriteRect;
+	sf::RectangleShape hitBox;
+
 
 public:
-	//sf::VertexArray platforms
-
-	Platform(sf::Vector2f position = sf::Vector2f(0.0f,0.0f));
+	Platform();
 	~Platform();
 
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
-
-	void setPosition(const sf::Vector2f& position);
-
 	sf::Sprite getSprite() const;
+	
+	void setPosition(sf::Vector2f position);
 
 };
 
