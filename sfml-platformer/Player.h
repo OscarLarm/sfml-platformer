@@ -43,6 +43,8 @@ public:
 	sf::Sprite getSprite() const;
 
 	void setPosition(const sf::Vector2f& position);
+
+	void move(const sf::Vector2f offset); // Possibly make override transformable
 };
 
 #endif // !PLAYER_H

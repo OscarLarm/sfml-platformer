@@ -32,7 +32,7 @@ void Game::render()
 }
 
 Game::Game()
-	: window(sf::VideoMode(VWIDTH, VHEIGHT), "Platformer", sf::Style::Close)
+	: window(sf::VideoMode(VWIDTH, VHEIGHT), "Platformer"/*, sf::Style::Close*/)
 {
 	int count = 0;
 	int count2 = 0;
