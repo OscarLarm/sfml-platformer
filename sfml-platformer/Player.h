@@ -28,7 +28,7 @@ private:
 	std::string playerState;
 	bool facingRight;
 
-	void collision(const std::vector<Platform>& platforms);
+	void collision(const std::vector<Platform>& platforms, const sf::Time& time);
 
 public:
 	Player();

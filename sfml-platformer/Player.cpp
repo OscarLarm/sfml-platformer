@@ -2,21 +2,53 @@
 #include <iostream>
 #include <string>
 
-void Player::collision(const std::vector<Platform>& platforms)
+void Player::collision(const std::vector<Platform>& platforms, const sf::Time& time)
 {
+	sf::FloatRect thisBounds = hitBox.getGlobalBounds();
+	sf::FloatRect nextUpdateBounds = thisBounds;
+	nextUpdateBounds.left += velocity.x * time.asSeconds();
+	nextUpdateBounds.top += velocity.y * time.asSeconds();
 
+	float thisLeft = thisBounds.left;
+	float thisRight = thisBounds.left + thisBounds.width;
+	float thisTop = thisBounds.top;
+	float thisBottom = thisBounds.top + thisBounds.height;
+
+
+
+	
 	for (const Platform& i : platforms)
 	{
-		sf::FloatRect playerHitboxBounds = hitBox.getGlobalBounds();
 		sf::FloatRect platFormBounds = i.getSprite().getGlobalBounds();
+		
+		float platformLeft = platFormBounds.left;
+		float platformRight = platFormBounds.left + platFormBounds.width;
+		float platformTop = platFormBounds.top;
+		float platformBottom = platFormBounds.top + platFormBounds.height;
 
-		sf::FloatRect nextUpdatePlayerBounds = playerHitboxBounds;
-		nextUpdatePlayerBounds.left *= velocity.x;
-		nextUpdatePlayerBounds.top *= velocity.y;
-
-		if (platFormBounds.intersects(nextUpdatePlayerBounds))
+		if (platFormBounds.intersects(nextUpdateBounds))
 		{
-			std::cout << "Collision!" << std::endl;
+
+			if (true)
+			{
+				std::cout << "Collision on feet" << std::endl;
+
+			}
+			else if (true)
+			{
+				std::cout << "Collision on head" << std::endl;
+			}
+
+			if (true)
+			{
+				std::cout << "Collision on right" << std::endl;
+			}
+
+			else if (true)
+			{
+				std::cout << "Collision on left" << std::endl;
+			}
+
 		}
 	}
 }
@@ -45,7 +77,7 @@ Player::Player()
 	this->hitBox.setOutlineColor(sf::Color::Red);
 	this->hitBox.setOutlineThickness(1.0f);
 
-	this->setPosition(sf::Vector2f(50.0f, 50.0f));
+	this->setPosition(sf::Vector2f(50.0f, 500.0f));
 }
 
 Player::~Player()
@@ -141,7 +173,7 @@ void Player::controller(const sf::Time& time, const std::vector<Platform>& platf
 	sprite.setTextureRect(playerAnimation->updateAnimation(playerState, velocity, time.asSeconds()));
 	this->move(velocity * time.asSeconds());
 
-	collision(platforms);
+	collision(platforms, time);
 
 	//Debug
 	//std::cout << std::endl << std::endl;
