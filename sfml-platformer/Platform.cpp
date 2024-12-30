@@ -7,7 +7,9 @@ Platform::Platform()
 	this->sprite.setTexture(this->texture);
 	this->sprite.setTextureRect(this->spriteRect);
 
+	this->sprite.setOrigin(this->spriteRect.width / 2.0f, spriteRect.height);
 	this->sprite.setPosition(150, 650);
+
 
 
 	this->hitBox.setSize(sf::Vector2f(spriteRect.getSize().x, spriteRect.getSize().y));

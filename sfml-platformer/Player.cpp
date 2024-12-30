@@ -4,51 +4,61 @@
 
 void Player::collision(const std::vector<Platform>& platforms, const sf::Time& time)
 {
-	sf::FloatRect thisBounds = hitBox.getGlobalBounds();
-	sf::FloatRect nextUpdateBounds = thisBounds;
+	this->grounded = false;
+	float collisionOffset = 1.0f;
+
+	sf::FloatRect hitBoxBounds = hitBox.getGlobalBounds();
+
+	sf::FloatRect nextUpdateBounds = hitBoxBounds;
 	nextUpdateBounds.left += velocity.x * time.asSeconds();
-	nextUpdateBounds.top += velocity.y * time.asSeconds();
+	nextUpdateBounds.top += velocity.y * time.asSeconds() + collisionOffset;
 
-	float thisLeft = thisBounds.left;
-	float thisRight = thisBounds.left + thisBounds.width;
-	float thisTop = thisBounds.top;
-	float thisBottom = thisBounds.top + thisBounds.height;
-
-
-
-	
 	for (const Platform& i : platforms)
 	{
-		sf::FloatRect platFormBounds = i.getSprite().getGlobalBounds();
-		
-		float platformLeft = platFormBounds.left;
-		float platformRight = platFormBounds.left + platFormBounds.width;
-		float platformTop = platFormBounds.top;
-		float platformBottom = platFormBounds.top + platFormBounds.height;
+		sf::FloatRect platformBounds = i.getSprite().getGlobalBounds();
 
-		if (platFormBounds.intersects(nextUpdateBounds))
+		if (platformBounds.intersects(nextUpdateBounds))
 		{
-
-			if (true)
+			// Vectical collision
+			if (
+				hitBoxBounds.top < platformBounds.top &&
+				hitBoxBounds.top + hitBoxBounds.height < platformBounds.top + platformBounds.height &&
+				hitBoxBounds.left < platformBounds.left + platformBounds.width &&
+				hitBoxBounds.left + hitBoxBounds.width > platformBounds.left)
 			{
-				std::cout << "Collision on feet" << std::endl;
-
+				velocity.y = 0.0f;
+				this->setPosition(sf::Vector2f(this->getPosition().x, platformBounds.top - collisionOffset));
+				this->grounded = true;
 			}
-			else if (true)
+			else if (
+				hitBoxBounds.top > platformBounds.top &&
+				hitBoxBounds.top + hitBoxBounds.height > platformBounds.top + platformBounds.height &&
+				hitBoxBounds.left < platformBounds.left + platformBounds.width &&
+				hitBoxBounds.left + hitBoxBounds.width > platformBounds.left)
 			{
-				std::cout << "Collision on head" << std::endl;
+				velocity.y = 0.0f;
+				this->setPosition(sf::Vector2f(this->getPosition().x, platformBounds.top + platformBounds.height + hitBoxBounds.height));
 			}
-
-			if (true)
+			
+			// Horizontal collision
+			if (
+				hitBoxBounds.left < platformBounds.left &&
+				hitBoxBounds.left + hitBoxBounds.width < platformBounds.left + platformBounds.width &&
+				hitBoxBounds.top < platformBounds.top + platformBounds.height &&
+				hitBoxBounds.top + hitBoxBounds.height > platformBounds.top)
 			{
-				std::cout << "Collision on right" << std::endl;
+				velocity.x = 0.0f;
+				this->setPosition(sf::Vector2f(platformBounds.left - hitBoxBounds.width / 2, this->getPosition().y));
 			}
-
-			else if (true)
+			else if (
+				hitBoxBounds.left > platformBounds.left &&
+				hitBoxBounds.left + hitBoxBounds.width > platformBounds.left + platformBounds.width &&
+				hitBoxBounds.top < platformBounds.top + platformBounds.height &&
+				hitBoxBounds.top + hitBoxBounds.height > platformBounds.top)
 			{
-				std::cout << "Collision on left" << std::endl;
+				velocity.x = 0.0f;
+				this->setPosition(sf::Vector2f(platformBounds.left + platformBounds.width + hitBoxBounds.width / 2, this->getPosition().y));
 			}
-
 		}
 	}
 }
@@ -92,26 +102,15 @@ void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
 void Player::controller(const sf::Time& time, const std::vector<Platform>& platforms)
 {
-	grounded = false;
-	//grounded = false;
-	//collision(platforms);
-
-	//// GRAVITY
-	//if (!grounded)
-	//{
-	//	velocity.y += gravity * time.asSeconds();
-	//}
-	//else
-	//{
-	//	velocity.y = 0;
-	//}
-
 	// MOVEMENT
 	if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::D)) &&
 		!(sf::Keyboard::isKeyPressed(sf::Keyboard::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::A)))
 	{
 		velocity.x = moveSpeed;
-		playerState = "running";
+		if (grounded)
+		{
+			playerState = "running";
+		}
 		if (!facingRight)
 		{
 			sprite.scale(-1.0f, 1.0f); // Flips sprite
@@ -122,7 +121,10 @@ void Player::controller(const sf::Time& time, const std::vector<Platform>& platf
 		!(sf::Keyboard::isKeyPressed(sf::Keyboard::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::D)))
 	{
 		velocity.x = -moveSpeed;
-		playerState = "running";
+		if (grounded)
+		{
+			playerState = "running";
+		}
 		if (facingRight)
 		{
 			sprite.scale(-1.0f, 1.0f); // Flips sprite
@@ -132,60 +134,44 @@ void Player::controller(const sf::Time& time, const std::vector<Platform>& platf
 	else
 	{
 		velocity.x = 0;
-		playerState = "idle";
+		if (grounded)
+		{
+			playerState = "idle";
+
+		}
 	}
 
-	if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::W)) &&
-		!(sf::Keyboard::isKeyPressed(sf::Keyboard::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::S)))
+	//Actions
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && grounded)
 	{
-		velocity.y = -moveSpeed;
-		playerState = "running";
+		velocity.y = jumpForce;
+		grounded = false;
 	}
-	else if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::S)) &&
-		!(sf::Keyboard::isKeyPressed(sf::Keyboard::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::W)))
+
+	if (!grounded)
 	{
-		velocity.y = moveSpeed;
-		playerState = "running";
+		velocity.y += gravity * time.asSeconds();
+		playerState = "jumping";
 	}
-	else
-	{
-		velocity.y = 0;
-	}
-
-	////Actions
-	//if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && grounded)
-	//{
-	//	velocity.y = jumpForce;
-	//	grounded = false;
-	//}
-
-	//if (!grounded)
-	//{
-	//	velocity.y += gravity * time.asSeconds();
-	//}
-
-	//if (!grounded)
-	//{
-	//	playerState = "jumping";
-	//}
-
 
 	sprite.setTextureRect(playerAnimation->updateAnimation(playerState, velocity, time.asSeconds()));
+
+	collision(platforms, time); //Testing before move
+
 	this->move(velocity * time.asSeconds());
 
-	collision(platforms, time);
-
 	//Debug
-	//std::cout << std::endl << std::endl;
-	//std::cout << "Velocity: " << velocity.x << ", " << velocity.y << std::endl;
-	//std::cout << "Grounded: " << grounded << std::endl;
-	//std::cout << "State: " << playerState << std::endl;
-	//std::cout << "Position: " << getPosition().x << ", " << getPosition().y << std::endl;
+	std::system("cls");
+	std::cout << std::endl << std::endl;
+	std::cout << "Velocity: " << velocity.x << ", " << velocity.y << std::endl;
+	std::cout << "Grounded: " << grounded << std::endl;
+	std::cout << "State: " << playerState << std::endl;
+	std::cout << "Position: " << getPosition().x << ", " << getPosition().y << std::endl;
 }
 
 sf::Vector2f Player::getPosition() const
 {
-	return this->sprite.getPosition();
+	return this->hitBox.getPosition();
 }
 
 sf::Vector2f Player::getVelocity() const
