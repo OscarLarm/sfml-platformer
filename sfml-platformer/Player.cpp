@@ -64,30 +64,32 @@ void Player::collision(const std::vector<Platform>& platforms, const sf::Time& t
 }
 
 Player::Player()
-	: spriteRect(0, 0, 96, 84),
+	:
 	moveSpeed(125.0f),
 	velocity(0.0f,0.0f),
 	gravity(900.0f),
 	jumpForce(-350.0f),
 	grounded(false),
-	playerAnimation(new Animation(spriteRect)),
 	playerState("none"),
 	facingRight(true)
 {
-	this->texture.loadFromFile(this->ASSETS_DIRECTORY + "playerSheetCombat.png");
-	this->sprite.setTexture(this->texture);
-	this->sprite.setTextureRect(this->spriteRect);
-	this->sprite.setOrigin(this->spriteRect.width / 2.0f, spriteRect.height);
+	spriteRect = sf::IntRect(0, 0, 96, 84);
+	playerAnimation = new Animation(spriteRect);
 
-	this->hitBox.setSize(sf::Vector2f(16.0f, 36.0f));
-	this->hitBox.setOrigin(hitBox.getSize().x / 2.0f, hitBox.getSize().y);
-	this->hitBox.setFillColor(sf::Color::Transparent);
+	texture.loadFromFile(ASSETS_DIRECTORY + "playerSheetCombat.png");
+	sprite.setTexture(texture);
+	sprite.setTextureRect(spriteRect);
+	sprite.setOrigin(spriteRect.width / 2.0f, spriteRect.height);
+
+	hitBox.setSize(sf::Vector2f(16.0f, 36.0f));
+	hitBox.setOrigin(hitBox.getSize().x / 2.0f, hitBox.getSize().y);
+	hitBox.setFillColor(sf::Color::Transparent);
 	
 	// Make hitbox visible
-	this->hitBox.setOutlineColor(sf::Color::Red);
-	this->hitBox.setOutlineThickness(1.0f);
+	hitBox.setOutlineColor(sf::Color::Red);
+	hitBox.setOutlineThickness(1.0f);
 
-	this->setPosition(sf::Vector2f(50.0f, 500.0f));
+	setPosition(sf::Vector2f(50.0f, 0.0f));
 }
 
 Player::~Player()
@@ -169,25 +171,9 @@ void Player::controller(const sf::Time& time, const std::vector<Platform>& platf
 	std::cout << "Position: " << getPosition().x << ", " << getPosition().y << std::endl;
 }
 
-sf::Vector2f Player::getPosition() const
-{
-	return this->hitBox.getPosition();
-}
-
 sf::Vector2f Player::getVelocity() const
 {
 	return this->velocity;
-}
-
-sf::Sprite Player::getSprite() const
-{
-	return this->sprite;
-}
-
-void Player::setPosition(const sf::Vector2f& position)
-{
-	this->sprite.setPosition(position);
-	this->hitBox.setPosition(position);
 }
 
 void Player::move(const sf::Vector2f offset)
