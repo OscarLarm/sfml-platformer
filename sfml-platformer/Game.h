@@ -6,6 +6,8 @@
 #include "GameObject.h"
 #include "Player.h"
 
+#include <vector>
+
 class Game
 {
 private:
@@ -22,7 +24,9 @@ private:
 	void render();
 
 	Player player;
-	Platform* platform;
+	Platform platform[30];
+
+	std::vector<Platform> platformVector;
 
 public:
 	Game();
