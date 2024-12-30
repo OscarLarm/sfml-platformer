@@ -7,13 +7,6 @@
 class Platform : public GameObject
 {
 private:
-	const std::string ASSETS_DIRECTORY = "../assets/";
-
-	sf::Texture texture;
-	sf::Sprite sprite;
-	sf::IntRect spriteRect;
-	sf::RectangleShape hitBox;
-
 
 public:
 	Platform();
@@ -21,13 +14,6 @@ public:
 
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
-	sf::Sprite getSprite() const;
-	
-	void setPosition(sf::Vector2f position);
-
 };
 
 #endif // !PLATFORM_H
-
-
-//texture.setrepeated
