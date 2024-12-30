@@ -28,7 +28,7 @@ private:
 	std::string playerState;
 	bool facingRight;
 
-	void collision(const std::vector<Platform>& platforms);
+	void collision(const std::vector<Platform>& platforms, const sf::Time& time);
 
 public:
 	Player();
@@ -43,6 +43,8 @@ public:
 	sf::Sprite getSprite() const;
 
 	void setPosition(const sf::Vector2f& position);
+
+	void move(const sf::Vector2f offset); // Possibly make override transformable
 };
 
 #endif // !PLAYER_H
