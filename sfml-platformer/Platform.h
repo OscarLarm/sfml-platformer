@@ -2,8 +2,9 @@
 #define PLATFORM_H
 
 #include <SFML/Graphics.hpp>
+#include "GameObject.h"
 
-class Platform : public sf::Drawable//: public GameObject
+class Platform : public GameObject
 {
 private:
 	const std::string ASSETS_DIRECTORY = "../assets/";

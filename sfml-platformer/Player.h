@@ -6,8 +6,9 @@
 
 #include "Platform.h"
 #include <vector>
+#include "GameObject.h"
 
-class Player : public sf::Drawable
+class Player : public GameObject
 {
 private:
 	const std::string ASSETS_DIRECTORY = "../assets/";
