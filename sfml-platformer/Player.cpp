@@ -49,7 +49,7 @@ void Player::playerControls(const sf::Time& time)
 	}
 }
 
-void Player::collisionControl(const std::vector<Platform>& platforms, const sf::Time& time)
+void Player::collisionControl(const std::vector<Platform*>& platforms, const sf::Time& time)
 {
 	this->grounded = false;
 	float collisionOffset = 1.0f;
@@ -60,9 +60,9 @@ void Player::collisionControl(const std::vector<Platform>& platforms, const sf::
 	nextUpdateBounds.left += velocity.x * time.asSeconds();
 	nextUpdateBounds.top += velocity.y * time.asSeconds() + collisionOffset;
 
-	for (const Platform& i : platforms)
+	for (auto* i : platforms)
 	{
-		sf::FloatRect platformBounds = i.getSprite().getGlobalBounds();
+		sf::FloatRect platformBounds = i->getSprite().getGlobalBounds();
 
 		if (platformBounds.intersects(nextUpdateBounds))
 		{
@@ -100,7 +100,7 @@ Player::~Player()
 {
 }
 
-void Player::update(const sf::Time& time, const std::vector<Platform>& platforms)
+void Player::update(const sf::Time& time, const std::vector<Platform*>& platforms)
 {
 	playerControls(time);
 

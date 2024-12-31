@@ -33,7 +33,7 @@ void Enemy::patrol(const sf::Time& time)
 	}
 }
 
-void Enemy::collisionControl(const std::vector<Platform>& platforms, const sf::Time& time)
+void Enemy::collisionControl(const std::vector<Platform*>& platforms, const sf::Time& time)
 {
 	this->grounded = false;
 	float collisionOffset = 1.0f;
@@ -44,9 +44,9 @@ void Enemy::collisionControl(const std::vector<Platform>& platforms, const sf::T
 	nextUpdateBounds.left += velocity.x * time.asSeconds();
 	nextUpdateBounds.top += velocity.y * time.asSeconds() + collisionOffset;
 
-	for (const Platform& i : platforms)
+	for (auto* i : platforms)
 	{
-		sf::FloatRect platformBounds = i.getSprite().getGlobalBounds();
+		sf::FloatRect platformBounds = i->getSprite().getGlobalBounds();
 
 		if (platformBounds.intersects(nextUpdateBounds))
 		{
@@ -85,7 +85,7 @@ Enemy::~Enemy()
 {
 }
 
-void Enemy::update(const sf::Time& time, const std::vector<Platform>& platforms)
+void Enemy::update(const sf::Time& time, const std::vector<Platform*>& platforms)
 {
 	patrol(time);
 

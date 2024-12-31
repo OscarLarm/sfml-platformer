@@ -24,11 +24,13 @@ private:
 	void update();
 	void render();
 
-	Player player;
+	/*Player player;
 	Platform platform[75];
-	Enemy enemy;
+	Enemy enemy;*/
 
-	std::vector<Platform> platformVector;
+	std::vector<Platform*> platformVector;
+
+	std::vector<GameObject*> gameObjects;
 
 public:
 	Game();
