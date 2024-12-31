@@ -5,6 +5,7 @@
 #include "Platform.h"
 #include "GameObject.h"
 #include "Player.h"
+#include "Enemy.h"
 
 #include <vector>
 
@@ -24,7 +25,8 @@ private:
 	void render();
 
 	Player player;
-	Platform platform[30];
+	Platform platform[75];
+	Enemy enemy;
 
 	std::vector<Platform> platformVector;
 
