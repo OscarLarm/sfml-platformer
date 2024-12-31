@@ -15,35 +15,17 @@ void Game::eventHandler()
 void Game::update()
 {
 	this->timeElapsedLastFrame = this->clock.restart();
-	/*this->player.update(timeElapsedLastFrame, platformVector);
-	this->enemy.update(timeElapsedLastFrame, platformVector);*/
-
 
 	for (auto* character : gameObjects)
 	{
 		Character* characterPtr = nullptr;
-
-		characterPtr = dynamic_cast<Character*>(character);
-
-		if (characterPtr != nullptr)
-		{
-			characterPtr->update(timeElapsedLastFrame, platformVector);
-		}
-
-	}
-
-	/*for (auto* character : gameObjects)
-	{
-		Character* characterPtr = nullptr;
-
 		characterPtr = dynamic_cast<Character*>(character);
 
 		if (characterPtr != nullptr)
 		{
 			characterPtr->update(timeElapsedLastFrame, gameObjects);
 		}
-
-	}*/
+	}
 }
 
 void Game::render()
@@ -54,13 +36,6 @@ void Game::render()
 	{
 		this->window.draw(*object);
 	}
-
-	/*this->window.draw(this->player);
-	this->window.draw(this->enemy);
-	for  (const Platform& i : platformVector)
-	{
-		this->window.draw(i);
-	}*/
 
 	this->window.display();
 }

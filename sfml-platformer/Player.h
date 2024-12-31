@@ -17,13 +17,13 @@ private:
 
 
 	void playerControls(const sf::Time& time);
-	void collisionControl(const std::vector<Platform*>& platforms, const sf::Time& time) override;
+	void collisionControl(const sf::Time& time, const std::vector<GameObject*>& gameObjects) override;
 
 public:
 	Player();
 	~Player();
 
-	void update(const sf::Time& time, const std::vector<Platform*>& platforms) override;
+	void update(const sf::Time& time, const std::vector<GameObject*>& gameObjects) override;
 
 
 };

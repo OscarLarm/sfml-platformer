@@ -49,7 +49,7 @@ void Player::playerControls(const sf::Time& time)
 	}
 }
 
-void Player::collisionControl(const std::vector<Platform*>& platforms, const sf::Time& time)
+void Player::collisionControl(const sf::Time& time, const std::vector<GameObject*>& gameObjects)
 {
 	this->grounded = false;
 	float collisionOffset = 1.0f;
@@ -60,13 +60,20 @@ void Player::collisionControl(const std::vector<Platform*>& platforms, const sf:
 	nextUpdateBounds.left += velocity.x * time.asSeconds();
 	nextUpdateBounds.top += velocity.y * time.asSeconds() + collisionOffset;
 
-	for (auto* i : platforms)
+	for (auto* i : gameObjects)
 	{
-		sf::FloatRect platformBounds = i->getSprite().getGlobalBounds();
+		sf::FloatRect otherBounds = i->getSprite().getGlobalBounds();
 
-		if (platformBounds.intersects(nextUpdateBounds))
+		if (otherBounds.intersects(nextUpdateBounds))
 		{
-			collisionPlatform(hitBoxBounds, platformBounds);
+			GameObject* typePtr = nullptr;
+			typePtr = dynamic_cast<Platform*>(i);
+	
+			if (typePtr != nullptr)
+			{
+				collisionPlatform(hitBoxBounds, otherBounds);
+			}
+			
 		}
 	}
 }
@@ -100,7 +107,7 @@ Player::~Player()
 {
 }
 
-void Player::update(const sf::Time& time, const std::vector<Platform*>& platforms)
+void Player::update(const sf::Time& time, const std::vector<GameObject*>& gameObjects)
 {
 	playerControls(time);
 
@@ -112,7 +119,7 @@ void Player::update(const sf::Time& time, const std::vector<Platform*>& platform
 
 	sprite.setTextureRect(playerAnimation->updateAnimation(state, velocity, time.asSeconds()));
 
-	collisionControl(platforms, time);
+	collisionControl(time, gameObjects);
 
 	this->move(velocity * time.asSeconds());
 

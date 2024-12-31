@@ -33,7 +33,7 @@ void Enemy::patrol(const sf::Time& time)
 	}
 }
 
-void Enemy::collisionControl(const std::vector<Platform*>& platforms, const sf::Time& time)
+void Enemy::collisionControl(const sf::Time& time, const std::vector<GameObject*>& gameObjects)
 {
 	this->grounded = false;
 	float collisionOffset = 1.0f;
@@ -44,13 +44,20 @@ void Enemy::collisionControl(const std::vector<Platform*>& platforms, const sf::
 	nextUpdateBounds.left += velocity.x * time.asSeconds();
 	nextUpdateBounds.top += velocity.y * time.asSeconds() + collisionOffset;
 
-	for (auto* i : platforms)
+	for (auto* i : gameObjects)
 	{
-		sf::FloatRect platformBounds = i->getSprite().getGlobalBounds();
+		sf::FloatRect otherBounds = i->getSprite().getGlobalBounds();
 
-		if (platformBounds.intersects(nextUpdateBounds))
+		if (otherBounds.intersects(nextUpdateBounds))
 		{
-			collisionPlatform(hitBoxBounds, platformBounds);
+			GameObject* typePtr = nullptr;
+			typePtr = dynamic_cast<Platform*>(i);
+
+			if (typePtr != nullptr)
+			{
+				collisionPlatform(hitBoxBounds, otherBounds);
+			}
+
 		}
 	}
 }
@@ -85,7 +92,7 @@ Enemy::~Enemy()
 {
 }
 
-void Enemy::update(const sf::Time& time, const std::vector<Platform*>& platforms)
+void Enemy::update(const sf::Time& time, const std::vector<GameObject*>& gameObjects)
 {
 	patrol(time);
 
@@ -94,7 +101,7 @@ void Enemy::update(const sf::Time& time, const std::vector<Platform*>& platforms
 		velocity.y += gravity * time.asSeconds();
 	}
 
-	collisionControl(platforms, time);
+	collisionControl(time, gameObjects);
 
 	sprite.setTextureRect(enemyAnimation->updateAnimation(state, velocity, time.asSeconds()));
 

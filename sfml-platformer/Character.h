@@ -15,7 +15,7 @@ protected:
 	bool facingRight;
 	int lives;
 
-	virtual void collisionControl(const std::vector<Platform*>& platforms, const sf::Time& time) = 0;
+	virtual void collisionControl(const sf::Time& time, const std::vector<GameObject*>& gameObjects) = 0;
 	void collisionPlatform(const sf::FloatRect& hitBoxBounds, const sf::FloatRect& platformBounds);
 
 private:
@@ -26,7 +26,7 @@ public:
 	~Character();
 
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
-	virtual void update(const sf::Time& time, const std::vector<Platform*>& platforms) = 0;
+	virtual void update(const sf::Time& time, const std::vector<GameObject*>& gameObjects) = 0;
 
 	void move(const sf::Vector2f offset);
 
