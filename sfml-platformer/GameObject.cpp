@@ -18,6 +18,11 @@ sf::Sprite GameObject::getSprite() const
 	return this->sprite;
 }
 
+sf::RectangleShape GameObject::getHitBox() const
+{
+	return this->hitBox;
+}
+
 void GameObject::setPosition(const sf::Vector2f& position)
 {
 	this->sprite.setPosition(position);

@@ -62,7 +62,7 @@ void Player::collisionControl(const sf::Time& time, const std::vector<GameObject
 
 	for (auto* i : gameObjects)
 	{
-		sf::FloatRect otherBounds = i->getSprite().getGlobalBounds();
+		sf::FloatRect otherBounds = i->getHitBox().getGlobalBounds();
 
 		if (otherBounds.intersects(nextUpdateBounds))
 		{
@@ -73,7 +73,17 @@ void Player::collisionControl(const sf::Time& time, const std::vector<GameObject
 			{
 				collisionPlatform(hitBoxBounds, otherBounds);
 			}
-			
+
+			else
+			{
+				typePtr = dynamic_cast<Enemy*>(i);
+
+				if (typePtr != nullptr)
+				{
+					this->lives--;
+					this->setPosition(sf::Vector2f(50.0f, 0.0f));
+				}
+			}
 		}
 	}
 }

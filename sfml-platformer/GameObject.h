@@ -23,6 +23,7 @@ public:
 	
 	sf::Vector2f getPosition() const;
 	sf::Sprite getSprite() const;
+	sf::RectangleShape getHitBox() const;
 
 	void setPosition(const sf::Vector2f& position);
 };

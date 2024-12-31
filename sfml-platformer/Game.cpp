@@ -49,6 +49,7 @@ Game::Game()
 	float count = 0.0f;
 	float count2 = 0.0f;
 	this->window.setVerticalSyncEnabled(true);
+
 	for (int i = 0; i < 15; i++)
 	{
 		Platform* platform = new Platform;
@@ -62,7 +63,6 @@ Game::Game()
 		platform->setPosition(sf::Vector2f(0.0f + 16.0f * (count - 1.0f), 650.0f - 16.0f * ++count2));
 		gameObjects.push_back(platform);
 		platformVector.push_back(platform);
-
 	}
 	for (int i = 19; i < 75; i++)
 	{
@@ -70,7 +70,6 @@ Game::Game()
 		platform->setPosition(sf::Vector2f(0.0f + 16.0f * count++, 650.0f));
 		gameObjects.push_back(platform);
 		platformVector.push_back(platform);
-
 	}
 }
 

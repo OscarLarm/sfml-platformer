@@ -46,7 +46,7 @@ void Enemy::collisionControl(const sf::Time& time, const std::vector<GameObject*
 
 	for (auto* i : gameObjects)
 	{
-		sf::FloatRect otherBounds = i->getSprite().getGlobalBounds();
+		sf::FloatRect otherBounds = i->getHitBox().getGlobalBounds();
 
 		if (otherBounds.intersects(nextUpdateBounds))
 		{
