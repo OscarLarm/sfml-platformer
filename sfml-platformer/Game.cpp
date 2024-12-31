@@ -15,17 +15,26 @@ void Game::eventHandler()
 void Game::update()
 {
 	this->timeElapsedLastFrame = this->clock.restart();
-	this->player.controller(timeElapsedLastFrame, platformVector);
+
+	for (auto* character : gameObjects)
+	{
+		Character* characterPtr = nullptr;
+		characterPtr = dynamic_cast<Character*>(character);
+
+		if (characterPtr != nullptr)
+		{
+			characterPtr->update(timeElapsedLastFrame, gameObjects);
+		}
+	}
 }
 
 void Game::render()
 {
 	this->window.clear();
 
-	this->window.draw(this->player);
-	for  (const Platform& i : platformVector)
+	for (auto* object : gameObjects)
 	{
-		this->window.draw(i);
+		this->window.draw(*object);
 	}
 
 	this->window.display();
@@ -34,23 +43,33 @@ void Game::render()
 Game::Game()
 	: window(sf::VideoMode(VWIDTH, VHEIGHT), "Platformer"/*, sf::Style::Close*/)
 {
-	int count = 0;
-	int count2 = 0;
+	gameObjects.push_back(new Player);
+	gameObjects.push_back(new Enemy);
+
+	float count = 0.0f;
+	float count2 = 0.0f;
 	this->window.setVerticalSyncEnabled(true);
+
 	for (int i = 0; i < 15; i++)
 	{
-		platform[i].setPosition(sf::Vector2f(0 + 16 * count++, 650));
-		platformVector.push_back(platform[i]);
+		Platform* platform = new Platform;
+		platform->setPosition(sf::Vector2f(0.0f + 16.0f * count++, 650.0f));
+		gameObjects.push_back(platform);
+		platformVector.push_back(platform);
 	}
 	for (int i = 16; i < 19; i++)
 	{
-		platform[i].setPosition(sf::Vector2f(0 + 16 * (count -1), 650 - 16 * ++count2));
-		platformVector.push_back(platform[i]);
+		Platform* platform = new Platform;
+		platform->setPosition(sf::Vector2f(0.0f + 16.0f * (count - 1.0f), 650.0f - 16.0f * ++count2));
+		gameObjects.push_back(platform);
+		platformVector.push_back(platform);
 	}
-	for (int i = 19; i < 30; i++)
+	for (int i = 19; i < 75; i++)
 	{
-		platform[i].setPosition(sf::Vector2f(0 + 16 * count++, 650));
-		platformVector.push_back(platform[i]);
+		Platform* platform = new Platform;
+		platform->setPosition(sf::Vector2f(0.0f + 16.0f * count++, 650.0f));
+		gameObjects.push_back(platform);
+		platformVector.push_back(platform);
 	}
 }
 

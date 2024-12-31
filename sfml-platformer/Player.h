@@ -7,33 +7,25 @@
 #include "Platform.h"
 #include <vector>
 #include "GameObject.h"
+#include "Character.h"
+#include "Enemy.h"
 
-class Player : public GameObject
+class Player : public Character
 {
 private:
-	float moveSpeed;
-	sf::Vector2f velocity;
-
-	float gravity;
 	float jumpForce;
-	bool grounded;
 	Animation* playerAnimation;
 
-	std::string playerState;
-	bool facingRight;
 
-	void collision(const std::vector<Platform>& platforms, const sf::Time& time);
+	void playerControls(const sf::Time& time);
+	void collisionControl(const sf::Time& time, const std::vector<GameObject*>& gameObjects) override;
 
 public:
 	Player();
 	~Player();
 
-	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
-	void move(const sf::Vector2f offset); // Possibly make override transformable
+	void update(const sf::Time& time, const std::vector<GameObject*>& gameObjects) override;
 
-	void controller(const sf::Time& time, const std::vector<Platform>& platforms);
-
-	sf::Vector2f getVelocity() const;
 
 };
 

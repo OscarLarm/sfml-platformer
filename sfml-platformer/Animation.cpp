@@ -14,6 +14,13 @@ void Animation::runningAnimation()
 	animationSpeed = 0.08f;
 }
 
+void Animation::patrolAnimation()
+{
+	numOfFrames = 8;
+	spriteRow = 2;
+	animationSpeed = 0.1f;
+}
+
 void Animation::jumpAnimation(float yVelocity)
 {
 	numOfFrames = 1;
@@ -48,6 +55,10 @@ sf::IntRect Animation::updateAnimation(const std::string& currentState, sf::Vect
 	else if (currentState == "running")
 	{
 		runningAnimation();
+	}
+	else if (currentState == "patrol")
+	{
+		patrolAnimation();
 	}
 
 	spriteRect.top = spriteRect.height * (spriteRow - 1);

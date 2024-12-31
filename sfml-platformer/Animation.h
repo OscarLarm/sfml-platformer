@@ -18,6 +18,7 @@ private:
 
 	void idleAnimation();
 	void runningAnimation();
+	void patrolAnimation();
 	void jumpAnimation(float yVelocity);
 
 public:
