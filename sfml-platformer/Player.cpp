@@ -49,11 +49,33 @@ void Player::playerControls(const sf::Time& time)
 	}
 }
 
+void Player::collisionControl(const std::vector<Platform>& platforms, const sf::Time& time)
+{
+	this->grounded = false;
+	float collisionOffset = 1.0f;
+
+	sf::FloatRect hitBoxBounds = hitBox.getGlobalBounds();
+
+	sf::FloatRect nextUpdateBounds = hitBoxBounds;
+	nextUpdateBounds.left += velocity.x * time.asSeconds();
+	nextUpdateBounds.top += velocity.y * time.asSeconds() + collisionOffset;
+
+	for (const Platform& i : platforms)
+	{
+		sf::FloatRect platformBounds = i.getSprite().getGlobalBounds();
+
+		if (platformBounds.intersects(nextUpdateBounds))
+		{
+			collisionPlatform(hitBoxBounds, platformBounds);
+		}
+	}
+}
+
 Player::Player()
 	:
 	jumpForce(-350.0f)
 {
-
+	this->lives = 3;
 
 	spriteRect = sf::IntRect(0, 0, 96, 84);
 	playerAnimation = new Animation(spriteRect);
@@ -67,9 +89,9 @@ Player::Player()
 	hitBox.setOrigin(hitBox.getSize().x / 2.0f, hitBox.getSize().y);
 	hitBox.setFillColor(sf::Color::Transparent);
 	
-	// Make hitbox visible
-	hitBox.setOutlineColor(sf::Color::Red);
-	hitBox.setOutlineThickness(1.0f);
+	//// Make hitbox visible
+	//hitBox.setOutlineColor(sf::Color::Red);
+	//hitBox.setOutlineThickness(1.0f);
 
 	setPosition(sf::Vector2f(50.0f, 0.0f));
 }
@@ -90,7 +112,7 @@ void Player::update(const sf::Time& time, const std::vector<Platform>& platforms
 
 	sprite.setTextureRect(playerAnimation->updateAnimation(state, velocity, time.asSeconds()));
 
-	collision(platforms, time); //Testing before move
+	collisionControl(platforms, time);
 
 	this->move(velocity * time.asSeconds());
 
@@ -101,4 +123,5 @@ void Player::update(const sf::Time& time, const std::vector<Platform>& platforms
 	std::cout << "Grounded: " << grounded << std::endl;
 	std::cout << "State: " << state << std::endl;
 	std::cout << "Position: " << getPosition().x << ", " << getPosition().y << std::endl;
+	std::cout << "Lives: " << this->lives << std::endl;
 }

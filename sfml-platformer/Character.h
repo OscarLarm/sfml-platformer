@@ -13,9 +13,10 @@ protected:
 	bool grounded;
 	std::string state;
 	bool facingRight;
+	int lives;
 
-
-	void collision(const std::vector<Platform>& platforms, const sf::Time& time);
+	virtual void collisionControl(const std::vector<Platform>& platforms, const sf::Time& time) = 0;
+	void collisionPlatform(const sf::FloatRect& hitBoxBounds, const sf::FloatRect& platformBounds);
 
 private:
 

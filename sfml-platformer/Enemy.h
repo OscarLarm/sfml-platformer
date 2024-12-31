@@ -16,6 +16,7 @@ private:
 
 
 	void patrol(const sf::Time& time);
+	void collisionControl(const std::vector<Platform>& platforms, const sf::Time& time) override;
 
 public:
 	Enemy();

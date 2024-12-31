@@ -33,6 +33,28 @@ void Enemy::patrol(const sf::Time& time)
 	}
 }
 
+void Enemy::collisionControl(const std::vector<Platform>& platforms, const sf::Time& time)
+{
+	this->grounded = false;
+	float collisionOffset = 1.0f;
+
+	sf::FloatRect hitBoxBounds = hitBox.getGlobalBounds();
+
+	sf::FloatRect nextUpdateBounds = hitBoxBounds;
+	nextUpdateBounds.left += velocity.x * time.asSeconds();
+	nextUpdateBounds.top += velocity.y * time.asSeconds() + collisionOffset;
+
+	for (const Platform& i : platforms)
+	{
+		sf::FloatRect platformBounds = i.getSprite().getGlobalBounds();
+
+		if (platformBounds.intersects(nextUpdateBounds))
+		{
+			collisionPlatform(hitBoxBounds, platformBounds);
+		}
+	}
+}
+
 Enemy::Enemy()
 	: reachedTarget(false)
 {
@@ -48,15 +70,15 @@ Enemy::Enemy()
 	hitBox.setOrigin(hitBox.getSize().x / 2.0f, hitBox.getSize().y);
 	hitBox.setFillColor(sf::Color::Transparent);
 
-	// Make hitbox visible
-	hitBox.setOutlineColor(sf::Color::Red);
-	hitBox.setOutlineThickness(1.0f);
+	//// Make hitbox visible
+	//hitBox.setOutlineColor(sf::Color::Red);
+	//hitBox.setOutlineThickness(1.0f);
 
 	setPosition(sf::Vector2f(400.0f, 0.0f));
 	startPosition = this->getPosition().x;
 	targetPosition = startPosition + 300.0f;
 
-	this->moveSpeed = 75.0f;
+	this->moveSpeed = 70.0f;
 }
 
 Enemy::~Enemy()
@@ -72,7 +94,7 @@ void Enemy::update(const sf::Time& time, const std::vector<Platform>& platforms)
 		velocity.y += gravity * time.asSeconds();
 	}
 
-	collision(platforms, time); //Testing before movea
+	collisionControl(platforms, time);
 
 	sprite.setTextureRect(enemyAnimation->updateAnimation(state, velocity, time.asSeconds()));
 
@@ -97,6 +119,6 @@ void Enemy::update(const sf::Time& time, const std::vector<Platform>& platforms)
 	std::cout << "Position: " << getPosition().x << ", " << getPosition().y << std::endl;
 	std::cout << "Start position: " << startPosition << std::endl;
 	std::cout << "Target position: " << targetPosition << std::endl;
-
+	std::cout << "Lives: " << this->lives << std::endl;
 }
 
