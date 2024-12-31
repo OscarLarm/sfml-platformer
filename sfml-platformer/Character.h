@@ -15,6 +15,8 @@ protected:
 	bool facingRight;
 	int lives;
 
+	bool alive;
+
 	virtual void collisionControl(const sf::Time& time, const std::vector<GameObject*>& gameObjects) = 0;
 	void collisionPlatform(const sf::FloatRect& hitBoxBounds, const sf::FloatRect& platformBounds);
 
@@ -31,6 +33,7 @@ public:
 	void move(const sf::Vector2f offset);
 
 	sf::Vector2f getVelocity() const;
+	bool isAlive() const;
 };
 
 #endif // !CHARACTER_H

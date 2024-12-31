@@ -4,6 +4,8 @@
 #include "GameObject.h"
 #include "Character.h"
 #include "Animation.h"
+#include "Sword.h"
+#include "Player.h"
 
 class Enemy : public Character
 {

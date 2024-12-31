@@ -75,3 +75,8 @@ sf::Vector2f Character::getVelocity() const
 {
 	return this->velocity;
 }
+
+bool Character::isAlive() const
+{
+	return this->alive;
+}

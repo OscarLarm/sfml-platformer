@@ -14,8 +14,8 @@ Platform::Platform()
 	this->hitBox.setFillColor(sf::Color::Transparent);
 
 	//// Make hitbox visible
-	this->hitBox.setOutlineColor(sf::Color::Red);
-	this->hitBox.setOutlineThickness(1.0f);
+	//this->hitBox.setOutlineColor(sf::Color::Red);
+	//this->hitBox.setOutlineThickness(1.0f);
 
 	this->setPosition(sf::Vector2f(150, 650));
 }

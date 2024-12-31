@@ -46,6 +46,8 @@ void Enemy::collisionControl(const sf::Time& time, const std::vector<GameObject*
 
 	for (auto* i : gameObjects)
 	{
+		Player* swordPtr = nullptr;
+
 		sf::FloatRect otherBounds = i->getHitBox().getGlobalBounds();
 
 		if (otherBounds.intersects(nextUpdateBounds))
@@ -57,7 +59,6 @@ void Enemy::collisionControl(const sf::Time& time, const std::vector<GameObject*
 			{
 				collisionPlatform(hitBoxBounds, otherBounds);
 			}
-
 		}
 	}
 }
@@ -65,6 +66,9 @@ void Enemy::collisionControl(const sf::Time& time, const std::vector<GameObject*
 Enemy::Enemy()
 	: reachedTarget(false)
 {
+
+	this->alive = true;
+
 	spriteRect = sf::IntRect(0, 0, 96, 84);
 	enemyAnimation = new Animation(spriteRect);
 
@@ -94,6 +98,13 @@ Enemy::~Enemy()
 
 void Enemy::update(const sf::Time& time, const std::vector<GameObject*>& gameObjects)
 {
+	if (this->lives == 0)
+	{
+		// NOTE: Later add a die() function which first plays a animation, and then sets alive to false once the animation is done.
+		this->alive = false;
+		return;
+	}
+
 	patrol(time);
 
 	if (!grounded)
@@ -118,14 +129,18 @@ void Enemy::update(const sf::Time& time, const std::vector<GameObject*>& gameObj
 
 	this->move(velocity * time.asSeconds());
 
-	//Debug
-	std::cout << std::endl << std::endl;
-	std::cout << "Velocity: " << velocity.x << ", " << velocity.y << std::endl;
-	std::cout << "Grounded: " << grounded << std::endl;
-	std::cout << "State: " << state << std::endl;
-	std::cout << "Position: " << getPosition().x << ", " << getPosition().y << std::endl;
-	std::cout << "Start position: " << startPosition << std::endl;
-	std::cout << "Target position: " << targetPosition << std::endl;
-	std::cout << "Lives: " << this->lives << std::endl;
+	////Debug
+	//std::cout << std::endl << std::endl;
+	//std::cout << "------ENEMY------" << std::endl;
+	//std::cout << "Velocity: " << velocity.x << ", " << velocity.y << std::endl;
+	//std::cout << "Grounded: " << grounded << std::endl;
+	//std::cout << "State: " << state << std::endl;
+	//std::cout << "Position: " << getPosition().x << ", " << getPosition().y << std::endl;
+	//std::cout << "Start position: " << startPosition << std::endl;
+	//std::cout << "Target position: " << targetPosition << std::endl;
+	//std::cout << "Lives: " << this->lives << std::endl;
+	//std::cout << "Alive: " << this->alive << std::endl;
+	//std::cout << "-----------------" << std::endl;
+
 }
 

@@ -11,7 +11,7 @@ void Animation::runningAnimation()
 {
 	numOfFrames = 8;
 	spriteRow = 3;
-	animationSpeed = 0.08f;
+	animationSpeed = 0.07f;
 }
 
 void Animation::patrolAnimation()
@@ -37,6 +37,27 @@ void Animation::jumpAnimation(float yVelocity)
 	}
 }
 
+void Animation::jumpAttackAnimation()
+{
+	numOfFrames = 4;
+	spriteRow = 18;
+	animationSpeed = 0.06f;
+}
+
+void Animation::idleAttackAnimation()
+{
+	numOfFrames = 8;
+	spriteRow = 9;
+	animationSpeed = 0.04f;
+}
+
+void Animation::runningAttackAnimation()
+{
+	numOfFrames = 8;
+	spriteRow = 8;
+	animationSpeed = 0.06f;
+}
+
 sf::IntRect Animation::updateAnimation(const std::string& currentState, sf::Vector2f velocity, float timeAsSeconds)
 {
 	if (currentState != previousState || currentState == "jumping")
@@ -59,6 +80,18 @@ sf::IntRect Animation::updateAnimation(const std::string& currentState, sf::Vect
 	else if (currentState == "patrol")
 	{
 		patrolAnimation();
+	}
+	else if (currentState == "jumping-attack")
+	{
+		jumpAttackAnimation();
+	}
+	else if (currentState == "idle-attack")
+	{
+		idleAttackAnimation();
+	}
+	else if (currentState == "running-attack")
+	{
+		runningAttackAnimation();
 	}
 
 	spriteRect.top = spriteRect.height * (spriteRow - 1);
