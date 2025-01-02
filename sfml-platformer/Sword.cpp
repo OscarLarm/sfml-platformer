@@ -13,8 +13,8 @@ Sword::Sword()
 	hitBox.setFillColor(sf::Color::Transparent);
 
 	//// Make hitbox visible
-	hitBox.setOutlineColor(sf::Color::Red);
-	hitBox.setOutlineThickness(1.0f);
+	/*hitBox.setOutlineColor(sf::Color::Red);
+	hitBox.setOutlineThickness(1.0f);*/
 
 	this->setPosition(sf::Vector2f(200.0f, 200.0f));
 }

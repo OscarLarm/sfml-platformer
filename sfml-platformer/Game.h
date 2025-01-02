@@ -28,8 +28,6 @@ private:
 	Platform platform[75];
 	Enemy enemy;*/
 
-	std::vector<Platform*> platformVector;
-
 	std::vector<GameObject*> gameObjects;
 
 public:
