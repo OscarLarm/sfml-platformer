@@ -21,7 +21,7 @@ public:
 	~Level();
 
 	void update();
-	void render();
+	void render(sf::RenderWindow& gameWindow);
 };
 
 #endif // !LEVEL_H

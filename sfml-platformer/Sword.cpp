@@ -44,7 +44,6 @@ void Sword::update(const sf::Time& time, const bool facingRight, std::vector<Gam
 			if (enemyBounds.intersects(swordBounds) && enemyPtr != nullptr)
 			{
 				enemyPtr->hit(this->damage);
-				std::cout << "Hit!" << std::endl;
 			}
 		}
 
