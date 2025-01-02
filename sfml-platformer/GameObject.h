@@ -2,6 +2,8 @@
 #define GAMEOBJECT_H
 
 #include <SFML/Graphics.hpp>
+#include <vector>
+#include <string>
 
 class GameObject : public sf::Drawable
 {
@@ -24,6 +26,7 @@ public:
 	sf::Vector2f getPosition() const;
 	sf::Sprite getSprite() const;
 	sf::RectangleShape getHitBox() const;
+	GameObject* getGameObject(const GameObject& gameObject, std::vector<GameObject*>& gameObjectVector);
 
 	void setPosition(const sf::Vector2f& position);
 };

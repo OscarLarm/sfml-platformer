@@ -16,6 +16,7 @@ void Game::update()
 {
 	this->timeElapsedLastFrame = this->clock.restart();
 
+	int counter = 0;
 	for (auto* character : gameObjects)
 	{
 		Character* characterPtr = nullptr;
@@ -24,7 +25,13 @@ void Game::update()
 		if (characterPtr != nullptr)
 		{
 			characterPtr->update(timeElapsedLastFrame, gameObjects);
+
+			if (!characterPtr->isAlive())
+			{
+				gameObjects.erase(gameObjects.begin() + counter);
+			}
 		}
+		counter++;
 	}
 }
 
@@ -35,6 +42,14 @@ void Game::render()
 	for (auto* object : gameObjects)
 	{
 		this->window.draw(*object);
+
+		Player* playerPtr = nullptr;
+		playerPtr = dynamic_cast<Player*>(object);
+
+		if (playerPtr != nullptr)
+		{
+			this->window.draw(*playerPtr->getSword());
+		}
 	}
 
 	this->window.display();
@@ -45,6 +60,18 @@ Game::Game()
 {
 	gameObjects.push_back(new Player);
 	gameObjects.push_back(new Enemy);
+	
+	// Add players sword to gameObject vector
+	for (auto* i : gameObjects)
+	{
+		GameObject* playerPtr = nullptr;
+
+		Player* player = dynamic_cast<Player*>(i);
+		if (playerPtr != nullptr)
+		{
+			gameObjects.push_back(player->getSword());
+		}
+	}
 
 	float count = 0.0f;
 	float count2 = 0.0f;

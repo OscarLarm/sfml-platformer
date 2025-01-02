@@ -15,11 +15,14 @@ private:
 	int numOfFrames;
 	int spriteRow;
 	float animationSpeed;
-
+	
 	void idleAnimation();
 	void runningAnimation();
 	void patrolAnimation();
 	void jumpAnimation(float yVelocity);
+	void jumpAttackAnimation();
+	void idleAttackAnimation();
+	void runningAttackAnimation();
 
 public:
 	Animation(sf::IntRect spriteRect);
@@ -27,4 +30,4 @@ public:
 	sf::IntRect updateAnimation(const std::string& currentState, sf::Vector2f velocity, float timeAsSeconds);
 
 };
-#endif // !ANIMATOR_H
+#endif // !ANIMATION_H

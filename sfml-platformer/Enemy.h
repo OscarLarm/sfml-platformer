@@ -4,6 +4,7 @@
 #include "GameObject.h"
 #include "Character.h"
 #include "Animation.h"
+#include "Player.h"
 
 class Enemy : public Character
 {
@@ -16,13 +17,13 @@ private:
 
 
 	void patrol(const sf::Time& time);
-	void collisionControl(const sf::Time& time, const std::vector<GameObject*>& gameObjects) override;
+	void collisionControl(const sf::Time& time, std::vector<GameObject*>& gameObjects) override;
 
 public:
 	Enemy();
 	~Enemy();
 
-	void update(const sf::Time& time, const std::vector<GameObject*>& gameObjects) override;
+	void update(const sf::Time& time, std::vector<GameObject*>& gameObjects) override;
 
 };
 
