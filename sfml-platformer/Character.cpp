@@ -44,6 +44,11 @@ void Character::collisionPlatform(const sf::FloatRect& hitBoxBounds, const sf::F
 	}
 }
 
+void Character::hit(const int damage)
+{
+	this->lives -= damage;
+}
+
 Character::Character()
 	: velocity(0, 0),
 	moveSpeed(125.0f),
@@ -51,7 +56,8 @@ Character::Character()
 	grounded(false),
 	state("none"),
 	facingRight(true),
-	lives(1)
+	lives(1),
+	alive(true)
 {
 }
 

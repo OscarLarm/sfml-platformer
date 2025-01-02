@@ -36,7 +36,6 @@ public:
 	Game();
 	~Game();
 	void start();
-
 };
 
 #endif // !GAME_H

@@ -53,7 +53,7 @@ void Animation::idleAttackAnimation()
 
 void Animation::runningAttackAnimation()
 {
-	numOfFrames = 8;
+	numOfFrames = 4;
 	spriteRow = 8;
 	animationSpeed = 0.06f;
 }

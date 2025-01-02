@@ -60,6 +60,18 @@ Game::Game()
 {
 	gameObjects.push_back(new Player);
 	gameObjects.push_back(new Enemy);
+	
+	// Add players sword to gameObject vector
+	for (auto* i : gameObjects)
+	{
+		GameObject* playerPtr = nullptr;
+
+		Player* player = dynamic_cast<Player*>(i);
+		if (playerPtr != nullptr)
+		{
+			gameObjects.push_back(player->getSword());
+		}
+	}
 
 	float count = 0.0f;
 	float count2 = 0.0f;

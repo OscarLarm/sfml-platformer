@@ -74,12 +74,9 @@ void Player::playerControls(const sf::Time& time)
 			swordCooldownTimer = 0.0f;
 		}
 	}
-
-	sword->update(time, facingRight);
-
 }
 
-void Player::collisionControl(const sf::Time& time, const std::vector<GameObject*>& gameObjects)
+void Player::collisionControl(const sf::Time& time, std::vector<GameObject*>& gameObjects)
 {
 	this->grounded = false;
 	float collisionOffset = 1.0f;
@@ -106,7 +103,7 @@ void Player::collisionControl(const sf::Time& time, const std::vector<GameObject
 
 			else
 			{
-				typePtr = dynamic_cast<Enemy*>(i);
+				/*typePtr = dynamic_cast<Enemy*>(i);
 
 				if (typePtr != nullptr)
 				{
@@ -114,7 +111,7 @@ void Player::collisionControl(const sf::Time& time, const std::vector<GameObject
 					this->velocity.x = 0;
 					this->velocity.y = 0;
 					this->setPosition(sf::Vector2f(100.0f, 630.0f));
-				}
+				}*/
 			}
 		}
 	}
@@ -153,7 +150,7 @@ Player::~Player()
 {
 }
 
-void Player::update(const sf::Time& time, const std::vector<GameObject*>& gameObjects)
+void Player::update(const sf::Time& time, std::vector<GameObject*>& gameObjects)
 {
 	if (this->lives == 0)
 	{
@@ -163,6 +160,8 @@ void Player::update(const sf::Time& time, const std::vector<GameObject*>& gameOb
 	}
 
 	playerControls(time);
+	sword->update(time, facingRight, gameObjects);
+
 
 	if (!grounded)
 	{
@@ -181,21 +180,29 @@ void Player::update(const sf::Time& time, const std::vector<GameObject*>& gameOb
 	this->move(velocity * time.asSeconds());
 	this->sword->setPosition(sf::Vector2f(this->getPosition().x, this->getPosition().y));
 
-	//Debug
-	std::system("cls");
-	std::cout << std::endl << std::endl;
-	std::cout << "------PLAYER------" << std::endl;
-	std::cout << "Velocity: " << velocity.x << ", " << velocity.y << std::endl;
-	std::cout << "Grounded: " << grounded << std::endl;
-	std::cout << "State: " << state << std::endl;
-	std::cout << "Position: " << getPosition().x << ", " << getPosition().y << std::endl;
-	std::cout << "Lives: " << this->lives << std::endl;
-	std::cout << "Sword Ready: " << this->swordReady << std::endl;
-	std::cout << "Sword CD: " << this->swordCooldown - this->swordCooldownTimer << std::endl;
-	std::cout << "------------------" << std::endl;
+	////Debug
+	//std::system("cls");
+	//std::cout << std::endl << std::endl;
+	//std::cout << "------PLAYER------" << std::endl;
+	//std::cout << "Velocity: " << velocity.x << ", " << velocity.y << std::endl;
+	//std::cout << "Grounded: " << grounded << std::endl;
+	//std::cout << "State: " << state << std::endl;
+	//std::cout << "Position: " << getPosition().x << ", " << getPosition().y << std::endl;
+	//std::cout << "Lives: " << this->lives << std::endl;
+	//std::cout << "Sword Ready: " << this->swordReady << std::endl;
+	//std::cout << "Sword CD: " << this->swordCooldown - this->swordCooldownTimer << std::endl;
+	//std::cout << "------------------" << std::endl;
 }
 
 Sword* Player::getSword() const
 {
 	return this->sword;
+}
+
+void Player::hit(const int damage)
+{
+	this->lives -= damage;
+	this->velocity.x = 0;
+	this->velocity.y = 0;
+	this->setPosition(sf::Vector2f(100.0f, 630.0f));
 }

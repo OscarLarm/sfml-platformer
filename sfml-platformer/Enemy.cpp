@@ -33,7 +33,7 @@ void Enemy::patrol(const sf::Time& time)
 	}
 }
 
-void Enemy::collisionControl(const sf::Time& time, const std::vector<GameObject*>& gameObjects)
+void Enemy::collisionControl(const sf::Time& time, std::vector<GameObject*>& gameObjects)
 {
 	this->grounded = false;
 	float collisionOffset = 1.0f;
@@ -46,8 +46,6 @@ void Enemy::collisionControl(const sf::Time& time, const std::vector<GameObject*
 
 	for (auto* i : gameObjects)
 	{
-		Player* swordPtr = nullptr;
-
 		sf::FloatRect otherBounds = i->getHitBox().getGlobalBounds();
 
 		if (otherBounds.intersects(nextUpdateBounds))
@@ -59,6 +57,15 @@ void Enemy::collisionControl(const sf::Time& time, const std::vector<GameObject*
 			{
 				collisionPlatform(hitBoxBounds, otherBounds);
 			}
+			else
+			{
+				Player* playerPtr = dynamic_cast<Player*>(i);
+
+				if (playerPtr != nullptr)
+				{
+					playerPtr->hit(1);
+				}
+			}
 		}
 	}
 }
@@ -66,7 +73,6 @@ void Enemy::collisionControl(const sf::Time& time, const std::vector<GameObject*
 Enemy::Enemy()
 	: reachedTarget(false)
 {
-
 	this->alive = true;
 
 	spriteRect = sf::IntRect(0, 0, 96, 84);
@@ -96,7 +102,7 @@ Enemy::~Enemy()
 {
 }
 
-void Enemy::update(const sf::Time& time, const std::vector<GameObject*>& gameObjects)
+void Enemy::update(const sf::Time& time, std::vector<GameObject*>& gameObjects)
 {
 	if (this->lives == 0)
 	{

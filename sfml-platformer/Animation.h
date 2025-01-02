@@ -30,4 +30,4 @@ public:
 	sf::IntRect updateAnimation(const std::string& currentState, sf::Vector2f velocity, float timeAsSeconds);
 
 };
-#endif // !ANIMATOR_H
+#endif // !ANIMATION_H
