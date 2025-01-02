@@ -31,9 +31,10 @@ public:
 	virtual void update(const sf::Time& time, std::vector<GameObject*>& gameObjects) = 0;
 
 	void move(const sf::Vector2f offset);
-	virtual void hit(const int damage);
+	virtual void hit(const int damage = 1);
 
 	sf::Vector2f getVelocity() const;
+	virtual int getLives() const;
 	bool isAlive() const;
 };
 

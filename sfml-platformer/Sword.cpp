@@ -8,13 +8,13 @@ Sword::Sword()
 	lastFacingDirection(true),
 	damage(1)
 {
-	hitBox.setSize(sf::Vector2f(42.0f, 38.0f));
+	hitBox.setSize(sf::Vector2f(40.0f, 38.0f));
 	hitBox.setOrigin(0.0f, this->hitBox.getSize().y);
 	hitBox.setFillColor(sf::Color::Transparent);
 
 	//// Make hitbox visible
-	/*hitBox.setOutlineColor(sf::Color::Red);
-	hitBox.setOutlineThickness(1.0f);*/
+	//hitBox.setOutlineColor(sf::Color::Red);
+	//hitBox.setOutlineThickness(1.0f);
 
 	this->setPosition(sf::Vector2f(200.0f, 200.0f));
 }

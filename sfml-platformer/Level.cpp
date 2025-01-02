@@ -3,19 +3,12 @@
 Level::Level()
 {
 	// Temporary before adding tilemap
-	gameObjects.push_back(new Player);
+	playerPtr = new Player;
+	gameObjects.push_back(playerPtr);
 	gameObjects.push_back(new Enemy);
+	gameObjects.push_back(playerPtr->getSword());
+	hud = new Hud(playerPtr);
 
-	for (auto* i : gameObjects)
-	{
-		GameObject* playerPtr = nullptr;
-
-		Player* player = dynamic_cast<Player*>(i);
-		if (playerPtr != nullptr)
-		{
-			gameObjects.push_back(player->getSword());
-		}
-	}
 	float count = 0.0f;
 	float count2 = 0.0f;
 
@@ -38,6 +31,7 @@ Level::Level()
 		platform->setPosition(sf::Vector2f(0.0f + 16.0f * count++, 650.0f));
 		gameObjects.push_back(platform);
 	}
+	//gameCamera = new sf::View(sf::FloatRect(50, 350, 640, 360));
 }
 
 Level::~Level()
@@ -47,6 +41,7 @@ Level::~Level()
 void Level::update()
 {
 	this->timeElapsedLastFrame = this->clock.restart();
+	this->hud->update(this->timeElapsedLastFrame);
 	int counter = 0;
 
 	for (auto* character : gameObjects)
@@ -69,6 +64,7 @@ void Level::update()
 
 void Level::render(sf::RenderWindow& gameWindow)
 {
+	gameWindow.draw(*hud);
 	for (auto* object : gameObjects)
 	{
 		gameWindow.draw(*object);
@@ -82,3 +78,8 @@ void Level::render(sf::RenderWindow& gameWindow)
 		}
 	}
 }
+
+//sf::View* Level::getGameCamera() const
+//{
+//	return this->gameCamera;
+//}

@@ -26,9 +26,10 @@ void Game::render()
 }
 
 Game::Game()
-	: window(sf::VideoMode(VWIDTH, VHEIGHT), "Platformer"/*, sf::Style::Close*/)
+	: window(sf::VideoMode(VWIDTH, VHEIGHT), "Platformer", sf::Style::Close)
 {
 	this->window.setVerticalSyncEnabled(true);
+	//this->window.setView(*this->level.getGameCamera());
 }
 
 Game::~Game()

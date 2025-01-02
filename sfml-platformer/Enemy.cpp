@@ -63,7 +63,7 @@ void Enemy::collisionControl(const sf::Time& time, std::vector<GameObject*>& gam
 
 				if (playerPtr != nullptr)
 				{
-					playerPtr->hit(1);
+					playerPtr->hit();
 				}
 			}
 		}
@@ -91,7 +91,7 @@ Enemy::Enemy()
 	//hitBox.setOutlineColor(sf::Color::Red);
 	//hitBox.setOutlineThickness(1.0f);
 
-	setPosition(sf::Vector2f(400.0f, 0.0f));
+	setPosition(sf::Vector2f(400.0f, 600.0f));
 	startPosition = this->getPosition().x;
 	targetPosition = startPosition + 300.0f;
 

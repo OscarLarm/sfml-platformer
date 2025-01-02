@@ -100,20 +100,11 @@ void Player::collisionControl(const sf::Time& time, std::vector<GameObject*>& ga
 			{
 				collisionPlatform(hitBoxBounds, otherBounds);
 			}
-
-			else
-			{
-				/*typePtr = dynamic_cast<Enemy*>(i);
-
-				if (typePtr != nullptr)
-				{
-					this->lives--;
-					this->velocity.x = 0;
-					this->velocity.y = 0;
-					this->setPosition(sf::Vector2f(100.0f, 630.0f));
-				}*/
-			}
 		}
+	}
+	if (nextUpdateBounds.top > 900) // TODO: Change to actual level-height, not hardcoded
+	{
+		this->hit();
 	}
 }
 
@@ -143,7 +134,7 @@ Player::Player()
 	//hitBox.setOutlineColor(sf::Color::Red);
 	//hitBox.setOutlineThickness(1.0f);
 
-	setPosition(sf::Vector2f(50.0f, 0.0f));
+	setPosition(sf::Vector2f(50.0f, 600.0f));
 }
 
 Player::~Player()
