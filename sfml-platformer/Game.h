@@ -2,10 +2,7 @@
 #define GAME_H
 
 #include <SFML/Graphics.hpp>
-#include "Platform.h"
-#include "GameObject.h"
-#include "Player.h"
-#include "Enemy.h"
+#include "Level.h"
 
 #include <vector>
 
@@ -15,22 +12,12 @@ private:
 	static const int VWIDTH = 1366;
 	static const int VHEIGHT = 768;
 
-	sf::Clock clock;
-	sf::Time timeElapsedLastFrame;
-
 	sf::RenderWindow window;
+	Level level;
 
 	void eventHandler();
 	void update();
 	void render();
-
-	/*Player player;
-	Platform platform[75];
-	Enemy enemy;*/
-
-	std::vector<Platform*> platformVector;
-
-	std::vector<GameObject*> gameObjects;
 
 public:
 	Game();
