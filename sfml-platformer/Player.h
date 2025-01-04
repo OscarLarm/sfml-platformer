@@ -33,8 +33,8 @@ public:
 	void update(const sf::Time& time, std::vector<GameObject*>& gameObjects) override;
 	
 	Sword* getSword() const;
-	void hit(const int damage) override;
 
+	void resetState();
 };
 
 #endif // !PLAYER_H

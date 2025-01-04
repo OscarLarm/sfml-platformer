@@ -28,8 +28,6 @@ GameObject* GameObject::getGameObject(const GameObject& gameObject, std::vector<
 	return nullptr;
 }
 
-
-
 void GameObject::setPosition(const sf::Vector2f& position)
 {
 	this->sprite.setPosition(position);

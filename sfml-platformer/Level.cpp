@@ -1,21 +1,14 @@
 #include "Level.h"
+#include <iostream>
 
 Level::Level()
+	: timer(0.0f)
 {
 	// Temporary before adding tilemap
 	gameObjects.push_back(new Player);
 	gameObjects.push_back(new Enemy);
+	gameObjects.push_back(this->getPlayer()->getSword());
 
-	for (auto* i : gameObjects)
-	{
-		GameObject* playerPtr = nullptr;
-
-		Player* player = dynamic_cast<Player*>(i);
-		if (playerPtr != nullptr)
-		{
-			gameObjects.push_back(player->getSword());
-		}
-	}
 	float count = 0.0f;
 	float count2 = 0.0f;
 
@@ -38,16 +31,22 @@ Level::Level()
 		platform->setPosition(sf::Vector2f(0.0f + 16.0f * count++, 650.0f));
 		gameObjects.push_back(platform);
 	}
+
+	//this->load();
+	hud = new Hud(this->getPlayer());
 }
 
 Level::~Level()
 {
+	gameObjects.clear();
+	delete this->hud;
+	hud = nullptr;
 }
 
-void Level::update()
+void Level::update(const sf::Time& timeElapsedLastFrame)
 {
-	this->timeElapsedLastFrame = this->clock.restart();
-	int counter = 0;
+	this->timer += timeElapsedLastFrame.asSeconds();
+	this->hud->update(this->timer);
 
 	for (auto* character : gameObjects)
 	{
@@ -57,28 +56,85 @@ void Level::update()
 		if (characterPtr != nullptr)
 		{
 			characterPtr->update(timeElapsedLastFrame, gameObjects);
-
-			if (!characterPtr->isAlive())
-			{
-				gameObjects.erase(gameObjects.begin() + counter);
-			}
 		}
-		counter++;
 	}
 }
 
 void Level::render(sf::RenderWindow& gameWindow)
 {
+	gameWindow.draw(*hud);
+
 	for (auto* object : gameObjects)
 	{
-		gameWindow.draw(*object);
+		Character* characterPtr = nullptr;
+		characterPtr = dynamic_cast<Character*>(object);
 
-		Player* playerPtr = nullptr;
-		playerPtr = dynamic_cast<Player*>(object);
-
-		if (playerPtr != nullptr)
+		if (characterPtr == nullptr || 
+			characterPtr != nullptr && 
+			characterPtr->isAlive())
 		{
-			gameWindow.draw(*playerPtr->getSword());
+			gameWindow.draw(*object);
 		}
 	}
 }
+
+void Level::load()
+{
+	//for (auto& i : gameObjects)
+	//{
+	//	delete i;
+	//	i = nullptr;
+	//}
+	reset();
+	for (auto& i : gameObjects)
+	{
+		Player* playerPtr = dynamic_cast<Player*>(i);
+		if (playerPtr != nullptr)
+		{
+			playerPtr->resetState();
+		}
+	}
+	this->timer = 0.0f;
+
+	//gameCamera = new sf::View(sf::FloatRect(50, 350, 640, 360));
+}
+
+void Level::reset()
+{
+	for (auto& i : gameObjects)
+	{
+		Character* characterPtr = nullptr;
+		characterPtr = dynamic_cast<Character*>(i);
+
+		if (characterPtr != nullptr)
+		{
+			characterPtr->resetPosition();
+		}
+		
+		characterPtr = dynamic_cast<Enemy*>(i);
+		if (characterPtr != nullptr)
+		{
+			characterPtr->resetLives();
+		}
+	}
+}
+
+Player* Level::getPlayer() const
+{
+	Player* playerPtr = nullptr;
+	for (auto& i : gameObjects)
+	{
+		Player* playerPtr = dynamic_cast<Player*>(i);
+
+		if (playerPtr != nullptr)
+		{
+			return playerPtr;
+		}
+	}
+	return playerPtr;
+}
+
+//sf::View* Level::getGameCamera() const
+//{
+//	return this->gameCamera;
+//}

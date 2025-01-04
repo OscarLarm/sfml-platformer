@@ -44,9 +44,9 @@ void Character::collisionPlatform(const sf::FloatRect& hitBoxBounds, const sf::F
 	}
 }
 
-void Character::hit(const int damage)
+void Character::setStartPosition(const sf::Vector2f& position)
 {
-	this->lives -= damage;
+	this->startPosition = position;
 }
 
 Character::Character()
@@ -57,7 +57,10 @@ Character::Character()
 	state("none"),
 	facingRight(true),
 	lives(1),
-	alive(true)
+	startLives(this->lives),
+	alive(true),
+	gotHit(false),
+	startPosition(sf::Vector2f(0.0f, 0.0f))
 {
 }
 
@@ -77,12 +80,41 @@ void Character::move(const sf::Vector2f offset)
 	this->hitBox.setPosition(hitBox.getPosition() + offset);
 }
 
+void Character::resetPosition()
+{
+	this->setPosition(startPosition);
+}
+
+void Character::resetLives()
+{
+	this->lives = startLives;
+}
+
+void Character::hit(const int damage)
+{
+	if (this->isAlive() && this->gotHit == false)
+	{
+		this->lives -= damage;
+		this->gotHit = true;
+	}
+}
+
 sf::Vector2f Character::getVelocity() const
 {
 	return this->velocity;
 }
 
+int Character::getLives() const
+{
+	return this->lives;
+}
+
 bool Character::isAlive() const
 {
 	return this->alive;
+}
+
+bool Character::isHit() const
+{
+	return this->gotHit;
 }

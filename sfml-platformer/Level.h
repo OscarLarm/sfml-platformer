@@ -6,6 +6,7 @@
 #include "GameObject.h"
 #include "Player.h"
 #include "Enemy.h"
+#include "Hud.h"
 
 #include <vector>
 
@@ -13,15 +14,26 @@ class Level
 {
 private:
 	std::vector<GameObject*> gameObjects;
-	sf::Clock clock;
-	sf::Time timeElapsedLastFrame;
+
+	Player* playerPtr;
+	float timer;
+
+	Hud* hud;
+
+	//sf::View* gameCamera;
 
 public:
 	Level();
 	~Level();
 
-	void update();
+	void update(const sf::Time& timeElapsedLastFrame);
 	void render(sf::RenderWindow& gameWindow);
+	void load();
+	void reset();
+
+	Player* getPlayer() const;
+	
+	//sf::View* getGameCamera() const;
 };
 
 #endif // !LEVEL_H
