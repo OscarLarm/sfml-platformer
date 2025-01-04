@@ -1,9 +1,8 @@
 #include "Hud.h"
 #include <iostream>
 
-Hud::Hud(Player*& player)
-	: player(player),
-	totalTime(0.0f),
+Hud::Hud(Player* player)
+	: playerPtr(player),
 	totalTimeStr("na"),
 	playerLivesStr("na")
 {
@@ -11,17 +10,17 @@ Hud::Hud(Player*& player)
 	{
 		std::cout << "Error loading font." << std::endl;
 	}
-	lives.setFont(font);
-	lives.setString("HP!");
-	lives.setCharacterSize(25);
-	lives.setFillColor(sf::Color::White);
-	lives.setPosition(200, 50);
+	livesText.setFont(font);
+	livesText.setString("HP!");
+	livesText.setCharacterSize(25);
+	livesText.setFillColor(sf::Color::White);
+	livesText.setPosition(200, 50);
 
-	timer.setFont(font);
-	timer.setString("Timer!");
-	timer.setCharacterSize(25);
-	timer.setFillColor(sf::Color::White);
-	timer.setPosition(550, 50);
+	timerText.setFont(font);
+	timerText.setString("Timer!");
+	timerText.setCharacterSize(25);
+	timerText.setFillColor(sf::Color::White);
+	timerText.setPosition(550, 50);
 }
 
 Hud::~Hud()
@@ -30,18 +29,17 @@ Hud::~Hud()
 
 void Hud::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	target.draw(this->lives);
-	target.draw(this->timer);
+	target.draw(this->livesText);
+	target.draw(this->timerText);
 }
 
-void Hud::update(const sf::Time& time)
+void Hud::update(float timer)
 {
-	this->playerLivesStr = std::to_string(player->getLives());
+	this->playerLivesStr = std::to_string(playerPtr->getLives());
 
-	totalTime += time.asSeconds();
-	totalTimeStr = std::to_string(static_cast<int>(totalTime));
+	totalTimeStr = std::to_string(static_cast<int>(timer));
 	
 
-	lives.setString("HP: " + playerLivesStr);
-	timer.setString("Time: " + totalTimeStr);
+	livesText.setString("HP: " + playerLivesStr);
+	timerText.setString("Time: " + totalTimeStr);
 }

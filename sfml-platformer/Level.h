@@ -14,10 +14,9 @@ class Level
 {
 private:
 	std::vector<GameObject*> gameObjects;
-	sf::Clock clock;
-	sf::Time timeElapsedLastFrame;
 
 	Player* playerPtr;
+	float timer;
 
 	Hud* hud;
 
@@ -27,8 +26,11 @@ public:
 	Level();
 	~Level();
 
-	void update();
+	void update(const sf::Time& timeElapsedLastFrame);
 	void render(sf::RenderWindow& gameWindow);
+	void load();
+
+	Player* getPlayer() const;
 	
 	//sf::View* getGameCamera() const;
 };

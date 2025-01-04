@@ -1,13 +1,64 @@
 #include "Level.h"
+#include <iostream>
 
 Level::Level()
+	: timer(0.0f)
 {
+	this->load();
+	hud = new Hud(this->getPlayer());
+}
+
+Level::~Level()
+{
+}
+
+void Level::update(const sf::Time& timeElapsedLastFrame)
+{
+	this->timer += timeElapsedLastFrame.asSeconds();
+	std::cout << "Level Update Called" << std::endl;
+	this->hud->update(this->timer);
+	int counter = 0;
+
+	for (auto* character : gameObjects)
+	{
+		Character* characterPtr = nullptr;
+		characterPtr = dynamic_cast<Character*>(character);
+
+		if (characterPtr != nullptr)
+		{
+			characterPtr->update(timeElapsedLastFrame, gameObjects);
+
+			if (!characterPtr->isAlive())
+			{
+				gameObjects.erase(gameObjects.begin() + counter);
+			}
+		}
+		counter++;
+	}
+}
+
+void Level::render(sf::RenderWindow& gameWindow)
+{
+	gameWindow.draw(*hud);
+
+	for (auto* object : gameObjects)
+	{
+		gameWindow.draw(*object);
+	}
+
+}
+
+void Level::load()
+{
+	//for (auto& i : gameObjects)
+	//{
+	//	delete i;
+	//	i = nullptr;
+	//}
 	// Temporary before adding tilemap
-	playerPtr = new Player;
-	gameObjects.push_back(playerPtr);
+	gameObjects.push_back(new Player);
 	gameObjects.push_back(new Enemy);
-	gameObjects.push_back(playerPtr->getSword());
-	hud = new Hud(playerPtr);
+	gameObjects.push_back(this->getPlayer()->getSword());
 
 	float count = 0.0f;
 	float count2 = 0.0f;
@@ -34,49 +85,19 @@ Level::Level()
 	//gameCamera = new sf::View(sf::FloatRect(50, 350, 640, 360));
 }
 
-Level::~Level()
+Player* Level::getPlayer() const
 {
-}
-
-void Level::update()
-{
-	this->timeElapsedLastFrame = this->clock.restart();
-	this->hud->update(this->timeElapsedLastFrame);
-	int counter = 0;
-
-	for (auto* character : gameObjects)
+	Player* playerPtr = nullptr;
+	for (auto& i : gameObjects)
 	{
-		Character* characterPtr = nullptr;
-		characterPtr = dynamic_cast<Character*>(character);
-
-		if (characterPtr != nullptr)
-		{
-			characterPtr->update(timeElapsedLastFrame, gameObjects);
-
-			if (!characterPtr->isAlive())
-			{
-				gameObjects.erase(gameObjects.begin() + counter);
-			}
-		}
-		counter++;
-	}
-}
-
-void Level::render(sf::RenderWindow& gameWindow)
-{
-	gameWindow.draw(*hud);
-	for (auto* object : gameObjects)
-	{
-		gameWindow.draw(*object);
-
-		Player* playerPtr = nullptr;
-		playerPtr = dynamic_cast<Player*>(object);
+		Player* playerPtr = dynamic_cast<Player*>(i);
 
 		if (playerPtr != nullptr)
 		{
-			gameWindow.draw(*playerPtr->getSword());
+			return playerPtr;
 		}
 	}
+	return playerPtr;
 }
 
 //sf::View* Level::getGameCamera() const

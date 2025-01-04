@@ -9,22 +9,20 @@ class Hud : public sf::Drawable
 {
 private:
 	sf::Font font;
-	sf::Text lives;
-	sf::Text timer;
+	sf::Text livesText;
+	sf::Text timerText;
 
-	const Player* player;
+	const Player* playerPtr;
 	std::string playerLivesStr;
 
-	float totalTime;
 	std::string totalTimeStr;
 
-
 public:
-	Hud(Player*& player);
+	Hud(Player* player);
 	~Hud();
 
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
-	void update(const sf::Time& time);
+	void update(float timer);
 };
 
 #endif // !HUD_H

@@ -54,7 +54,8 @@ Character::Character()
 	state("none"),
 	facingRight(true),
 	lives(1),
-	alive(true)
+	alive(true),
+	gotHit(false)
 {
 }
 
@@ -77,6 +78,14 @@ void Character::move(const sf::Vector2f offset)
 void Character::hit(const int damage)
 {
 	this->lives -= damage;
+	if (this->lives <= 0)
+	{
+		this->alive = false;
+	}
+	else
+	{
+		this->gotHit = true;
+	}
 }
 
 sf::Vector2f Character::getVelocity() const
@@ -92,4 +101,9 @@ int Character::getLives() const
 bool Character::isAlive() const
 {
 	return this->alive;
+}
+
+bool Character::isHit() const
+{
+	return this->gotHit;
 }

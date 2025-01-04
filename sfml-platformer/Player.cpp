@@ -143,12 +143,11 @@ Player::~Player()
 
 void Player::update(const sf::Time& time, std::vector<GameObject*>& gameObjects)
 {
-	if (this->lives == 0)
+	if (!alive)
 	{
-		// NOTE: Later add a die() function which first plays a animation, and then sets alive to false once the animation is done.
-		this->alive = false;
 		return;
 	}
+	this->gotHit = false;
 
 	playerControls(time);
 	sword->update(time, facingRight, gameObjects);
@@ -188,12 +187,4 @@ void Player::update(const sf::Time& time, std::vector<GameObject*>& gameObjects)
 Sword* Player::getSword() const
 {
 	return this->sword;
-}
-
-void Player::hit(const int damage)
-{
-	this->lives -= damage;
-	this->velocity.x = 0;
-	this->velocity.y = 0;
-	this->setPosition(sf::Vector2f(100.0f, 630.0f));
 }
