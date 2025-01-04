@@ -116,6 +116,7 @@ Player::Player()
 	swordReady(true)
 {
 	this->lives = 3;
+	this->startLives = this->lives;
 	this->alive = true;
 	spriteRect = sf::IntRect(0, 0, 96, 84);
 	playerAnimation = new Animation(spriteRect);
@@ -134,7 +135,8 @@ Player::Player()
 	//hitBox.setOutlineColor(sf::Color::Red);
 	//hitBox.setOutlineThickness(1.0f);
 
-	setPosition(sf::Vector2f(50.0f, 600.0f));
+	this->setStartPosition(sf::Vector2f(50.0f, 650.0f - hitBox.getSize().y / 2));
+	setPosition(startPosition);
 }
 
 Player::~Player()
@@ -143,32 +145,42 @@ Player::~Player()
 
 void Player::update(const sf::Time& time, std::vector<GameObject*>& gameObjects)
 {
-	if (!alive)
+	this->gotHit = false;
+	
+	if (this->lives == 0)
 	{
+		// NOTE: Later add a die() function which first plays a animation, and then sets alive to false once the animation is done.
+		this->alive = false;
 		return;
 	}
-	this->gotHit = false;
-
-	playerControls(time);
-	sword->update(time, facingRight, gameObjects);
-
-
-	if (!grounded)
+	else
 	{
-		velocity.y += gravity * time.asSeconds();
+		this->alive = true;
 
-		if (!sword->isAttacking())
+
+		playerControls(time);
+		sword->update(time, facingRight, gameObjects);
+
+
+		if (!grounded)
 		{
-			state = "jumping";
+			velocity.y += gravity * time.asSeconds();
+
+			if (!sword->isAttacking())
+			{
+				state = "jumping";
+			}
 		}
+
+		sprite.setTextureRect(playerAnimation->updateAnimation(state, velocity, time.asSeconds()));
+
+		collisionControl(time, gameObjects);
+
+		this->move(velocity * time.asSeconds());
+		this->sword->setPosition(sf::Vector2f(this->getPosition().x, this->getPosition().y));
+
 	}
-
-	sprite.setTextureRect(playerAnimation->updateAnimation(state, velocity, time.asSeconds()));
-
-	collisionControl(time, gameObjects);
-
-	this->move(velocity * time.asSeconds());
-	this->sword->setPosition(sf::Vector2f(this->getPosition().x, this->getPosition().y));
+	
 
 	////Debug
 	//std::system("cls");
@@ -187,4 +199,11 @@ void Player::update(const sf::Time& time, std::vector<GameObject*>& gameObjects)
 Sword* Player::getSword() const
 {
 	return this->sword;
+}
+
+void Player::resetState()
+{
+	this->alive = true;
+	this->lives = startLives;
+	this->setPosition(startPosition);
 }

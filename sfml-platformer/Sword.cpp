@@ -41,10 +41,9 @@ void Sword::update(const sf::Time& time, const bool facingRight, std::vector<Gam
 			sf::FloatRect enemyBounds = i->getHitBox().getGlobalBounds();
 			Enemy* enemyPtr = dynamic_cast<Enemy*>(i);
 
-			if (enemyBounds.intersects(swordBounds) && enemyPtr != nullptr)
+			if (enemyBounds.intersects(swordBounds) && enemyPtr != nullptr && enemyPtr->isAlive())
 			{
 				enemyPtr->hit(this->damage);
-				std::cout << "Hit!" << std::endl;
 			}
 		}
 

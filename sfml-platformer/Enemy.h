@@ -9,7 +9,6 @@
 class Enemy : public Character
 {
 private:
-	float startPosition;
 	float targetPosition;
 	bool reachedTarget;
 	

@@ -29,6 +29,7 @@ public:
 	void update(const sf::Time& timeElapsedLastFrame);
 	void render(sf::RenderWindow& gameWindow);
 	void load();
+	void reset();
 
 	Player* getPlayer() const;
 	

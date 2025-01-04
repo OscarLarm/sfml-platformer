@@ -20,10 +20,11 @@ private:
 
 	Level level;
 	Player* playerPtr;
+	Menu menu;
 
-	int gameState;
+	bool playing;
 
-	Menu mainMenu;
+	int menuChoice;
 
 	void eventHandler();
 	void update();

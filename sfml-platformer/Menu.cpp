@@ -1,12 +1,11 @@
 #include "Menu.h"
 #include <iostream>
 
-Menu::Menu(const sf::Vector2i& windowSize, const std::string& mainText, const std::string& secondaryText, const std::string& choiceText)
+Menu::Menu(const sf::Vector2i& windowSize, const std::string& mainText, const std::string& secondaryText, const std::string& choice1, const std::string& choice2)
 	: windowSize(windowSize),
 	mainText(mainText, fontBold, 32),
 	secondaryText(secondaryText, fontNormal, 20),
-	choiceText(choiceText, fontNormal, 10),
-	menuState(0)
+	choiceText("- Press 'Enter' to " + choice1 + "\n\n\n\n-Press 'ESC' to " + choice2, fontNormal, 10)
 {
 	this->fontNormal.loadFromFile("../assets/GravityRegular5.ttf");
 	this->fontBold.loadFromFile("../assets/GravityBold8.ttf");
@@ -35,24 +34,9 @@ void Menu::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	target.draw(this->choiceText);
 }
 
-void Menu::setText(const std::string& mainText, const std::string& secondaryText, const std::string& choiceText)
+void Menu::updateMenuText(const std::string& mainText, const std::string& secondaryText, const std::string& choice1, const std::string& choice2)
 {
-}
-
-int Menu::update()
-{
-	return this->menuState;
-}
-
-void Menu::setMenuState(const sf::Event& event)
-{
-	//std::cout << event.KeyPressed << std::endl;
-	if (event.key.code == sf::Keyboard::Enter)
-	{
-		this->menuState = 1;
-	}
-	else if (event.key.code == sf::Keyboard::Escape)
-	{
-		this->menuState = 5;
-	}
+	this->mainText.setString(mainText);
+	this->secondaryText.setString(secondaryText);
+	this->choiceText.setString("- Press 'Enter' to " + choice1 + "\n\n\n\n-Press 'ESC' to " + choice2);
 }

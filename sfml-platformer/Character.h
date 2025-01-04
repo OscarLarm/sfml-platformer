@@ -14,12 +14,16 @@ protected:
 	std::string state;
 	bool facingRight;
 	int lives;
+	int startLives;
 
 	bool alive;
 	bool gotHit;
 
 	virtual void collisionControl(const sf::Time& time, std::vector<GameObject*>& gameObjects) = 0;
 	void collisionPlatform(const sf::FloatRect& hitBoxBounds, const sf::FloatRect& platformBounds);
+
+	sf::Vector2f startPosition;
+	void setStartPosition(const sf::Vector2f& position);
 
 private:
 
@@ -32,6 +36,8 @@ public:
 	virtual void update(const sf::Time& time, std::vector<GameObject*>& gameObjects) = 0;
 
 	void move(const sf::Vector2f offset);
+	virtual void resetPosition();
+	virtual void resetLives();
 	virtual void hit(const int damage = 1);
 
 	sf::Vector2f getVelocity() const;

@@ -16,17 +16,13 @@ private:
 	sf::Text secondaryText;
 	sf::Text choiceText;
 
-	int menuState;
-
 public:
-	Menu(const sf::Vector2i& windowSize, const std::string& mainText, const std::string& secondaryText, const std::string& choiceText);
+	Menu(const sf::Vector2i& windowSize, const std::string& mainText, const std::string& secondaryText, const std::string& choice1, const std::string& choice2);
 	~Menu();
 
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
-	void setText(const std::string& mainText, const std::string& secondaryText, const std::string& choiceText);
-	int update();
-	void setMenuState(const sf::Event& event);
+	void updateMenuText(const std::string& mainText, const std::string& secondaryText, const std::string& choice1, const std::string& choice2);
 };
 
 #endif // !MENU_H

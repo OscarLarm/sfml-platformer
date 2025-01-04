@@ -19,7 +19,7 @@ void Enemy::patrol(const sf::Time& time)
 	}
 	else if (reachedTarget)
 	{
-		if (this->getPosition().x > startPosition)
+		if (this->getPosition().x > startPosition.x)
 		{
 			this->velocity.x = -moveSpeed;
 			state = "patrol";
@@ -64,6 +64,7 @@ void Enemy::collisionControl(const sf::Time& time, std::vector<GameObject*>& gam
 				if (playerPtr != nullptr)
 				{
 					playerPtr->hit();
+					std::cout << "hit" << std:: endl;
 				}
 			}
 		}
@@ -90,10 +91,10 @@ Enemy::Enemy()
 	//// Make hitbox visible
 	//hitBox.setOutlineColor(sf::Color::Red);
 	//hitBox.setOutlineThickness(1.0f);
-
-	setPosition(sf::Vector2f(400.0f, 600.0f));
-	startPosition = this->getPosition().x;
-	targetPosition = startPosition + 300.0f;
+	
+	this->setStartPosition(sf::Vector2f(400.0f, 650.0f - hitBox.getSize().y / 2));
+	setPosition(startPosition);
+	targetPosition = startPosition.x + 300.0f;
 
 	this->moveSpeed = 70.0f;
 }
@@ -104,36 +105,43 @@ Enemy::~Enemy()
 
 void Enemy::update(const sf::Time& time, std::vector<GameObject*>& gameObjects)
 {
+	this->gotHit = false;
+
 	if (this->lives == 0)
 	{
 		// NOTE: Later add a die() function which first plays a animation, and then sets alive to false once the animation is done.
 		this->alive = false;
 		return;
 	}
-
-	patrol(time);
-
-	if (!grounded)
+	else
 	{
-		velocity.y += gravity * time.asSeconds();
+		this->alive = true;
+
+		patrol(time);
+
+		if (!grounded)
+		{
+			velocity.y += gravity * time.asSeconds();
+		}
+
+		collisionControl(time, gameObjects);
+
+		sprite.setTextureRect(enemyAnimation->updateAnimation(state, velocity, time.asSeconds()));
+
+		if (this->velocity.x < 0 && facingRight == true)
+		{
+			facingRight = false;
+			this->sprite.scale(-1.0f, 1.0f);
+		}
+		else if (this->velocity.x > 0 && facingRight == false)
+		{
+			facingRight = true;
+			this->sprite.scale(-1.0f, 1.0f);
+		}
+
+		this->move(velocity * time.asSeconds());
 	}
-
-	collisionControl(time, gameObjects);
-
-	sprite.setTextureRect(enemyAnimation->updateAnimation(state, velocity, time.asSeconds()));
-
-	if (this->velocity.x < 0 && facingRight == true)
-	{
-		facingRight = false;
-		this->sprite.scale(-1.0f, 1.0f);
-	}
-	else if (this->velocity.x > 0 && facingRight == false)
-	{
-		facingRight = true;
-		this->sprite.scale(-1.0f, 1.0f);
-	}
-
-	this->move(velocity * time.asSeconds());
+	
 
 	////Debug
 	//std::cout << std::endl << std::endl;
