@@ -38,5 +38,14 @@ void Menu::updateMenuText(const std::string& mainText, const std::string& second
 {
 	this->mainText.setString(mainText);
 	this->secondaryText.setString(secondaryText);
-	this->choiceText.setString("- Press 'Enter' to " + choice1 + "\n\n\n\n-Press 'ESC' to " + choice2);
+	this->choiceText.setString("- Press 'Enter' to " + choice1 + "\n\n\n\n- Press 'ESC' to " + choice2);
+
+	this->mainText.setOrigin(this->mainText.getGlobalBounds().width / 2, this->mainText.getGlobalBounds().height / 2);
+	this->mainText.setPosition(this->windowSize.x / 2.0f, this->windowSize.y / 3.5f);
+
+	this->secondaryText.setOrigin(this->secondaryText.getGlobalBounds().width / 2, this->secondaryText.getGlobalBounds().height / 2);
+	this->secondaryText.setPosition(this->windowSize.x / 2.0f, this->windowSize.y / 2.5f);
+
+	this->choiceText.setOrigin(this->choiceText.getGlobalBounds().width / 2, this->choiceText.getGlobalBounds().height / 2);
+	this->choiceText.setPosition(this->windowSize.x / 2.0f, this->windowSize.y / 1.5f);
 }

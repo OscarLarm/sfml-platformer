@@ -26,9 +26,10 @@ public:
 	sf::Vector2f getPosition() const;
 	sf::Sprite getSprite() const;
 	sf::RectangleShape getHitBox() const;
-	GameObject* getGameObject(const GameObject& gameObject, std::vector<GameObject*>& gameObjectVector);
+	virtual bool getWin() const;
 
 	void setPosition(const sf::Vector2f& position);
+	virtual void setWin(bool win);
 };
 
 #endif // !GAMEOBJECT_H

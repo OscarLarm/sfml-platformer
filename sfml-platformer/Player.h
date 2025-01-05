@@ -9,6 +9,7 @@
 #include "Character.h"
 #include "Enemy.h"
 #include "Sword.h" // TEMPORARY CHANGED TO FORWARD DECLARATION, CIRCULAR INCLUDES.
+#include "WinObject.h"
 
 class Sword; // TEMPORARY CHANGED TO FORWARD DECLARATION, CIRCULAR INCLUDES.
 

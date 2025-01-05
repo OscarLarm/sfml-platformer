@@ -7,6 +7,7 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "Hud.h"
+#include "WinObject.h"
 
 #include <vector>
 
@@ -19,6 +20,8 @@ private:
 	float timer;
 
 	Hud* hud;
+	
+	bool win;
 
 	//sf::View* gameCamera;
 
@@ -32,7 +35,9 @@ public:
 	void reset();
 
 	Player* getPlayer() const;
-	
+	bool getWin() const;
+	float getTimer() const;
+
 	//sf::View* getGameCamera() const;
 };
 

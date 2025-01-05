@@ -23,11 +23,12 @@ private:
 	void jumpAttackAnimation();
 	void idleAttackAnimation();
 	void runningAttackAnimation();
+	void portalAnimation();
 
 public:
 	Animation(sf::IntRect spriteRect);
 	~Animation();
-	sf::IntRect updateAnimation(const std::string& currentState, sf::Vector2f velocity, float timeAsSeconds);
+	sf::IntRect updateAnimation(float timeAsSeconds, const std::string& currentState, sf::Vector2f velocity = sf::Vector2f(0.0f, 0.0f));
 
 };
 #endif // !ANIMATION_H

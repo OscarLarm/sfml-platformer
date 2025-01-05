@@ -2,9 +2,11 @@
 #include <iostream>
 
 Level::Level()
-	: timer(0.0f)
+	: timer(0.0f),
+	win(false)
 {
 	// Temporary before adding tilemap
+	gameObjects.push_back(new WinObject);
 	gameObjects.push_back(new Player);
 	gameObjects.push_back(new Enemy);
 	gameObjects.push_back(this->getPlayer()->getSword());
@@ -48,16 +50,26 @@ void Level::update(const sf::Time& timeElapsedLastFrame)
 	this->timer += timeElapsedLastFrame.asSeconds();
 	this->hud->update(this->timer);
 
-	for (auto* character : gameObjects)
+	for (auto* i : gameObjects)
 	{
 		Character* characterPtr = nullptr;
-		characterPtr = dynamic_cast<Character*>(character);
+		characterPtr = dynamic_cast<Character*>(i);
 
 		if (characterPtr != nullptr)
 		{
 			characterPtr->update(timeElapsedLastFrame, gameObjects);
 		}
+
+		WinObject* winObjectPtr = nullptr;
+		winObjectPtr = dynamic_cast<WinObject*>(i);
+
+		if (winObjectPtr != nullptr)
+		{
+			this->win = winObjectPtr->update(timeElapsedLastFrame);
+		}
 	}
+	std::cout << win << std::endl; 
+
 }
 
 void Level::render(sf::RenderWindow& gameWindow)
@@ -85,6 +97,7 @@ void Level::load()
 	//	delete i;
 	//	i = nullptr;
 	//}
+	this->win = false;
 	reset();
 	for (auto& i : gameObjects)
 	{
@@ -92,6 +105,15 @@ void Level::load()
 		if (playerPtr != nullptr)
 		{
 			playerPtr->resetState();
+		}
+		else
+		{
+			WinObject* winObjectPtr = dynamic_cast<WinObject*>(i);
+			if (winObjectPtr != nullptr)
+			{
+				winObjectPtr->setWin(false);
+			}
+
 		}
 	}
 	this->timer = 0.0f;
@@ -132,6 +154,16 @@ Player* Level::getPlayer() const
 		}
 	}
 	return playerPtr;
+}
+
+bool Level::getWin() const
+{
+	return this->win;
+}
+
+float Level::getTimer() const
+{
+	return this->timer;
 }
 
 //sf::View* Level::getGameCamera() const
