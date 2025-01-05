@@ -1,38 +1,41 @@
 #include "Level.h"
-#include <iostream>
+
 
 Level::Level()
 	: timer(0.0f),
 	win(false)
 {
-	// Temporary before adding tilemap
-	gameObjects.push_back(new WinObject);
-	gameObjects.push_back(new Player);
-	gameObjects.push_back(new Enemy);
-	gameObjects.push_back(this->getPlayer()->getSword());
 
-	float count = 0.0f;
-	float count2 = 0.0f;
+	tileMap.load(level01.data());
 
-	// Temporary before adding tilemap
-	for (int i = 0; i < 15; i++)
-	{
-		Platform* platform = new Platform;
-		platform->setPosition(sf::Vector2f(0.0f + 16.0f * count++, 650.0f));
-		gameObjects.push_back(platform);
-	}
-	for (int i = 16; i < 19; i++)
-	{
-		Platform* platform = new Platform;
-		platform->setPosition(sf::Vector2f(0.0f + 16.0f * (count - 1.0f), 650.0f - 16.0f * ++count2));
-		gameObjects.push_back(platform);
-	}
-	for (int i = 19; i < 75; i++)
-	{
-		Platform* platform = new Platform;
-		platform->setPosition(sf::Vector2f(0.0f + 16.0f * count++, 650.0f));
-		gameObjects.push_back(platform);
-	}
+	//// Temporary before adding tilemap
+	//gameObjects.push_back(new WinObject);
+	//gameObjects.push_back(new Player);
+	//gameObjects.push_back(new Enemy);
+	//gameObjects.push_back(this->getPlayer()->getSword());
+
+	//float count = 0.0f;
+	//float count2 = 0.0f;
+
+	//// Temporary before adding tilemap
+	//for (int i = 0; i < 15; i++)
+	//{
+	//	Platform* platform = new Platform;
+	//	platform->setPosition(sf::Vector2f(0.0f + 16.0f * count++, 650.0f));
+	//	gameObjects.push_back(platform);
+	//}
+	//for (int i = 16; i < 19; i++)
+	//{
+	//	Platform* platform = new Platform;
+	//	platform->setPosition(sf::Vector2f(0.0f + 16.0f * (count - 1.0f), 650.0f - 16.0f * ++count2));
+	//	gameObjects.push_back(platform);
+	//}
+	//for (int i = 19; i < 75; i++)
+	//{
+	//	Platform* platform = new Platform;
+	//	platform->setPosition(sf::Vector2f(0.0f + 16.0f * count++, 650.0f));
+	//	gameObjects.push_back(platform);
+	//}
 
 	//this->load();
 	hud = new Hud(this->getPlayer());
@@ -47,36 +50,34 @@ Level::~Level()
 
 void Level::update(const sf::Time& timeElapsedLastFrame)
 {
-	this->timer += timeElapsedLastFrame.asSeconds();
-	this->hud->update(this->timer);
+	//this->timer += timeElapsedLastFrame.asSeconds();
+	//this->hud->update(this->timer);
 
-	for (auto* i : gameObjects)
-	{
-		Character* characterPtr = nullptr;
-		characterPtr = dynamic_cast<Character*>(i);
+	//for (auto* i : gameObjects)
+	//{
+	//	Character* characterPtr = nullptr;
+	//	characterPtr = dynamic_cast<Character*>(i);
 
-		if (characterPtr != nullptr)
-		{
-			characterPtr->update(timeElapsedLastFrame, gameObjects);
-		}
+	//	if (characterPtr != nullptr)
+	//	{
+	//		characterPtr->update(timeElapsedLastFrame, gameObjects);
+	//	}
 
-		WinObject* winObjectPtr = nullptr;
-		winObjectPtr = dynamic_cast<WinObject*>(i);
+	//	WinObject* winObjectPtr = nullptr;
+	//	winObjectPtr = dynamic_cast<WinObject*>(i);
 
-		if (winObjectPtr != nullptr)
-		{
-			this->win = winObjectPtr->update(timeElapsedLastFrame);
-		}
-	}
-	std::cout << win << std::endl; 
-
+	//	if (winObjectPtr != nullptr)
+	//	{
+	//		this->win = winObjectPtr->update(timeElapsedLastFrame);
+	//	}
+	//}
 }
 
 void Level::render(sf::RenderWindow& gameWindow)
 {
-	gameWindow.draw(*hud);
-
-	for (auto* object : gameObjects)
+	//gameWindow.draw(*hud);
+	gameWindow.draw(tileMap);
+	/*for (auto* object : gameObjects)
 	{
 		Character* characterPtr = nullptr;
 		characterPtr = dynamic_cast<Character*>(object);
@@ -87,17 +88,16 @@ void Level::render(sf::RenderWindow& gameWindow)
 		{
 			gameWindow.draw(*object);
 		}
-	}
+	}*/
 }
 
-void Level::load()
+void Level::load(const int* level)
 {
-	//for (auto& i : gameObjects)
-	//{
-	//	delete i;
-	//	i = nullptr;
-	//}
-	this->win = false;
+	
+
+
+
+	/*this->win = false;
 	reset();
 	for (auto& i : gameObjects)
 	{
@@ -116,14 +116,12 @@ void Level::load()
 
 		}
 	}
-	this->timer = 0.0f;
-
-	//gameCamera = new sf::View(sf::FloatRect(50, 350, 640, 360));
+	this->timer = 0.0f;*/
 }
 
 void Level::reset()
 {
-	for (auto& i : gameObjects)
+	/*for (auto& i : gameObjects)
 	{
 		Character* characterPtr = nullptr;
 		characterPtr = dynamic_cast<Character*>(i);
@@ -138,7 +136,7 @@ void Level::reset()
 		{
 			characterPtr->resetLives();
 		}
-	}
+	}*/
 }
 
 Player* Level::getPlayer() const
@@ -165,8 +163,3 @@ float Level::getTimer() const
 {
 	return this->timer;
 }
-
-//sf::View* Level::getGameCamera() const
-//{
-//	return this->gameCamera;
-//}

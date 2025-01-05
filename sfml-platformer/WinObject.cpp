@@ -23,7 +23,6 @@ WinObject::WinObject()
 	//this->hitBox.setOutlineThickness(1.0f);
 
 	this->setPosition(sf::Vector2f(950, 632));
-	std::cout << "created!" << std::endl;
 }
 
 WinObject::~WinObject()

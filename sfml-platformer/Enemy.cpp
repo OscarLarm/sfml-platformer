@@ -64,7 +64,6 @@ void Enemy::collisionControl(const sf::Time& time, std::vector<GameObject*>& gam
 				if (playerPtr != nullptr)
 				{
 					playerPtr->hit();
-					std::cout << "hit" << std:: endl;
 				}
 			}
 		}

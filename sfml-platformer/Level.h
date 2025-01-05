@@ -8,8 +8,12 @@
 #include "Enemy.h"
 #include "Hud.h"
 #include "WinObject.h"
+#include "TileMap.h"
 
 #include <vector>
+#include <string>
+#include <array>
+#include <iostream>
 
 class Level
 {
@@ -23,22 +27,35 @@ private:
 	
 	bool win;
 
-	//sf::View* gameCamera;
+	std::array<int, 1980> level01 = {
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+	};
+	TileMap tileMap;
+
 
 public:
+
 	Level();
 	~Level();
 
 	void update(const sf::Time& timeElapsedLastFrame);
 	void render(sf::RenderWindow& gameWindow);
-	void load();
+	void load(const int* level);
 	void reset();
 
 	Player* getPlayer() const;
 	bool getWin() const;
 	float getTimer() const;
 
-	//sf::View* getGameCamera() const;
 };
 
 #endif // !LEVEL_H

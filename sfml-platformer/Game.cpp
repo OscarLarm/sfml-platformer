@@ -12,24 +12,24 @@ void Game::eventHandler()
 			this->window.close();
 		}
 
-		if (!playing && event.type == sf::Event::KeyPressed)
-		{
-			if (event.key.code == sf::Keyboard::Enter)
-			{
-				this->level.load();
-				this->playing = true;
-			}
-			else if (event.key.code == sf::Keyboard::Escape)
-			{
-				this->menuChoice = -1;
-			} 
-		}
+		//if (!playing && event.type == sf::Event::KeyPressed)
+		//{
+		//	if (event.key.code == sf::Keyboard::Enter)
+		//	{
+		//		//this->level.load();
+		//		this->playing = true;
+		//	}
+		//	else if (event.key.code == sf::Keyboard::Escape)
+		//	{
+		//		this->menuChoice = -1;
+		//	} 
+		//}
 	}
 }
 
 void Game::update()
 {
-	this->timeElapsedLastFrame = this->clock.restart();
+	/*this->timeElapsedLastFrame = this->clock.restart();
 	if (playing)
 	{
 		if (playerPtr->isHit())
@@ -50,14 +50,15 @@ void Game::update()
 		{
 			level.update(timeElapsedLastFrame);
 		}
-	}
+	}*/
 }
 
 void Game::render()
 {
 	this->window.clear();
 
-	if (!playing)
+	level.render(this->window);
+	/*if (!playing)
 	{
 		switch (menuChoice)
 		{
@@ -81,7 +82,7 @@ void Game::render()
 	else
 	{
 		level.render(this->window);
-	}
+	}*/
 
 	this->window.display();
 }
