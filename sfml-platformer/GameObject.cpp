@@ -1,5 +1,14 @@
 #include "GameObject.h"
 
+void GameObject::setWin(bool win)
+{
+}
+
+bool GameObject::getWin() const
+{
+	return false;
+}
+
 GameObject::GameObject()
 {
 }
@@ -21,11 +30,6 @@ sf::Sprite GameObject::getSprite() const
 sf::RectangleShape GameObject::getHitBox() const
 {
 	return this->hitBox;
-}
-
-GameObject* GameObject::getGameObject(const GameObject& gameObject, std::vector<GameObject*>& gameObjectVector)
-{
-	return nullptr;
 }
 
 void GameObject::setPosition(const sf::Vector2f& position)

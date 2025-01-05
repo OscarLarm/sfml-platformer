@@ -100,6 +100,15 @@ void Player::collisionControl(const sf::Time& time, std::vector<GameObject*>& ga
 			{
 				collisionPlatform(hitBoxBounds, otherBounds);
 			}
+			else
+			{
+				typePtr = dynamic_cast<WinObject*>(i);
+
+				if (typePtr != nullptr)
+				{
+					typePtr->setWin(true);
+				}
+			}
 		}
 	}
 	if (nextUpdateBounds.top > 900) // TODO: Change to actual level-height, not hardcoded
@@ -172,7 +181,7 @@ void Player::update(const sf::Time& time, std::vector<GameObject*>& gameObjects)
 			}
 		}
 
-		sprite.setTextureRect(playerAnimation->updateAnimation(state, velocity, time.asSeconds()));
+		sprite.setTextureRect(playerAnimation->updateAnimation(time.asSeconds(), state, velocity));
 
 		collisionControl(time, gameObjects);
 

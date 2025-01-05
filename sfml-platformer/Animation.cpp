@@ -58,7 +58,32 @@ void Animation::runningAttackAnimation()
 	animationSpeed = 0.06f;
 }
 
-sf::IntRect Animation::updateAnimation(const std::string& currentState, sf::Vector2f velocity, float timeAsSeconds)
+void Animation::portalAnimation()
+{
+	numOfFrames = 3;
+	animationSpeed = 0.1f;
+
+	if (spriteRect.left == spriteRect.width * (numOfFrames - 1))
+	{
+		spriteRect.left = 0;
+		if (spriteRect.top == 0)
+		{
+			spriteRect.top = spriteRect.height;
+		}
+		else if (spriteRect.top == 32)
+		{
+			spriteRect.top = 0;
+		}
+	}
+	else
+	{
+		spriteRect.left += spriteRect.width;
+	}
+}
+
+
+
+sf::IntRect Animation::updateAnimation(float timeAsSeconds, const std::string& currentState, sf::Vector2f velocity)
 {
 	if (currentState != previousState || currentState == "jumping")
 	{
@@ -92,6 +117,17 @@ sf::IntRect Animation::updateAnimation(const std::string& currentState, sf::Vect
 	else if (currentState == "running-attack")
 	{
 		runningAttackAnimation();
+	}
+	else if (currentState == "portal")
+	{
+		animationTimer += timeAsSeconds;
+		if (animationTimer >= animationSpeed)
+		{
+			portalAnimation();
+			animationTimer = 0.0f;
+			previousState = currentState;
+		}
+		return spriteRect;
 	}
 
 	spriteRect.top = spriteRect.height * (spriteRow - 1);

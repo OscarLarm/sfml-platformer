@@ -41,6 +41,11 @@ void Game::update()
 			this->playing = false;
 			this->menuChoice = 1;
 		}
+		else if (this->level.getWin())
+		{
+			this->playing = false;
+			this->menuChoice = 2;
+		}
 		else
 		{
 			level.update(timeElapsedLastFrame);
@@ -61,6 +66,12 @@ void Game::render()
 			break;
 		case 1:
 			this->menu.updateMenuText("Defeat", "You have been slain", "restart", "quit");
+			break;
+		case 2:
+			this->menu.updateMenuText(
+				"Success", "Time: " + 
+				std::to_string(static_cast<int>(this->level.getTimer())) +
+				" seconds", "restart", "quit");
 			break;
 		default:
 			break;

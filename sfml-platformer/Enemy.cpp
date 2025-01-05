@@ -126,7 +126,7 @@ void Enemy::update(const sf::Time& time, std::vector<GameObject*>& gameObjects)
 
 		collisionControl(time, gameObjects);
 
-		sprite.setTextureRect(enemyAnimation->updateAnimation(state, velocity, time.asSeconds()));
+		sprite.setTextureRect(enemyAnimation->updateAnimation(time.asSeconds(), state, velocity));
 
 		if (this->velocity.x < 0 && facingRight == true)
 		{
