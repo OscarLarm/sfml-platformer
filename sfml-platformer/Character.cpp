@@ -116,5 +116,9 @@ bool Character::isAlive() const
 
 bool Character::isHit() const
 {
+	if (this == nullptr)
+	{
+		return false;
+	}
 	return this->gotHit;
 }

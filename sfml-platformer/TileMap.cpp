@@ -45,12 +45,14 @@ void TileMap::load(const int* level)
 			triangles[4].position = sf::Vector2f((i + 1) * 32, j * 32);
 			triangles[5].position = sf::Vector2f((i + 1) * 32, (j + 1) * 32);
 
-			triangles[0].texCoords = sf::Vector2f(tileX * 32, tileY * 32);
-			triangles[1].texCoords = sf::Vector2f((tileX + 1) * 32, tileY * 32);
-			triangles[2].texCoords = sf::Vector2f(tileX * 32, (tileY + 1) * 32);
-			triangles[3].texCoords = sf::Vector2f(tileX * 32, (tileY + 1) * 32);
-			triangles[4].texCoords = sf::Vector2f((tileX + 1) * 32, tileY * 32);
-			triangles[5].texCoords = sf::Vector2f((tileX + 1)* 32, (tileY + 1) * 32);
+
+
+			//triangles[0].texCoords = sf::Vector2f(tileX * 32, tileY * 32);
+			//triangles[1].texCoords = sf::Vector2f((tileX + 1) * 32, tileY * 32);
+			//triangles[2].texCoords = sf::Vector2f(tileX * 32, (tileY + 1) * 32);
+			//triangles[3].texCoords = sf::Vector2f(tileX * 32, (tileY + 1) * 32);
+			//triangles[4].texCoords = sf::Vector2f((tileX + 1) * 32, tileY * 32);
+			//triangles[5].texCoords = sf::Vector2f((tileX + 1)* 32, (tileY + 1) * 32);
 
 		}
 	}

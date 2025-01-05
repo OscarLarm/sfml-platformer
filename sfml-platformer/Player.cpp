@@ -89,6 +89,10 @@ void Player::collisionControl(const sf::Time& time, std::vector<GameObject*>& ga
 
 	for (auto* i : gameObjects)
 	{
+		if (i == nullptr)
+		{
+			continue;
+		}
 		sf::FloatRect otherBounds = i->getHitBox().getGlobalBounds();
 
 		if (otherBounds.intersects(nextUpdateBounds))

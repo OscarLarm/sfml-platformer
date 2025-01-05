@@ -35,8 +35,13 @@ void Sword::update(const sf::Time& time, const bool facingRight, std::vector<Gam
 		//hitBox.setOutlineColor(sf::Color::White);
 		attackTimer += time.asSeconds();
 
-		for (auto& i : gameObjects)
+		for (auto* i : gameObjects)
 		{
+			if (i == nullptr)
+			{
+				continue;
+			}
+
 			sf::FloatRect swordBounds = this->hitBox.getGlobalBounds();
 			sf::FloatRect enemyBounds = i->getHitBox().getGlobalBounds();
 			Enemy* enemyPtr = dynamic_cast<Enemy*>(i);

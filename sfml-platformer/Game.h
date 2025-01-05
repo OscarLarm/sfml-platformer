@@ -14,13 +14,19 @@ private:
 	static const int VWIDTH = 1366;
 	static const int VHEIGHT = 768;
 
+	const sf::Vector2f LEVEL_SIZE;
+
 	sf::RenderWindow window;
 	sf::Clock clock;
 	sf::Time timeElapsedLastFrame;
 
-	Level level;
+	Level* level;
 	Player* playerPtr;
 	Menu menu;
+
+	sf::FloatRect gameView;
+	sf::FloatRect menuView;
+	sf::View view;
 
 	bool playing;
 
