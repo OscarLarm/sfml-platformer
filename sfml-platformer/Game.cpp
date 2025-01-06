@@ -32,6 +32,10 @@ void Game::update()
 	this->timeElapsedLastFrame = this->clock.restart();
 	if (playing)
 	{
+		if (playerPtr != nullptr)
+		{
+			this->gameView.setCenter(playerPtr->getPosition().x, LEVEL_SIZE.y / 2);
+		}
 		//if (playerPtr->isHit())
 		//{
 		//	level->reset();
@@ -55,11 +59,11 @@ void Game::update()
 
 void Game::render()
 {
-	
 	this->window.clear();
 
 	if (!playing)
 	{
+		window.setView(menuView);
 		switch (menuChoice)
 		{
 		case 0:
@@ -81,7 +85,8 @@ void Game::render()
 	}
 	else
 	{
-		level->render(this->window);
+		window.setView(gameView);
+		level->render(window);
 
 	}
 
@@ -89,23 +94,18 @@ void Game::render()
 }
 
 Game::Game()
-	:LEVEL_SIZE(sf::Vector2f(640.0f, 320.0f)),
-	window(sf::VideoMode(VWIDTH, VHEIGHT), "Platformer"/*, sf::Style::Close*/),
-	//mainMenu(sf::Vector2i(VWIDTH, VHEIGHT), "Platformer", "Made in SFML", "start", "quit"),
-	//defeatMenu(sf::Vector2i(VWIDTH, VHEIGHT), "Defeat", "You have been slain", "restart", "return to the main menu"),
+	:window(sf::VideoMode(VWIDTH, VHEIGHT), "Platformer"/*, sf::Style::Close*/),
+	LEVEL_SIZE(sf::Vector2f(640.0f, 320.0f)),
 	playing(false),
-	menu(sf::Vector2i(688.0f, 430.0f), "Platformer", "Made in SFML", "Start", "quit"),
+	menu(sf::Vector2i(VWIDTH, VHEIGHT), "Platformer", "Made in SFML", "Start", "quit"),
 	menuChoice(0),
 	playerPtr(nullptr),
-	gameView(sf::Vector2f(LEVEL_SIZE.x / -4, LEVEL_SIZE.y / -4), sf::Vector2f(800.0f,600.0f))/*,
-	view(sf::Vector2f(320.0f, 160.0f), sf::Vector2f(688.0f, 430.0f))*/
+	menuView(sf::FloatRect(0.0f, 0.0f, VWIDTH, VHEIGHT)),
+	gameView(sf::FloatRect(0.0f, 0.0f, LEVEL_SIZE.x, LEVEL_SIZE.y))
 {
 	this->window.setVerticalSyncEnabled(true);
 	this->level = new Level();
 	this->playerPtr = level->getPlayer();
-
-	this->view.reset(gameView);
-	this->window.setView(view);
 }
 
 Game::~Game()

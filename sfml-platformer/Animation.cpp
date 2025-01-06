@@ -42,6 +42,7 @@ void Animation::jumpAttackAnimation()
 	numOfFrames = 4;
 	spriteRow = 18;
 	animationSpeed = 0.06f;
+
 }
 
 void Animation::idleAttackAnimation()

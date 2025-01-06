@@ -23,7 +23,6 @@ protected:
 	void collisionPlatform(const sf::FloatRect& hitBoxBounds, const sf::FloatRect& platformBounds);
 
 	sf::Vector2f startPosition;
-	void setStartPosition(const sf::Vector2f& position);
 
 private:
 
@@ -44,6 +43,9 @@ public:
 	virtual int getLives() const;
 	virtual bool isAlive() const;
 	virtual bool isHit() const;
+
+	void setStartPosition(const sf::Vector2f& position);
+
 };
 
 #endif // !CHARACTER_H

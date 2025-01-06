@@ -24,9 +24,8 @@ private:
 	Player* playerPtr;
 	Menu menu;
 
-	sf::FloatRect gameView;
-	sf::FloatRect menuView;
-	sf::View view;
+	sf::View menuView;
+	sf::View gameView;
 
 	bool playing;
 

@@ -83,6 +83,7 @@ void Character::move(const sf::Vector2f offset)
 void Character::resetPosition()
 {
 	this->setPosition(startPosition);
+	this->velocity = sf::Vector2f(0.0f, 0.0f);
 }
 
 void Character::resetLives()
