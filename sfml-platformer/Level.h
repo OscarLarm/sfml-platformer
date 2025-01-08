@@ -22,8 +22,6 @@ private:
 
 	Player* playerPtr;
 	float timer;
-
-	Hud* hud;
 	
 	bool win;
 
@@ -55,11 +53,11 @@ private:
 public:
 
 	Level();
-	~Level();
+	virtual ~Level();
 
 	void update(const sf::Time& timeElapsedLastFrame);
 	void render(sf::RenderWindow& gameWindow);
-	void load(int* level, const int column, const int row, const sf::Vector2i& gridSize);
+	void load(/*int* level,*/ const int column, const int row, const sf::Vector2i& gridSize);
 	void reset();
 
 	Player* getPlayer() const;

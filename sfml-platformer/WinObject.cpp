@@ -5,7 +5,7 @@ WinObject::WinObject()
 	: win(false)
 {
 	spriteRect = sf::IntRect(0, 0, 32, 32);
-	portalAnimation = new Animation(spriteRect);
+	animationPtr = new Animation(spriteRect);
 	this->texture.loadFromFile(ASSETS_DIRECTORY + "portalSheet.png");
 	this->sprite.setTexture(this->texture);
 	this->sprite.setTextureRect(this->spriteRect);
@@ -37,7 +37,7 @@ void WinObject::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
 bool WinObject::update(sf::Time time)
 {
-	sprite.setTextureRect(portalAnimation->updateAnimation(time.asSeconds(), "portal"));
+	sprite.setTextureRect(animationPtr->updateAnimation(time.asSeconds(), "portal"));
 	
 	if (this->win)
 	{

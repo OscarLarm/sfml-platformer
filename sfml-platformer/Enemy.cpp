@@ -79,7 +79,7 @@ Enemy::Enemy()
 	this->alive = true;
 
 	spriteRect = sf::IntRect(0, 0, 96, 84);
-	enemyAnimation = new Animation(spriteRect);
+	this->animationPtr = new Animation(spriteRect);
 
 	texture.loadFromFile(ASSETS_DIRECTORY + "playerSheet.png");
 	sprite.setTexture(texture);
@@ -132,7 +132,7 @@ void Enemy::update(const sf::Time& time, std::vector<GameObject*>& gameObjects)
 
 		collisionControl(time, gameObjects);
 
-		sprite.setTextureRect(enemyAnimation->updateAnimation(time.asSeconds(), state, velocity));
+		sprite.setTextureRect(animationPtr->updateAnimation(time.asSeconds(), state, velocity));
 
 		if (this->velocity.x < 0 && facingRight == true)
 		{

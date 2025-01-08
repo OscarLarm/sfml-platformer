@@ -17,7 +17,7 @@ class Player : public Character
 {
 private:
 	float jumpForce;
-	Animation* playerAnimation;
+	//Animation* playerAnimation;
 	
 	Sword* sword;
 	float swordCooldown;
@@ -29,7 +29,7 @@ private:
 
 public:
 	Player();
-	~Player();
+	virtual ~Player();
 
 	void update(const sf::Time& time, std::vector<GameObject*>& gameObjects) override;
 	

@@ -10,12 +10,15 @@ bool GameObject::getWin() const
 }
 
 GameObject::GameObject()
-	: hitBox(sf::Vector2f(32.0f, 32.0f))
+	: hitBox(sf::Vector2f(32.0f, 32.0f)),
+	animationPtr(nullptr)
+
 {
 }
 
 GameObject::~GameObject()
 {
+	delete this->animationPtr;
 }
 
 sf::Vector2f GameObject::getPosition() const

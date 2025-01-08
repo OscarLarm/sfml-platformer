@@ -132,7 +132,7 @@ Player::Player()
 	this->startLives = this->lives;
 	this->alive = true;
 	spriteRect = sf::IntRect(0, 0, 96, 84);
-	playerAnimation = new Animation(spriteRect);
+	this->animationPtr = new Animation(spriteRect);
 	this->sword = new Sword;
 
 	texture.loadFromFile(ASSETS_DIRECTORY + "playerSheetCombat.png");
@@ -151,6 +151,7 @@ Player::Player()
 
 Player::~Player()
 {
+	delete this->sword;
 }
 
 void Player::update(const sf::Time& time, std::vector<GameObject*>& gameObjects)
@@ -185,7 +186,7 @@ void Player::update(const sf::Time& time, std::vector<GameObject*>& gameObjects)
 			}
 		}
 
-		sprite.setTextureRect(playerAnimation->updateAnimation(time.asSeconds(), state, velocity));
+		sprite.setTextureRect(animationPtr->updateAnimation(time.asSeconds(), state, velocity));
 
 		collisionControl(time, gameObjects);
 
@@ -195,19 +196,19 @@ void Player::update(const sf::Time& time, std::vector<GameObject*>& gameObjects)
 	}
 	
 
-	////Debug
-	//std::system("cls");
-	//std::cout << std::endl << std::endl;
-	//std::cout << "------PLAYER------" << std::endl;
-	//std::cout << "Velocity: " << velocity.x << ", " << velocity.y << std::endl;
-	//std::cout << "Grounded: " << grounded << std::endl;
-	//std::cout << "State: " << state << std::endl;
-	//std::cout << "Position: " << getPosition().x << ", " << getPosition().y << std::endl;
-	//std::cout << "Lives: " << this->lives << std::endl;
-	//std::cout << "Sword Ready: " << this->swordReady << std::endl;
-	//std::cout << "Sword CD: " << this->swordCooldown - this->swordCooldownTimer << std::endl;
-	//std::cout << "Start position: " << this->startPosition.x << ", " << this->startPosition.y << std::endl;
-	//std::cout << "------------------" << std::endl;
+	//Debug
+	std::system("cls");
+	std::cout << std::endl << std::endl;
+	std::cout << "------PLAYER------" << std::endl;
+	std::cout << "Velocity: " << velocity.x << ", " << velocity.y << std::endl;
+	std::cout << "Grounded: " << grounded << std::endl;
+	std::cout << "State: " << state << std::endl;
+	std::cout << "Position: " << getPosition().x << ", " << getPosition().y << std::endl;
+	std::cout << "Lives: " << this->lives << std::endl;
+	std::cout << "Sword Ready: " << this->swordReady << std::endl;
+	std::cout << "Sword CD: " << this->swordCooldown - this->swordCooldownTimer << std::endl;
+	std::cout << "Start position: " << this->startPosition.x << ", " << this->startPosition.y << std::endl;
+	std::cout << "------------------" << std::endl;
 }
 
 Sword* Player::getSword() const

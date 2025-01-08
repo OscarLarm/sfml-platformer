@@ -3,6 +3,7 @@
 
 #include "GameObject.h"
 #include "Platform.h"
+#include "Animation.h"
 
 class Character : public GameObject
 {
@@ -15,6 +16,7 @@ protected:
 	bool facingRight;
 	int lives;
 	int startLives;
+
 
 	bool alive;
 	bool gotHit;
@@ -29,7 +31,7 @@ private:
 
 public:
 	Character();
-	~Character();
+	virtual ~Character();
 
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 	virtual void update(const sf::Time& time, std::vector<GameObject*>& gameObjects) = 0;

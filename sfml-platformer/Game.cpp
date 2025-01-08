@@ -16,8 +16,9 @@ void Game::eventHandler()
 		{
 			if (event.key.code == sf::Keyboard::Enter)
 			{
-				this->totTime == 0.0f;
-				//this->level->load(level01.data(), 40, 20, sf::Vector2i(16, 16));
+				this->totTime = 0.0f;
+				this->level->load(/*level01.data(), */40, 20, sf::Vector2i(16, 16));
+				this->playerPtr = level->getPlayer();
 				this->playing = true;
 			}
 			else if (event.key.code == sf::Keyboard::Escape)
@@ -33,19 +34,20 @@ void Game::update()
 	this->timeElapsedLastFrame = this->clock.restart();
 	if (playing)
 	{
-		totTime += timeElapsedLastFrame.asSeconds();
+		//if (playerPtr == nullptr)
+		//{
+		//	return;
+		//}
 
-		if (playerPtr != nullptr)
-		{
-			this->gameView.setCenter(playerPtr->getPosition().x, LEVEL_SIZE.y / 2);
-			this->gameHud->update(this->totTime, this->playerPtr, this->gameView);
-			
-		}
-		if (this->playerPtr != nullptr && playerPtr->isHit())
+		totTime += timeElapsedLastFrame.asSeconds();
+		this->gameView.setCenter(playerPtr->getPosition().x, LEVEL_SIZE.y / 2);
+		this->gameHud->update(this->totTime, this->playerPtr, this->gameView);
+
+		if (this->playerPtr->isHit())
 		{
 			level->reset();
 		}
-		if (this->playerPtr == nullptr || !this->playerPtr->isAlive())
+		if (!this->playerPtr->isAlive())
 		{
 			this->playing = false;
 			this->menuChoice = 1;
@@ -111,12 +113,14 @@ Game::Game()
 {
 	this->window.setVerticalSyncEnabled(true); 
 	this->level = new Level();
-	this->playerPtr = level->getPlayer();
+	//this->playerPtr = level->getPlayer();
 	this->gameHud = new Hud();
 }
 
 Game::~Game()
 {
+	delete level;
+	delete gameHud;
 }
 
 void Game::start()

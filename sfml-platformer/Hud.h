@@ -15,10 +15,10 @@ private:
 	std::string playerLivesStr;
 
 	std::string totTimeStr;
-
+	
 public:
 	Hud();
-	~Hud();
+	virtual ~Hud();
 
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 	void update(float totTime, Player* player, sf::View& gameView);

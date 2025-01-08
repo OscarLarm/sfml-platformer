@@ -18,7 +18,7 @@ private:
 
 public:
 	Menu(const sf::Vector2i& windowSize, const std::string& mainText, const std::string& secondaryText, const std::string& choice1, const std::string& choice2);
-	~Menu();
+	virtual ~Menu();
 
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 

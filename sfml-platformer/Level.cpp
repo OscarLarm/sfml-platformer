@@ -6,15 +6,17 @@ Level::Level()
 	win(false),
 	playerPtr(nullptr)
 {
-	this->load(level01.data(), 40, 20, sf::Vector2i(16, 16));
+	//this->load(/*level01.data(),*/ 40, 20, sf::Vector2i(16, 16));
 	//hud = new Hud(this->getPlayer()); // Move to Game class, different from UML diagram.
 }
 
 Level::~Level()
 {
+	for (auto& i : gameObjects)
+	{
+		delete i;
+	}
 	gameObjects.clear();
-	delete this->hud;
-	hud = nullptr;
 }
 
 void Level::update(const sf::Time& timeElapsedLastFrame)
@@ -77,9 +79,13 @@ void Level::render(sf::RenderWindow& gameWindow)
 	}
 }
 
-void Level::load(int* level, const int column, const int row, const sf::Vector2i& gridSize)
+void Level::load(/*int* level,*/ const int column, const int row, const sf::Vector2i& gridSize)
 {
 	this->win = false;
+	for (auto& i : gameObjects)
+	{
+		delete i;
+	}
 	gameObjects.clear();
 
 	this->gameObjects.resize(column * row);
@@ -91,7 +97,7 @@ void Level::load(int* level, const int column, const int row, const sf::Vector2i
 		for (int j = 0; j < column; j++)
 		{
 			GameObject* gameObjectPtr = nullptr;
-			switch (level[levelIndex])
+			switch (/*level[levelIndex]*/ this->level01.data()[levelIndex])
 			{
 			case 0:
 				break;
@@ -107,6 +113,7 @@ void Level::load(int* level, const int column, const int row, const sf::Vector2i
 				break;
 			case 4:
 				gameObjectPtr = new Enemy;
+				break;
 			}
 			
 			if (gameObjectPtr != nullptr)
