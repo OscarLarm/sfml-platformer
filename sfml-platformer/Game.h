@@ -20,6 +20,7 @@ private:
 	sf::RenderWindow window;
 	sf::Clock clock;
 	sf::Time timeElapsedLastFrame;
+	float totTime;
 
 	Level* level;
 	Player* playerPtr;

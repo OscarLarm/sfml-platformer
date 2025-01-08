@@ -30,18 +30,19 @@ void Game::eventHandler()
 void Game::update()
 {
 	this->timeElapsedLastFrame = this->clock.restart();
+	totTime += timeElapsedLastFrame.asSeconds();
 	if (playing)
 	{
 		if (playerPtr != nullptr)
 		{
 			this->gameView.setCenter(playerPtr->getPosition().x, LEVEL_SIZE.y / 2);
-			this->gameHud->update(this->timeElapsedLastFrame.asSeconds(), this->playerPtr, gameView);
+			this->gameHud->update(this->totTime, this->playerPtr, this->gameView);
 			
 		}
-		//if (playerPtr->isHit())
-		//{
-		//	level->reset();
-		//}
+		if (this->playerPtr != nullptr && playerPtr->isHit())
+		{
+			level->reset();
+		}
 		if (this->playerPtr == nullptr || !this->playerPtr->isAlive())
 		{
 			this->playing = false;
@@ -98,6 +99,7 @@ void Game::render()
 Game::Game()
 	:window(sf::VideoMode(VWIDTH, VHEIGHT), "Platformer"/*, sf::Style::Close*/),
 	LEVEL_SIZE(sf::Vector2f(640.0f, 320.0f)),
+	totTime(0.0f),
 	playing(false),
 	menu(sf::Vector2i(VWIDTH, VHEIGHT), "Platformer", "Made in SFML", "Start", "quit"),
 	menuChoice(0),

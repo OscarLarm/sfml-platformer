@@ -147,6 +147,7 @@ Player::Player()
 	//// Make hitbox visible
 	//hitBox.setOutlineColor(sf::Color::Red);
 	//hitBox.setOutlineThickness(1.0f);
+	this->setStartPosition(this->getPosition());
 }
 
 Player::~Player()
