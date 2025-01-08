@@ -4,7 +4,7 @@
 
 Platform::Platform() 
 {
-	spriteRect = sf::IntRect(32, 16, 16, 16);
+	spriteRect = sf::IntRect(0, 0, 48, 16);
 
 	this->texture.loadFromFile(ASSETS_DIRECTORY + "tileSheet.png");
 	this->sprite.setTexture(this->texture);

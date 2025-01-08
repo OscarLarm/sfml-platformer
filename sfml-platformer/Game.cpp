@@ -17,7 +17,7 @@ void Game::eventHandler()
 			if (event.key.code == sf::Keyboard::Enter)
 			{
 				this->totTime = 0.0f;
-				this->level->load(/*level01.data(), */40, 20, sf::Vector2i(16, 16));
+				this->level->load(/*level01.data(), */40, 20, sf::Vector2i(32, 16));
 				this->playerPtr = level->getPlayer();
 				this->playing = true;
 			}
@@ -40,7 +40,7 @@ void Game::update()
 		//}
 
 		totTime += timeElapsedLastFrame.asSeconds();
-		this->gameView.setCenter(playerPtr->getPosition().x, LEVEL_SIZE.y / 2);
+		this->gameView.setCenter(playerPtr->getPosition().x, LEVEL_SIZE.y / 2.0f);
 		this->gameHud->update(this->totTime, this->playerPtr, this->gameView);
 
 		if (this->playerPtr->isHit())

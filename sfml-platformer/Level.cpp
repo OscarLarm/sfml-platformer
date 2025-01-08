@@ -118,7 +118,7 @@ void Level::load(/*int* level,*/ const int column, const int row, const sf::Vect
 			
 			if (gameObjectPtr != nullptr)
 			{
-				gameObjectPtr->setPosition(sf::Vector2f(j * gridSize.x, i * gridSize.x)); // Why do I need to use column for y and row for x?
+				gameObjectPtr->setPosition(sf::Vector2f(j * gridSize.x, i * gridSize.y)); // Why do I need to use column for y and row for x?
 				gameObjects.push_back(gameObjectPtr);
 			}
 			gameObjectPtr = nullptr;
