@@ -46,24 +46,27 @@ void Enemy::collisionControl(const sf::Time& time, std::vector<GameObject*>& gam
 
 	for (auto* i : gameObjects)
 	{
-		sf::FloatRect otherBounds = i->getHitBox().getGlobalBounds();
-
-		if (otherBounds.intersects(nextUpdateBounds))
+		if (i != nullptr)
 		{
-			GameObject* typePtr = nullptr;
-			typePtr = dynamic_cast<Platform*>(i);
+			sf::FloatRect otherBounds = i->getHitBox().getGlobalBounds();
 
-			if (typePtr != nullptr)
+			if (otherBounds.intersects(nextUpdateBounds))
 			{
-				collisionPlatform(hitBoxBounds, otherBounds);
-			}
-			else
-			{
-				Player* playerPtr = dynamic_cast<Player*>(i);
+				GameObject* typePtr = nullptr;
+				typePtr = dynamic_cast<Platform*>(i);
 
-				if (playerPtr != nullptr)
+				if (typePtr != nullptr)
 				{
-					playerPtr->hit();
+					collisionPlatform(hitBoxBounds, otherBounds);
+				}
+				else
+				{
+					Player* playerPtr = dynamic_cast<Player*>(i);
+
+					if (playerPtr != nullptr)
+					{
+						playerPtr->hit();
+					}
 				}
 			}
 		}
@@ -91,9 +94,9 @@ Enemy::Enemy()
 	//hitBox.setOutlineColor(sf::Color::Red);
 	//hitBox.setOutlineThickness(1.0f);
 	
-	this->setStartPosition(sf::Vector2f(400.0f, 650.0f - hitBox.getSize().y / 2));
+	this->setStartPosition(this->getPosition());
 	setPosition(startPosition);
-	targetPosition = startPosition.x + 300.0f;
+	targetPosition = startPosition.x + 20.0f;
 
 	this->moveSpeed = 70.0f;
 }
@@ -142,18 +145,18 @@ void Enemy::update(const sf::Time& time, std::vector<GameObject*>& gameObjects)
 	}
 	
 
-	////Debug
-	//std::cout << std::endl << std::endl;
-	//std::cout << "------ENEMY------" << std::endl;
-	//std::cout << "Velocity: " << velocity.x << ", " << velocity.y << std::endl;
-	//std::cout << "Grounded: " << grounded << std::endl;
-	//std::cout << "State: " << state << std::endl;
-	//std::cout << "Position: " << getPosition().x << ", " << getPosition().y << std::endl;
-	//std::cout << "Start position: " << startPosition << std::endl;
-	//std::cout << "Target position: " << targetPosition << std::endl;
-	//std::cout << "Lives: " << this->lives << std::endl;
-	//std::cout << "Alive: " << this->alive << std::endl;
-	//std::cout << "-----------------" << std::endl;
+	//Debug
+	std::cout << std::endl << std::endl;
+	std::cout << "------ENEMY------" << std::endl;
+	std::cout << "Velocity: " << velocity.x << ", " << velocity.y << std::endl;
+	std::cout << "Grounded: " << grounded << std::endl;
+	std::cout << "State: " << state << std::endl;
+	std::cout << "Position: " << getPosition().x << ", " << getPosition().y << std::endl;
+	std::cout << "Start position: " << startPosition.x << ", " << startPosition.y << std::endl;
+	std::cout << "Target position: " << targetPosition << std::endl;
+	std::cout << "Lives: " << this->lives << std::endl;
+	std::cout << "Alive: " << this->alive << std::endl;
+	std::cout << "-----------------" << std::endl;
 
 }
 

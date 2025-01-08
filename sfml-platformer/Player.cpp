@@ -190,19 +190,19 @@ void Player::update(const sf::Time& time, std::vector<GameObject*>& gameObjects)
 	}
 	
 
-	//Debug
-	std::system("cls");
-	std::cout << std::endl << std::endl;
-	std::cout << "------PLAYER------" << std::endl;
-	std::cout << "Velocity: " << velocity.x << ", " << velocity.y << std::endl;
-	std::cout << "Grounded: " << grounded << std::endl;
-	std::cout << "State: " << state << std::endl;
-	std::cout << "Position: " << getPosition().x << ", " << getPosition().y << std::endl;
-	std::cout << "Lives: " << this->lives << std::endl;
-	std::cout << "Sword Ready: " << this->swordReady << std::endl;
-	std::cout << "Sword CD: " << this->swordCooldown - this->swordCooldownTimer << std::endl;
-	std::cout << "Start position: " << this->startPosition.x << ", " << this->startPosition.y << std::endl;
-	std::cout << "------------------" << std::endl;
+	////Debug
+	//std::system("cls");
+	//std::cout << std::endl << std::endl;
+	//std::cout << "------PLAYER------" << std::endl;
+	//std::cout << "Velocity: " << velocity.x << ", " << velocity.y << std::endl;
+	//std::cout << "Grounded: " << grounded << std::endl;
+	//std::cout << "State: " << state << std::endl;
+	//std::cout << "Position: " << getPosition().x << ", " << getPosition().y << std::endl;
+	//std::cout << "Lives: " << this->lives << std::endl;
+	//std::cout << "Sword Ready: " << this->swordReady << std::endl;
+	//std::cout << "Sword CD: " << this->swordCooldown - this->swordCooldownTimer << std::endl;
+	//std::cout << "Start position: " << this->startPosition.x << ", " << this->startPosition.y << std::endl;
+	//std::cout << "------------------" << std::endl;
 }
 
 Sword* Player::getSword() const

@@ -7,40 +7,7 @@ Level::Level()
 	playerPtr(nullptr)
 {
 	this->load(level01.data(), 40, 20, sf::Vector2i(16, 16));
-	hud = new Hud(this->getPlayer());
-
-	//tileMap.load(level01.data());
-
-	//// Temporary before adding tilemap
-	//gameObjects.push_back(new WinObject);
-	//gameObjects.push_back(new Player);
-	//gameObjects.push_back(new Enemy);
-	//gameObjects.push_back(this->getPlayer()->getSword());
-
-	//float count = 0.0f;
-	//float count2 = 0.0f;
-
-	//// Temporary before adding tilemap
-	//for (int i = 0; i < 15; i++)
-	//{
-	//	Platform* platform = new Platform;
-	//	platform->setPosition(sf::Vector2f(0.0f + 16.0f * count++, 650.0f));
-	//	gameObjects.push_back(platform);
-	//}
-	//for (int i = 16; i < 19; i++)
-	//{
-	//	Platform* platform = new Platform;
-	//	platform->setPosition(sf::Vector2f(0.0f + 16.0f * (count - 1.0f), 650.0f - 16.0f * ++count2));
-	//	gameObjects.push_back(platform);
-	//}
-	//for (int i = 19; i < 75; i++)
-	//{
-	//	Platform* platform = new Platform;
-	//	platform->setPosition(sf::Vector2f(0.0f + 16.0f * count++, 650.0f));
-	//	gameObjects.push_back(platform);
-	//}
-
-	//this->load();
+	//hud = new Hud(this->getPlayer()); // Move to Game class, different from UML diagram.
 }
 
 Level::~Level()
@@ -53,7 +20,7 @@ Level::~Level()
 void Level::update(const sf::Time& timeElapsedLastFrame)
 {
 	this->timer += timeElapsedLastFrame.asSeconds();
-	this->hud->update(this->timer);
+	//this->hud->update(this->timer);
 
 	for (auto* i : gameObjects)
 	{
@@ -82,18 +49,22 @@ void Level::update(const sf::Time& timeElapsedLastFrame)
 
 void Level::render(sf::RenderWindow& gameWindow)
 {
-	for (auto& i : gameObjects)
-	{
-		if (i != nullptr)
-		{
-			gameWindow.draw(*i);
-		}
-	}
+	//for (auto& i : gameObjects)
+	//{
+	//	if (i != nullptr)
+	//	{
+	//		gameWindow.draw(*i);
+	//	}
+	//}
 
 	//gameWindow.draw(*hud);
 	//gameWindow.draw(tileMap);
-	/*for (auto* object : gameObjects)
+	for (auto* object : gameObjects)
 	{
+		if (object == nullptr)
+		{
+			continue;
+		}
 		Character* characterPtr = nullptr;
 		characterPtr = dynamic_cast<Character*>(object);
 
@@ -103,7 +74,7 @@ void Level::render(sf::RenderWindow& gameWindow)
 		{
 			gameWindow.draw(*object);
 		}
-	}*/
+	}
 }
 
 void Level::load(int* level, const int column, const int row, const sf::Vector2i& gridSize)
@@ -134,6 +105,8 @@ void Level::load(int* level, const int column, const int row, const sf::Vector2i
 				gameObjectPtr = new Player;
 				this->playerPtr = static_cast<Player*>(gameObjectPtr);
 				break;
+			case 4:
+				gameObjectPtr = new Enemy;
 			}
 			
 			if (gameObjectPtr != nullptr)

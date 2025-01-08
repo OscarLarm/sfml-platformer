@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include "Level.h"
 #include "Menu.h"
+#include "Hud.h"
 
 #include <vector>
 #include <string>
@@ -23,6 +24,7 @@ private:
 	Level* level;
 	Player* playerPtr;
 	Menu menu;
+	Hud* gameHud;
 
 	sf::View menuView;
 	sf::View gameView;

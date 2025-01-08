@@ -35,6 +35,8 @@ void Game::update()
 		if (playerPtr != nullptr)
 		{
 			this->gameView.setCenter(playerPtr->getPosition().x, LEVEL_SIZE.y / 2);
+			this->gameHud->update(this->timeElapsedLastFrame.asSeconds(), this->playerPtr, gameView);
+			
 		}
 		//if (playerPtr->isHit())
 		//{
@@ -87,7 +89,7 @@ void Game::render()
 	{
 		window.setView(gameView);
 		level->render(window);
-
+		window.draw(*this->gameHud);
 	}
 
 	this->window.display();
@@ -103,9 +105,10 @@ Game::Game()
 	menuView(sf::FloatRect(0.0f, 0.0f, VWIDTH, VHEIGHT)),
 	gameView(sf::FloatRect(0.0f, 0.0f, LEVEL_SIZE.x, LEVEL_SIZE.y))
 {
-	this->window.setVerticalSyncEnabled(true);
+	this->window.setVerticalSyncEnabled(true); 
 	this->level = new Level();
 	this->playerPtr = level->getPlayer();
+	this->gameHud = new Hud();
 }
 
 Game::~Game()
