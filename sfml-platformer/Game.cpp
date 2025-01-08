@@ -1,100 +1,126 @@
 #include "Game.h"
-#include <iostream> // FOR DEBUGGING
+#include <iostream>
 
 void Game::eventHandler()
 {
 	sf::Event event;
 	while (this->window.pollEvent(event))
 	{
-		if (event.type == sf::Event::Closed)
+		if (event.type == sf::Event::Closed ||
+			this->menuChoice == -1)
 		{
 			this->window.close();
 		}
 
-		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Space)
+		if (!playing && event.type == sf::Event::KeyPressed)
 		{
-			this->player.jump(this->timeElapsedLastFrame);
+			if (event.key.code == sf::Keyboard::Enter)
+			{
+				this->totTime = 0.0f;
+				this->level->load(/*level01.data(), */40, 20, sf::Vector2i(16, 16));
+				this->playerPtr = level->getPlayer();
+				this->playing = true;
+			}
+			else if (event.key.code == sf::Keyboard::Escape)
+			{
+				this->menuChoice = -1;
+			}
 		}
-
-		//// FOR DEBUGGING
-		//if (event.type == sf::Event::KeyReleased)
-		//{
-		//	std::cout << this->player.getPosition().x << ", " << this->player.getPosition().y << std::endl;
-		//}
 	}
 }
 
 void Game::update()
 {
 	this->timeElapsedLastFrame = this->clock.restart();
-	//std::cout << "Frames: " << 1.0f / this->timeElapsedLastFrame.asSeconds() << std::endl;
+	if (playing)
+	{
+		//if (playerPtr == nullptr)
+		//{
+		//	return;
+		//}
 
-	this->collision();
-	this->player.controller(timeElapsedLastFrame);
+		totTime += timeElapsedLastFrame.asSeconds();
+		this->gameView.setCenter(playerPtr->getPosition().x, LEVEL_SIZE.y / 2);
+		this->gameHud->update(this->totTime, this->playerPtr, this->gameView);
+
+		if (this->playerPtr->isHit())
+		{
+			level->reset();
+		}
+		if (!this->playerPtr->isAlive())
+		{
+			this->playing = false;
+			this->menuChoice = 1;
+		}
+		else if (this->level->getWin())
+		{
+			this->playing = false;
+			this->menuChoice = 2;
+		}
+		else
+		{
+			level->update(timeElapsedLastFrame);
+		}
+	}
 }
 
 void Game::render()
 {
-	window.clear();
-	window.draw(this->player);
-	//for (int i = 0; i < 20; i++)
-	//{
-	//	window.draw(*this->platform[i]);
-	//}
-	//window.draw(*this->platform);
+	this->window.clear();
 
-	window.display();
-}
+	if (!playing)
+	{
+		window.setView(menuView);
+		switch (menuChoice)
+		{
+		case 0:
+			this->menu.updateMenuText("Platformer", "Made in SFML", "start", "quit");
+			break;
+		case 1:
+			this->menu.updateMenuText("Defeat", "You have been slain", "restart", "quit");
+			break;
+		case 2:
+			this->menu.updateMenuText(
+				"Success", "Time: " + 
+				std::to_string(static_cast<int>(totTime)) +
+				" seconds", "restart", "quit");
+			break;
+		default:
+			break;
+		}
+		window.draw(this->menu);
+	}
+	else
+	{
+		window.setView(gameView);
+		level->render(window);
+		window.draw(*this->gameHud);
+	}
 
-void Game::collision()
-{
-	//if (player.getSprite().getGlobalBounds().intersects(this->platform->getSprite().getGlobalBounds()))
-	//{
-	//	std::cout << "collision!" << std::endl;
-	//}
-
-
-	//// Stops at player collision with window border
-	//if (this->player.getSprite().getGlobalBounds().left <= 0.0f)
-	//{
-	//	this->player.setPosition(sf::Vector2f(0.0f, this->player.getPosition().y));
-	//}
-	//else if (
-	//	this->player.getSprite().getGlobalBounds().left + 
-	//	this->player.getSprite().getGlobalBounds().width >= 
-	//	window.getSize().x)
-	//{
-	//	this->player.setPosition(sf::Vector2f(
-	//		this->window.getSize().x - this->player.getSprite().getGlobalBounds().width, 
-	//		this->player.getPosition().y));
-	//}
-	
-	//if (this->player.getSprite().getGlobalBounds().top <= 0.0f)
-	//{
-	//	this->player.setPosition(sf::Vector2f(this->player.getPosition().x, 0.0f));
-	//}
-	//else if (
-	//	this->player.getSprite().getGlobalBounds().top +
-	//	this->player.getSprite().getGlobalBounds().height >=
-	//	window.getSize().y)
-	//{
-	//	this->player.setPosition(sf::Vector2f(
-	//		this->player.getPosition().x,
-	//		this->window.getSize().y - this->player.getSprite().getGlobalBounds().height));
-	//}
-	
-	
+	this->window.display();
 }
 
 Game::Game()
-	: window(sf::VideoMode(VWIDTH, VHEIGHT), "Platformer", sf::Style::Close)
+	:window(sf::VideoMode(VWIDTH, VHEIGHT), "Platformer"/*, sf::Style::Close*/),
+	LEVEL_SIZE(sf::Vector2f(640.0f, 320.0f)),
+	totTime(0.0f),
+	playing(false),
+	menu(sf::Vector2i(VWIDTH, VHEIGHT), "Platformer", "Made in SFML", "Start", "quit"),
+	menuChoice(0),
+	playerPtr(nullptr),
+	menuView(sf::FloatRect(0.0f, 0.0f, VWIDTH, VHEIGHT)),
+	gameView(sf::FloatRect(0.0f, 0.0f, LEVEL_SIZE.x, LEVEL_SIZE.y))
 {
-	this->window.setVerticalSyncEnabled(true);
-	//this->platform = new Platform(sf::Vector2f(31.0f, 696.0f));
+	this->window.setVerticalSyncEnabled(true); 
+	this->level = new Level();
+	//this->playerPtr = level->getPlayer();
+	this->gameHud = new Hud();
 }
 
 Game::~Game()
 {
+	delete level;
+	delete gameHud;
 }
 
 void Game::start()

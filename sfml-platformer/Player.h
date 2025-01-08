@@ -2,39 +2,40 @@
 #define PLAYER_H
 
 #include <SFML/Graphics.hpp>
+#include "Animation.h"
+#include "Platform.h"
+#include <vector>
+#include "GameObject.h"
+#include "Character.h"
+#include "Enemy.h"
+#include "Sword.h" // TEMPORARY CHANGED TO FORWARD DECLARATION, CIRCULAR INCLUDES.
+#include "WinObject.h"
 
-class Player : public sf::Drawable
+class Sword; // TEMPORARY CHANGED TO FORWARD DECLARATION, CIRCULAR INCLUDES.
+
+class Player : public Character
 {
 private:
-	sf::Texture texture;
-	sf::Sprite sprite;
+	float jumpForce;
+	//Animation* playerAnimation;
+	
+	Sword* sword;
+	float swordCooldown;
+	float swordCooldownTimer;
+	bool swordReady;
 
-	float moveSpeed;
-	sf::Vector2f velocity;
-
-	float gravity = 1000.0f;
-	float jumpForce = -500.0f;
-	bool grounded;
+	void playerControls(const sf::Time& time);
+	void collisionControl(const sf::Time& time, std::vector<GameObject*>& gameObjects) override;
 
 public:
 	Player();
-	~Player();
+	virtual ~Player();
 
-	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
-
-
-	void setPosition(const sf::Vector2f& position);
-
-	sf::Vector2f getPosition() const; // FOR DEBUGGING
-
-	sf::Sprite getSprite() const;
+	void update(const sf::Time& time, std::vector<GameObject*>& gameObjects) override;
 	
-	void controller(const sf::Time& time);
+	Sword* getSword() const;
 
-	void jump(const sf::Time& time);
-
-	//// FOR TESTING
-	//sf::RectangleShape border;
+	void resetState();
 };
 
 #endif // !PLAYER_H
