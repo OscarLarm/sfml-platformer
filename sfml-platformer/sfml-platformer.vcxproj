@@ -151,6 +151,7 @@
     <ClCompile Include="Platform.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Sword.cpp" />
+    <ClCompile Include="TileMap.cpp" />
     <ClCompile Include="WinObject.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -165,6 +166,7 @@
     <ClInclude Include="Platform.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Sword.h" />
+    <ClInclude Include="TileMap.h" />
     <ClInclude Include="WinObject.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

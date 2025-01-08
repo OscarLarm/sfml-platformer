@@ -12,17 +12,16 @@ private:
 	sf::Text livesText;
 	sf::Text timerText;
 
-	const Player* playerPtr;
 	std::string playerLivesStr;
 
-	std::string totalTimeStr;
-
+	std::string totTimeStr;
+	
 public:
-	Hud(Player* player);
-	~Hud();
+	Hud();
+	virtual ~Hud();
 
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
-	void update(float timer);
+	void update(float totTime, Player* player, sf::View& gameView);
 };
 
 #endif // !HUD_H

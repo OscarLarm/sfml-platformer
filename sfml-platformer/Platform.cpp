@@ -1,4 +1,6 @@
 #include "Platform.h"
+#include <iostream>
+#include <string>
 
 Platform::Platform() 
 {
@@ -17,7 +19,7 @@ Platform::Platform()
 	//this->hitBox.setOutlineColor(sf::Color::Red);
 	//this->hitBox.setOutlineThickness(1.0f);
 
-	this->setPosition(sf::Vector2f(150, 650));
+	//this->setPosition(sf::Vector2f(150, 650));
 }
 
 Platform::~Platform()

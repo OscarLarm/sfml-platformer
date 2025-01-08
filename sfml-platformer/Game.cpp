@@ -16,13 +16,15 @@ void Game::eventHandler()
 		{
 			if (event.key.code == sf::Keyboard::Enter)
 			{
-				this->level.load();
+				this->totTime = 0.0f;
+				this->level->load(/*level01.data(), */40, 20, sf::Vector2i(16, 16));
+				this->playerPtr = level->getPlayer();
 				this->playing = true;
 			}
 			else if (event.key.code == sf::Keyboard::Escape)
 			{
 				this->menuChoice = -1;
-			} 
+			}
 		}
 	}
 }
@@ -32,23 +34,32 @@ void Game::update()
 	this->timeElapsedLastFrame = this->clock.restart();
 	if (playing)
 	{
-		if (playerPtr->isHit())
+		//if (playerPtr == nullptr)
+		//{
+		//	return;
+		//}
+
+		totTime += timeElapsedLastFrame.asSeconds();
+		this->gameView.setCenter(playerPtr->getPosition().x, LEVEL_SIZE.y / 2);
+		this->gameHud->update(this->totTime, this->playerPtr, this->gameView);
+
+		if (this->playerPtr->isHit())
 		{
-			level.reset();
+			level->reset();
 		}
 		if (!this->playerPtr->isAlive())
 		{
 			this->playing = false;
 			this->menuChoice = 1;
 		}
-		else if (this->level.getWin())
+		else if (this->level->getWin())
 		{
 			this->playing = false;
 			this->menuChoice = 2;
 		}
 		else
 		{
-			level.update(timeElapsedLastFrame);
+			level->update(timeElapsedLastFrame);
 		}
 	}
 }
@@ -59,6 +70,7 @@ void Game::render()
 
 	if (!playing)
 	{
+		window.setView(menuView);
 		switch (menuChoice)
 		{
 		case 0:
@@ -70,7 +82,7 @@ void Game::render()
 		case 2:
 			this->menu.updateMenuText(
 				"Success", "Time: " + 
-				std::to_string(static_cast<int>(this->level.getTimer())) +
+				std::to_string(static_cast<int>(totTime)) +
 				" seconds", "restart", "quit");
 			break;
 		default:
@@ -80,28 +92,35 @@ void Game::render()
 	}
 	else
 	{
-		level.render(this->window);
+		window.setView(gameView);
+		level->render(window);
+		window.draw(*this->gameHud);
 	}
 
 	this->window.display();
 }
 
 Game::Game()
-	: window(sf::VideoMode(VWIDTH, VHEIGHT), "Platformer"/*, sf::Style::Close*/),
-	//mainMenu(sf::Vector2i(VWIDTH, VHEIGHT), "Platformer", "Made in SFML", "start", "quit"),
-	//defeatMenu(sf::Vector2i(VWIDTH, VHEIGHT), "Defeat", "You have been slain", "restart", "return to the main menu"),
-	playerPtr(level.getPlayer()),
+	:window(sf::VideoMode(VWIDTH, VHEIGHT), "Platformer"/*, sf::Style::Close*/),
+	LEVEL_SIZE(sf::Vector2f(640.0f, 320.0f)),
+	totTime(0.0f),
 	playing(false),
 	menu(sf::Vector2i(VWIDTH, VHEIGHT), "Platformer", "Made in SFML", "Start", "quit"),
-	menuChoice(0)
+	menuChoice(0),
+	playerPtr(nullptr),
+	menuView(sf::FloatRect(0.0f, 0.0f, VWIDTH, VHEIGHT)),
+	gameView(sf::FloatRect(0.0f, 0.0f, LEVEL_SIZE.x, LEVEL_SIZE.y))
 {
-	this->window.setVerticalSyncEnabled(true);
-
-	//this->window.setView(*this->level.getGameCamera());
+	this->window.setVerticalSyncEnabled(true); 
+	this->level = new Level();
+	//this->playerPtr = level->getPlayer();
+	this->gameHud = new Hud();
 }
 
 Game::~Game()
 {
+	delete level;
+	delete gameHud;
 }
 
 void Game::start()

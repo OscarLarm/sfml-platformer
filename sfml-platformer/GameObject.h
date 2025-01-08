@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <string>
+#include "Animation.h"
 
 class GameObject : public sf::Drawable
 {
@@ -15,11 +16,14 @@ protected:
 	sf::IntRect spriteRect;
 	sf::RectangleShape hitBox;
 
+	Animation* animationPtr;
+
+
 private:
 	
 public:
 	GameObject();
-	~GameObject();
+	virtual ~GameObject();
 
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const = 0;
 	
@@ -29,6 +33,7 @@ public:
 	virtual bool getWin() const;
 
 	void setPosition(const sf::Vector2f& position);
+	void setScale(const sf::Vector2f& scale);
 	virtual void setWin(bool win);
 };
 

@@ -12,7 +12,7 @@ private:
 	float targetPosition;
 	bool reachedTarget;
 	
-	Animation* enemyAnimation;
+	//Animation* enemyAnimation;
 
 
 	void patrol(const sf::Time& time);
@@ -20,7 +20,7 @@ private:
 
 public:
 	Enemy();
-	~Enemy();
+	virtual ~Enemy();
 
 	void update(const sf::Time& time, std::vector<GameObject*>& gameObjects) override;
 

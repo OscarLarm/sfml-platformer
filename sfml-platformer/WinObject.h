@@ -8,11 +8,10 @@ class WinObject : public GameObject
 {
 private:
 	bool win;
-	Animation* portalAnimation;
 
 public:
 	WinObject();
-	~WinObject();
+	virtual ~WinObject();
 
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 	bool update(sf::Time time);

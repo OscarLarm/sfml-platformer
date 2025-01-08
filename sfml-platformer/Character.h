@@ -3,6 +3,7 @@
 
 #include "GameObject.h"
 #include "Platform.h"
+#include "Animation.h"
 
 class Character : public GameObject
 {
@@ -16,6 +17,7 @@ protected:
 	int lives;
 	int startLives;
 
+
 	bool alive;
 	bool gotHit;
 
@@ -23,14 +25,13 @@ protected:
 	void collisionPlatform(const sf::FloatRect& hitBoxBounds, const sf::FloatRect& platformBounds);
 
 	sf::Vector2f startPosition;
-	void setStartPosition(const sf::Vector2f& position);
 
 private:
 
 
 public:
 	Character();
-	~Character();
+	virtual ~Character();
 
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 	virtual void update(const sf::Time& time, std::vector<GameObject*>& gameObjects) = 0;
@@ -44,6 +45,9 @@ public:
 	virtual int getLives() const;
 	virtual bool isAlive() const;
 	virtual bool isHit() const;
+
+	void setStartPosition(const sf::Vector2f& position);
+
 };
 
 #endif // !CHARACTER_H

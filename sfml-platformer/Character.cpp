@@ -53,7 +53,7 @@ Character::Character()
 	: velocity(0, 0),
 	moveSpeed(125.0f),
 	gravity(900.0f),
-	grounded(false),
+	grounded(true),
 	state("none"),
 	facingRight(true),
 	lives(1),
@@ -77,12 +77,13 @@ void Character::draw(sf::RenderTarget& target, sf::RenderStates states) const
 void Character::move(const sf::Vector2f offset)
 {
 	this->sprite.setPosition(this->sprite.getPosition() + offset);
-	this->hitBox.setPosition(hitBox.getPosition() + offset);
+	this->hitBox.setPosition(this->hitBox.getPosition() + offset);
 }
 
 void Character::resetPosition()
 {
 	this->setPosition(startPosition);
+	this->velocity = sf::Vector2f(0.0f, 0.0f);
 }
 
 void Character::resetLives()
@@ -116,5 +117,9 @@ bool Character::isAlive() const
 
 bool Character::isHit() const
 {
+	if (this == nullptr)
+	{
+		return false;
+	}
 	return this->gotHit;
 }
