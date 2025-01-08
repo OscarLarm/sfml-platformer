@@ -16,6 +16,7 @@ void Game::eventHandler()
 		{
 			if (event.key.code == sf::Keyboard::Enter)
 			{
+				this->totTime == 0.0f;
 				//this->level->load(level01.data(), 40, 20, sf::Vector2i(16, 16));
 				this->playing = true;
 			}
@@ -30,9 +31,10 @@ void Game::eventHandler()
 void Game::update()
 {
 	this->timeElapsedLastFrame = this->clock.restart();
-	totTime += timeElapsedLastFrame.asSeconds();
 	if (playing)
 	{
+		totTime += timeElapsedLastFrame.asSeconds();
+
 		if (playerPtr != nullptr)
 		{
 			this->gameView.setCenter(playerPtr->getPosition().x, LEVEL_SIZE.y / 2);
@@ -78,7 +80,7 @@ void Game::render()
 		case 2:
 			this->menu.updateMenuText(
 				"Success", "Time: " + 
-				std::to_string(static_cast<int>(this->level->getTimer())) +
+				std::to_string(static_cast<int>(totTime)) +
 				" seconds", "restart", "quit");
 			break;
 		default:

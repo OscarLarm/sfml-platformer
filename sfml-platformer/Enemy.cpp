@@ -94,9 +94,7 @@ Enemy::Enemy()
 	//hitBox.setOutlineColor(sf::Color::Red);
 	//hitBox.setOutlineThickness(1.0f);
 	
-	this->setStartPosition(this->getPosition());
-	setPosition(startPosition);
-	targetPosition = startPosition.x + 20.0f;
+	startPosition = this->getPosition();
 
 	this->moveSpeed = 70.0f;
 }
@@ -107,6 +105,12 @@ Enemy::~Enemy()
 
 void Enemy::update(const sf::Time& time, std::vector<GameObject*>& gameObjects)
 {
+	if (this->startPosition == sf::Vector2f(0.0f, 0.0f))
+	{
+		startPosition = this->getPosition();
+		targetPosition = startPosition.x + 300.0f;
+	}
+
 	this->gotHit = false;
 
 	if (this->lives == 0)

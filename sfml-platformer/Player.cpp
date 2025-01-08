@@ -147,7 +147,6 @@ Player::Player()
 	//// Make hitbox visible
 	//hitBox.setOutlineColor(sf::Color::Red);
 	//hitBox.setOutlineThickness(1.0f);
-	this->setStartPosition(this->getPosition());
 }
 
 Player::~Player()
@@ -156,6 +155,11 @@ Player::~Player()
 
 void Player::update(const sf::Time& time, std::vector<GameObject*>& gameObjects)
 {
+	if (this->startPosition == sf::Vector2f(0.0f, 0.0f))
+	{
+		startPosition = this->getPosition();
+	}
+
 	this->gotHit = false;
 	
 	if (this->lives == 0)
