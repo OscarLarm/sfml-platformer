@@ -22,7 +22,7 @@ private:
 	sf::Vector2f startPosition;
 
 protected:
-	virtual void collisionControl(const sf::Time& time, std::vector<GameObject*>& gameObjects) = 0;
+	virtual void collisionControl(const sf::Time& time, std::vector<std::unique_ptr<GameObject>>& gameObjects) = 0;
 	void collisionPlatform(const sf::FloatRect& hitBoxBounds, const sf::FloatRect& platformBounds);
 	void move(const sf::Vector2f& offset);
 	void flip();
@@ -45,7 +45,7 @@ public:
 	virtual ~Character();
 
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
-	virtual void update(const sf::Time& time, std::vector<GameObject*>& gameObjects) = 0;
+	virtual void update(const sf::Time& time, std::vector<std::unique_ptr<GameObject>>& gameObjects) = 0;
 
 	virtual void resetPosition();
 	virtual void resetLives();

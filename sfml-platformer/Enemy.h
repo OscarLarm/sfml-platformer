@@ -14,13 +14,13 @@ private:
 	bool reachedTarget;
 
 	void patrol(const sf::Time& time);
-	void collisionControl(const sf::Time& time, std::vector<GameObject*>& gameObjects) override;
+	void collisionControl(const sf::Time& time, std::vector<std::unique_ptr<GameObject>>& gameObjects) override;
 
 public:
 	Enemy();
 	virtual ~Enemy();
 
-	void update(const sf::Time& time, std::vector<GameObject*>& gameObjects) override;
+	void update(const sf::Time& time, std::vector<std::unique_ptr<GameObject>>& gameObjects) override;
 
 };
 

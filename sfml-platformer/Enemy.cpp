@@ -32,7 +32,7 @@ void Enemy::patrol(const sf::Time& time)
 	}
 }
 
-void Enemy::collisionControl(const sf::Time& time, std::vector<GameObject*>& gameObjects)
+void Enemy::collisionControl(const sf::Time& time, std::vector<std::unique_ptr<GameObject>>& gameObjects)
 {
 	this->setGrounded(false);
 	float collisionOffset = 1.0f;
@@ -43,7 +43,7 @@ void Enemy::collisionControl(const sf::Time& time, std::vector<GameObject*>& gam
 	nextUpdateBounds.left += this->getVelocity().x * time.asSeconds();
 	nextUpdateBounds.top += this->getVelocity().y * time.asSeconds() + collisionOffset;
 
-	for (auto* i : gameObjects)
+	for (auto& i : gameObjects)
 	{
 		if (i != nullptr)
 		{
@@ -52,7 +52,7 @@ void Enemy::collisionControl(const sf::Time& time, std::vector<GameObject*>& gam
 			if (otherBounds.intersects(nextUpdateBounds))
 			{
 				GameObject* typePtr = nullptr;
-				typePtr = dynamic_cast<Platform*>(i);
+				typePtr = dynamic_cast<Platform*>(i.get());
 
 				if (typePtr != nullptr)
 				{
@@ -60,7 +60,7 @@ void Enemy::collisionControl(const sf::Time& time, std::vector<GameObject*>& gam
 				}
 				else
 				{
-					Player* playerPtr = dynamic_cast<Player*>(i);
+					Player* playerPtr = dynamic_cast<Player*>(i.get());
 
 					if (playerPtr != nullptr && !playerPtr->isHit())
 					{
@@ -84,7 +84,7 @@ Enemy::~Enemy()
 {
 }
 
-void Enemy::update(const sf::Time& time, std::vector<GameObject*>& gameObjects)
+void Enemy::update(const sf::Time& time, std::vector<std::unique_ptr<GameObject>>& gameObjects)
 {
 	if (this->getStartPosition() == sf::Vector2f(0.0f, 0.0f))
 	{

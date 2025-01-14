@@ -18,7 +18,7 @@ public:
 	~Sword();
 
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
-	void update(const sf::Time& time, const bool facingRight, std::vector<GameObject*>& gameObjects);
+	void update(const sf::Time& time, const bool facingRight, std::vector<std::unique_ptr<GameObject>>& gameObjects);
 
 	void attack();
 
