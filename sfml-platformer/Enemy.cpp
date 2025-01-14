@@ -6,13 +6,15 @@ void Enemy::patrol(const sf::Time& time)
 	{
 		if (this->getPosition().x < targetPosition)
 		{
-			this->setVelocityX(this->getMoveSpeed());
-			this->setState("patrol");
+			this->setVelocity(this->getMoveSpeed(), this->getVelocity().y);
+			//this->setState("patrol");
+			setCurrentState(Animation::States::Patrol);
 		}
 		else
 		{
-			this->setVelocityX(0.0f);
-			this->setState("idle");
+			this->setVelocity(0.0f, this->getVelocity().y);
+			//this->setState("idle");
+			setCurrentState(Animation::States::Patrol);
 			this->reachedTarget = true;
 		}
 	}
@@ -20,14 +22,15 @@ void Enemy::patrol(const sf::Time& time)
 	{
 		if (this->getPosition().x > this->getStartPosition().x)
 		{
-			this->setVelocityX(-this->getMoveSpeed());
-			this->setState("patrol");
-
+			this->setVelocity(-this->getMoveSpeed(), this->getVelocity().y);
+			//this->setState("patrol");
+			setCurrentState(Animation::States::Patrol);
 		}
 		else
 		{
-			this->setVelocityX(0.0f);
-			this->setState("idle");
+			this->setVelocity(0.0f, this->getVelocity().y);
+			//this->setState("idle");
+			setCurrentState(Animation::States::Idle);
 			this->reachedTarget = false;
 		}
 	}
@@ -108,26 +111,17 @@ void Enemy::update(const sf::Time& time, std::vector<GameObject*>& gameObjects)
 
 		if (!this->isGrounded())
 		{
-			this->setVelocityY(this->getVelocity().y + getGravity() * time.asSeconds());
+			this->setVelocity(this->getVelocity().x, this->getVelocity().y + getGravity() * time.asSeconds());
 			//velocity.y += gravity * time.asSeconds();
 		}
 
 		collisionControl(time, gameObjects);
 
-		updateAnimation(time, this->getState(), this->getVelocity());
-
-		//// gör till funktion i character?
-		//if (this->velocity.x < 0 && facingRight == true)
-		//{
-		//	facingRight = false;
-		//	this->setSpriteScale(sf::Vector2f(-1.0f, 1.0f));
-		//}
-		//else if (this->velocity.x > 0 && facingRight == false)
-		//{
-		//	facingRight = true;
-		//	this->setSpriteScale(sf::Vector2f(1.0f, 1.0f));
-		//}
+		updateAnimation(time, getCurrentState(), this->getVelocity());
 
 		this->move(this->getVelocity() *time.asSeconds());
+
+		//std::system("cls");
+		//std::cout << "CurrentState: " << static_cast<int>(getCurrentState()) << std::endl;
 	}
 }

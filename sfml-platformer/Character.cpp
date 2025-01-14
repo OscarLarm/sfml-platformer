@@ -61,13 +61,9 @@ float Character::getMoveSpeed() const
 	return this->moveSpeed;
 }
 
-void Character::setVelocityX(float x)
+void Character::setVelocity(float x, float y)
 {
 	this->velocity.x = x;
-}
-
-void Character::setVelocityY(float y)
-{
 	this->velocity.y = y;
 }
 
@@ -81,15 +77,15 @@ void Character::setGrounded(bool grounded)
 	this->grounded = grounded;
 }
 
-void Character::setState(std::string state)
-{
-	this->state = state;
-}
-
-std::string Character::getState()
-{
-	return this->state;
-}
+//void Character::setState(std::string state)
+//{
+//	this->state = state;
+//}
+//
+//std::string Character::getState()
+//{
+//	return this->state;
+//}
 
 void Character::setCharacterValues(int lives, float moveSpeed)
 {
@@ -135,7 +131,6 @@ Character::Character()
 	moveSpeed(150.0f),
 	gravity(900.0f),
 	grounded(true),
-	state("none"),
 	facingRight(true),
 	lives(1),
 	startLives(this->lives),

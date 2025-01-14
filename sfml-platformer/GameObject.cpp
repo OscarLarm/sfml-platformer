@@ -11,7 +11,8 @@ bool GameObject::getWin() const
 
 GameObject::GameObject()
 	: hitBox(sf::Vector2f(32.0f, 32.0f)),
-	animationPtr(nullptr)
+	animationPtr(nullptr),
+	currentState(Animation::States::Idle)
 {
 }
 
@@ -28,6 +29,11 @@ sf::Vector2f GameObject::getPosition() const
 sf::Sprite GameObject::getSprite() const
 {
 	return this->sprite;
+}
+
+Animation::States GameObject::getCurrentState() const
+{
+	return this->currentState;
 }
 
 sf::RectangleShape GameObject::getHitBox() const
@@ -56,7 +62,7 @@ void GameObject::setGameObjectValues(std::string textureFileName, sf::IntRect sp
 	this->animationPtr = new Animation(this->spriteRect);
 }
 
-void GameObject::updateAnimation(sf::Time time, std::string currentState, sf::Vector2f velocity)
+void GameObject::updateAnimation(sf::Time time, Animation::States currentState, sf::Vector2f velocity)
 {
 	this->sprite.setTextureRect(this->animationPtr->update(time.asSeconds(), currentState, velocity));
 }
@@ -89,6 +95,11 @@ void GameObject::setSpriteScale(sf::Vector2f scale)
 void GameObject::setSpritePosition(sf::Vector2f position)
 {
 	this->sprite.setPosition(position);
+}
+
+void GameObject::setCurrentState(Animation::States state)
+{
+	this->currentState = state;
 }
 
 void GameObject::setScale(const sf::Vector2f& scale)

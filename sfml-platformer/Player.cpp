@@ -5,10 +5,12 @@ void Player::playerControls(const sf::Time& time)
 	if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::D)) &&
 		!(sf::Keyboard::isKeyPressed(sf::Keyboard::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::A)))
 	{
-		this->setVelocityX(this->getMoveSpeed());
+		this->setVelocity(this->getMoveSpeed(), this->getVelocity().y);
 		if (this->isGrounded() && !sword->isAttacking())
 		{
-			this->setState("running");
+			//this->setState("running");
+			setCurrentState(Animation::States::Running);
+
 		}
 		//if (!facingRight)
 		//{
@@ -19,10 +21,11 @@ void Player::playerControls(const sf::Time& time)
 	else if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::A)) &&
 		!(sf::Keyboard::isKeyPressed(sf::Keyboard::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::D)))
 	{
-		this->setVelocityX(-this->getMoveSpeed());
+		this->setVelocity(-this->getMoveSpeed(), this->getVelocity().y);
 		if (this->isGrounded() && !sword->isAttacking())
 		{
-			this->setState("running");
+			//this->setState("running");
+			setCurrentState(Animation::States::Running);
 		}
 		//if (facingRight)
 		//{
@@ -33,34 +36,39 @@ void Player::playerControls(const sf::Time& time)
 	}
 	else
 	{
-		this->setVelocityX(0.0f);
+		this->setVelocity(0.0f, this->getVelocity().y);
 		if (isGrounded() && !sword->isAttacking())
 		{
-			this->setState("idle");
+			//this->setState("idle");
+			setCurrentState(Animation::States::Idle);
 		}
 	}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && this->isGrounded())
 	{
-		this->setVelocityY(this->JUMP_FORCE);
+		this->setVelocity(this->getVelocity().x, this->JUMP_FORCE);
 		this->setGrounded(false);
 	}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::J) && swordReady)
 	{
-		std::string state = this->getState();
+		//std::string state = this->getState();
+		Animation::States state = getCurrentState();
 
-		if (state == "running")
+		if (state == Animation::States::Running)
 		{
-			this->setState("running-attack");
+			//this->setState("running-attack");
+			setCurrentState(Animation::States::RunningAttack);
 		}
-		else if (state == "jumping")
+		else if (state == Animation::States::Jumping)
 		{
-			this->setState("jumping-attack");
+			//this->setState("jumping-attack");
+			setCurrentState(Animation::States::JumpingAttack);
 		}
 		else
 		{
-			this->setState("idle-attack");
+			//this->setState("idle-attack");
+			setCurrentState(Animation::States::IdleAttack);
 		}
 
 		this->sword->attack();
@@ -131,6 +139,7 @@ Player::Player()
 	this->setGameObjectValues("playerSheetCombat.png", sf::IntRect(0, 0, 96, 84), sf::Vector2f(16.0f, 36.0f));
 
 	this->sword = new Sword;
+
 }
 
 Player::~Player()
@@ -168,15 +177,16 @@ void Player::update(const sf::Time& time, std::vector<GameObject*>& gameObjects)
 		if (!this->isGrounded())
 		{
 			//velocity.y += gravity * time.asSeconds();
-			this->setVelocityY(this->getVelocity().y + this->getGravity() * time.asSeconds());
+			this->setVelocity(this->getVelocity().x, this->getVelocity().y + this->getGravity() * time.asSeconds());
 
 			if (!sword->isAttacking())
 			{
-				this->setState("jumping");
+				//this->setState("jumping");
+				setCurrentState(Animation::States::Jumping);
 			}
 		}
 
-		updateAnimation(time, this->getState(), this->getVelocity());
+		updateAnimation(time, getCurrentState(), this->getVelocity());
 
 		collisionControl(time, gameObjects);
 
