@@ -6,9 +6,7 @@
 #include "GameObject.h"
 #include "Player.h"
 #include "Enemy.h"
-#include "Hud.h"
 #include "WinObject.h"
-//#include "TileMap.h"
 
 #include <vector>
 #include <string>
@@ -22,7 +20,6 @@ private:
 	std::vector<GameObject*> gameObjects;
 
 	Player* playerPtr;
-	float timer;
 	
 	bool win;
 
@@ -33,7 +30,6 @@ private:
 
 
 public:
-
 	Level();
 	virtual ~Level();
 
@@ -44,8 +40,6 @@ public:
 
 	Player* getPlayer() const;
 	bool getWin() const;
-	float getTimer() const;
-
 	void setBackgroundPosition(const sf::View& gameView);
 };
 

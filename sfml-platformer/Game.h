@@ -8,12 +8,12 @@
 
 #include <vector>
 #include <string>
+#include <iostream>
 
 class Game
 {
 private:
-	static const int VWIDTH = 1366;
-	static const int VHEIGHT = 768;
+	const sf::Vector2i WINDOW_SIZE = sf::Vector2i(1366, 768);
 	const std::string LEVEL_01_FILE_PATH = "../levels/level01.txt";
 
 	sf::RenderWindow window;
@@ -31,12 +31,18 @@ private:
 
 	bool playing;
 
-	int menuChoice;
+	enum MenuChoice
+	{
+		Main,
+		Defeat,
+		Victory,
+		Quit
+	};
+	MenuChoice currentMenu;
 
 	void eventHandler();
 	void update();
 	void render();
-
 
 public:
 	Game();

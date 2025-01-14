@@ -1,10 +1,9 @@
 #include "Level.h"
 
-
 Level::Level()
-	: timer(0.0f),
-	win(false),
-	playerPtr(nullptr)
+	: win(false),
+	playerPtr(nullptr),
+	levelArray({0})
 {
 	this->backgroundTexture.loadFromFile("../assets/background.png");
 	this->backgroundSprite.setTexture(backgroundTexture);
@@ -22,8 +21,6 @@ Level::~Level()
 
 void Level::update(const sf::Time& timeElapsedLastFrame)
 {
-	this->timer += timeElapsedLastFrame.asSeconds();
-
 	for (auto* i : gameObjects)
 	{
 		if (i == nullptr)
@@ -98,7 +95,7 @@ void Level::load(const std::string& levelDataPath, const int column, const int r
 		for (int j = 0; j < column; j++)
 		{
 			GameObject* gameObjectPtr = nullptr;
-			switch (/*level[levelIndex]*/ this->levelArray.data()[levelIndex])
+			switch (this->levelArray.data()[levelIndex])
 			{
 			case 0:
 				break;
@@ -111,6 +108,7 @@ void Level::load(const std::string& levelDataPath, const int column, const int r
 			case 3:
 				gameObjectPtr = new Player;
 				this->playerPtr = static_cast<Player*>(gameObjectPtr);
+				playerPtr->setLevelLimitY(row * gridSize.y);
 				break;
 			case 4:
 				gameObjectPtr = new Enemy;
@@ -119,7 +117,7 @@ void Level::load(const std::string& levelDataPath, const int column, const int r
 			
 			if (gameObjectPtr != nullptr)
 			{
-				gameObjectPtr->setPosition(sf::Vector2f(j * gridSize.x, i * gridSize.y)); // Why do I need to use column for y and row for x?
+				gameObjectPtr->setPosition(sf::Vector2f(j * gridSize.x, i * gridSize.y));
 				gameObjects.push_back(gameObjectPtr);
 			}
 			gameObjectPtr = nullptr;
@@ -127,7 +125,6 @@ void Level::load(const std::string& levelDataPath, const int column, const int r
 			levelIndex++;
 		}
 	}
-	this->timer = 0.0f;
 }
 
 void Level::reset()
@@ -158,11 +155,6 @@ Player* Level::getPlayer() const
 bool Level::getWin() const
 {
 	return this->win;
-}
-
-float Level::getTimer() const
-{
-	return this->timer;
 }
 
 void Level::setBackgroundPosition(const sf::View& gameView)

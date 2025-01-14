@@ -1,5 +1,4 @@
 #include "Game.h"
-#include <iostream>
 
 void Game::eventHandler()
 {
@@ -7,7 +6,7 @@ void Game::eventHandler()
 	while (this->window.pollEvent(event))
 	{
 		if (event.type == sf::Event::Closed ||
-			this->menuChoice == -1)
+			this->currentMenu == Quit)
 		{
 			this->window.close();
 		}
@@ -23,7 +22,7 @@ void Game::eventHandler()
 			}
 			else if (event.key.code == sf::Keyboard::Escape)
 			{
-				this->menuChoice = -1;
+				this->currentMenu = Quit;
 			}
 		}
 	}
@@ -41,7 +40,7 @@ void Game::update()
 
 		this->totTime += timeElapsedLastFrame.asSeconds();
 		this->gameView.setCenter(playerPtr->getPosition().x, playerPtr->getPosition().y);
-		this->gameHud->update(this->totTime, this->playerPtr, this->gameView);
+		this->gameHud->update(this->totTime, this->playerPtr->getLives(), this->gameView);
 		this->level->setBackgroundPosition(this->gameView);
 
 		if (this->playerPtr->isHit())
@@ -51,12 +50,12 @@ void Game::update()
 		if (!this->playerPtr->isAlive())
 		{
 			this->playing = false;
-			this->menuChoice = 1;
+			this->currentMenu = Defeat;
 		}
 		else if (this->level->getWin())
 		{
 			this->playing = false;
-			this->menuChoice = 2;
+			this->currentMenu = Victory;
 		}
 		else
 		{
@@ -72,19 +71,25 @@ void Game::render()
 	if (!playing)
 	{
 		window.setView(menuView);
-		switch (menuChoice)
+		switch (currentMenu)
 		{
-		case 0:
-			this->menu.updateMenuText("Platformer", "Made in SFML", "start", "quit");
-			break;
-		case 1:
-			this->menu.updateMenuText("Defeat", "You have been slain", "restart", "quit");
-			break;
-		case 2:
+		case Main:
 			this->menu.updateMenuText(
-				"Success", "Time: " + 
-				std::to_string(static_cast<int>(totTime)) +
-				" seconds", "restart", "quit");
+				"Platformer", 
+				"Made in SFML", 
+				"start", "quit");
+			break;
+		case Defeat:
+			this->menu.updateMenuText(
+				"Defeat", 
+				"You have been slain", 
+				"restart", "quit");
+			break;
+		case Victory:
+			this->menu.updateMenuText(
+				"Success", 
+				"Time: " + std::to_string(static_cast<int>(totTime)) + " seconds", 
+				"restart", "quit");
 			break;
 		default:
 			break;
@@ -94,7 +99,9 @@ void Game::render()
 	else
 	{
 		window.setView(gameView);
+
 		level->render(window);
+
 		window.draw(*this->gameHud);
 	}
 
@@ -102,18 +109,17 @@ void Game::render()
 }
 
 Game::Game()
-	:window(sf::VideoMode(VWIDTH, VHEIGHT), "Platformer", sf::Style::Close),
+	:window(sf::VideoMode(WINDOW_SIZE.x, WINDOW_SIZE.y), "Platformer", sf::Style::Close),
 	totTime(0.0f),
 	playing(false),
-	menu(sf::Vector2i(VWIDTH, VHEIGHT), "Platformer", "Made in SFML", "Start", "quit"),
-	menuChoice(0),
+	menu(WINDOW_SIZE),
+	currentMenu(Main),
 	playerPtr(nullptr),
-	menuView(sf::FloatRect(0.0f, 0.0f, VWIDTH, VHEIGHT)),
-	gameView(sf::FloatRect(0.0f, 0.0f, VWIDTH / 1.75, VHEIGHT / 1.75))
+	menuView(sf::FloatRect(0.0f, 0.0f, WINDOW_SIZE.x, WINDOW_SIZE.y)),
+	gameView(sf::FloatRect(0.0f, 0.0f, WINDOW_SIZE.x / 1.75, WINDOW_SIZE.y / 1.75))
 {
 	this->window.setVerticalSyncEnabled(true); 
 	this->level = new Level();
-	//this->playerPtr = level->getPlayer();
 	this->gameHud = new Hud();
 }
 
