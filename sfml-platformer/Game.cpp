@@ -17,7 +17,7 @@ void Game::eventHandler()
 			if (event.key.code == sf::Keyboard::Enter)
 			{
 				this->totTime = 0.0f;
-				this->level->load(/*level01.data(), */40, 20, sf::Vector2i(32, 16));
+				this->level->load(this->LEVEL_01_FILE_PATH, 80, 40, sf::Vector2i(32, 16));
 				this->playerPtr = level->getPlayer();
 				this->playing = true;
 			}
@@ -34,18 +34,19 @@ void Game::update()
 	this->timeElapsedLastFrame = this->clock.restart();
 	if (playing)
 	{
-		//if (playerPtr == nullptr)
-		//{
-		//	return;
-		//}
+		if (playerPtr == nullptr)
+		{
+			return;
+		}
 
-		totTime += timeElapsedLastFrame.asSeconds();
-		this->gameView.setCenter(playerPtr->getPosition().x, LEVEL_SIZE.y / 2.0f);
+		this->totTime += timeElapsedLastFrame.asSeconds();
+		this->gameView.setCenter(playerPtr->getPosition().x, playerPtr->getPosition().y);
 		this->gameHud->update(this->totTime, this->playerPtr, this->gameView);
+		this->level->setBackgroundPosition(this->gameView);
 
 		if (this->playerPtr->isHit())
 		{
-			level->reset();
+			this->level->reset();
 		}
 		if (!this->playerPtr->isAlive())
 		{
@@ -101,15 +102,14 @@ void Game::render()
 }
 
 Game::Game()
-	:window(sf::VideoMode(VWIDTH, VHEIGHT), "Platformer"/*, sf::Style::Close*/),
-	LEVEL_SIZE(sf::Vector2f(640.0f, 320.0f)),
+	:window(sf::VideoMode(VWIDTH, VHEIGHT), "Platformer", sf::Style::Close),
 	totTime(0.0f),
 	playing(false),
 	menu(sf::Vector2i(VWIDTH, VHEIGHT), "Platformer", "Made in SFML", "Start", "quit"),
 	menuChoice(0),
 	playerPtr(nullptr),
 	menuView(sf::FloatRect(0.0f, 0.0f, VWIDTH, VHEIGHT)),
-	gameView(sf::FloatRect(0.0f, 0.0f, LEVEL_SIZE.x, LEVEL_SIZE.y))
+	gameView(sf::FloatRect(0.0f, 0.0f, VWIDTH / 1.75, VHEIGHT / 1.75))
 {
 	this->window.setVerticalSyncEnabled(true); 
 	this->level = new Level();

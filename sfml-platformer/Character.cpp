@@ -51,7 +51,7 @@ void Character::setStartPosition(const sf::Vector2f& position)
 
 Character::Character()
 	: velocity(0, 0),
-	moveSpeed(125.0f),
+	moveSpeed(150.0f),
 	gravity(900.0f),
 	grounded(true),
 	state("none"),
@@ -95,8 +95,8 @@ void Character::hit(const int damage)
 {
 	if (this->isAlive() && this->gotHit == false)
 	{
-		this->lives -= damage;
 		this->gotHit = true;
+		this->lives -= damage;
 	}
 }
 

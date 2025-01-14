@@ -6,8 +6,9 @@ Level::Level()
 	win(false),
 	playerPtr(nullptr)
 {
-	//this->load(/*level01.data(),*/ 40, 20, sf::Vector2i(16, 16));
-	//hud = new Hud(this->getPlayer()); // Move to Game class, different from UML diagram.
+	this->backgroundTexture.loadFromFile("../assets/background.png");
+	this->backgroundSprite.setTexture(backgroundTexture);
+	this->backgroundSprite.setOrigin(this->backgroundSprite.getGlobalBounds().width / 2, this->backgroundSprite.getGlobalBounds().height / 2);
 }
 
 Level::~Level()
@@ -22,7 +23,6 @@ Level::~Level()
 void Level::update(const sf::Time& timeElapsedLastFrame)
 {
 	this->timer += timeElapsedLastFrame.asSeconds();
-	//this->hud->update(this->timer);
 
 	for (auto* i : gameObjects)
 	{
@@ -51,16 +51,7 @@ void Level::update(const sf::Time& timeElapsedLastFrame)
 
 void Level::render(sf::RenderWindow& gameWindow)
 {
-	//for (auto& i : gameObjects)
-	//{
-	//	if (i != nullptr)
-	//	{
-	//		gameWindow.draw(*i);
-	//	}
-	//}
-
-	//gameWindow.draw(*hud);
-	//gameWindow.draw(tileMap);
+	gameWindow.draw(backgroundSprite);
 	for (auto* object : gameObjects)
 	{
 		if (object == nullptr)
@@ -79,7 +70,7 @@ void Level::render(sf::RenderWindow& gameWindow)
 	}
 }
 
-void Level::load(/*int* level,*/ const int column, const int row, const sf::Vector2i& gridSize)
+void Level::load(const std::string& levelDataPath, const int column, const int row, const sf::Vector2i& gridSize)
 {
 	this->win = false;
 	for (auto& i : gameObjects)
@@ -90,6 +81,16 @@ void Level::load(/*int* level,*/ const int column, const int row, const sf::Vect
 
 	this->gameObjects.resize(column * row);
 
+	std::ifstream levelFile(levelDataPath);
+	int levelObject;
+	int fileCounter = 0;
+	while (levelFile >> levelObject)
+	{
+		levelArray[fileCounter++] = levelObject;
+	}
+	levelFile.close();
+
+
 	int levelIndex = 0;
 
 	for (int i = 0; i < row; i++)
@@ -97,7 +98,7 @@ void Level::load(/*int* level,*/ const int column, const int row, const sf::Vect
 		for (int j = 0; j < column; j++)
 		{
 			GameObject* gameObjectPtr = nullptr;
-			switch (/*level[levelIndex]*/ this->level01.data()[levelIndex])
+			switch (/*level[levelIndex]*/ this->levelArray.data()[levelIndex])
 			{
 			case 0:
 				break;
@@ -126,27 +127,6 @@ void Level::load(/*int* level,*/ const int column, const int row, const sf::Vect
 			levelIndex++;
 		}
 	}
-
-
-
-	/*reset();
-	for (auto& i : gameObjects)
-	{
-		Player* playerPtr = dynamic_cast<Player*>(i);
-		if (playerPtr != nullptr)
-		{
-			playerPtr->resetState();
-		}
-		else
-		{
-			WinObject* winObjectPtr = dynamic_cast<WinObject*>(i);
-			if (winObjectPtr != nullptr)
-			{
-				winObjectPtr->setWin(false);
-			}
-
-		}
-	}*/
 	this->timer = 0.0f;
 }
 
@@ -183,4 +163,10 @@ bool Level::getWin() const
 float Level::getTimer() const
 {
 	return this->timer;
+}
+
+void Level::setBackgroundPosition(const sf::View& gameView)
+{
+	this->backgroundSprite.setPosition(gameView.getCenter());
+	this->backgroundSprite.setScale(2.5f, 2.5f);
 }

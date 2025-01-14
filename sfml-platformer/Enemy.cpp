@@ -108,7 +108,7 @@ void Enemy::update(const sf::Time& time, std::vector<GameObject*>& gameObjects)
 	if (this->startPosition == sf::Vector2f(0.0f, 0.0f))
 	{
 		startPosition = this->getPosition();
-		targetPosition = startPosition.x + 300.0f;
+		targetPosition = startPosition.x + 100.0f;
 	}
 
 	this->gotHit = false;

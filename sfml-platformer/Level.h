@@ -26,8 +26,10 @@ private:
 	
 	bool win;
 
-	std::array<int, 3200> level01;
-	//TileMap tileMap;
+	std::array<int, 3200> levelArray;
+
+	sf::Sprite backgroundSprite;
+	sf::Texture backgroundTexture;
 
 
 public:
@@ -37,13 +39,14 @@ public:
 
 	void update(const sf::Time& timeElapsedLastFrame);
 	void render(sf::RenderWindow& gameWindow);
-	void load(/*int* level,*/ const int column, const int row, const sf::Vector2i& gridSize);
+	void load(const std::string& levelDataPath, const int column, const int row, const sf::Vector2i& gridSize);
 	void reset();
 
 	Player* getPlayer() const;
 	bool getWin() const;
 	float getTimer() const;
 
+	void setBackgroundPosition(const sf::View& gameView);
 };
 
 #endif // !LEVEL_H
