@@ -12,7 +12,7 @@ void Player::playerControls(const sf::Time& time)
 		}
 		if (!facingRight)
 		{
-			sprite.scale(-1.0f, 1.0f);
+			this->setSpriteScale(sf::Vector2f(1.0f, 1.0f));
 			facingRight = true;
 		}
 	}
@@ -26,7 +26,8 @@ void Player::playerControls(const sf::Time& time)
 		}
 		if (facingRight)
 		{
-			sprite.scale(-1.0f, 1.0f);
+			this->setSpriteScale(sf::Vector2f(-1.0f, 1.0f));
+
 			facingRight = false;
 		}
 	}
@@ -79,7 +80,7 @@ void Player::collisionControl(const sf::Time& time, std::vector<GameObject*>& ga
 	this->grounded = false;
 	float collisionOffset = 1.0f;
 
-	sf::FloatRect hitBoxBounds = hitBox.getGlobalBounds();
+	sf::FloatRect hitBoxBounds = this->getHitBox().getGlobalBounds();
 
 	sf::FloatRect nextUpdateBounds = hitBoxBounds;
 	nextUpdateBounds.left += velocity.x * time.asSeconds();
@@ -181,5 +182,7 @@ void Player::update(const sf::Time& time, std::vector<GameObject*>& gameObjects)
 		this->move(velocity * time.asSeconds());
 		this->sword->setPosition(sf::Vector2f(this->getPosition().x, this->getPosition().y));
 
+		//std::system("cls");
+		//std::cout << "Facingright: " << facingRight << std::endl;
 	}
 }

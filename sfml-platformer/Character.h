@@ -4,6 +4,7 @@
 #include "GameObject.h"
 #include "Platform.h"
 #include <vector>
+#include <iostream>
 
 class Character : public GameObject
 {

@@ -37,7 +37,7 @@ void Enemy::collisionControl(const sf::Time& time, std::vector<GameObject*>& gam
 	this->grounded = false;
 	float collisionOffset = 1.0f;
 
-	sf::FloatRect hitBoxBounds = hitBox.getGlobalBounds();
+	sf::FloatRect hitBoxBounds = this->getHitBox().getGlobalBounds();
 
 	sf::FloatRect nextUpdateBounds = hitBoxBounds;
 	nextUpdateBounds.left += velocity.x * time.asSeconds();
@@ -123,12 +123,12 @@ void Enemy::update(const sf::Time& time, std::vector<GameObject*>& gameObjects)
 		if (this->velocity.x < 0 && facingRight == true)
 		{
 			facingRight = false;
-			this->sprite.scale(-1.0f, 1.0f);
+			this->setSpriteScale(sf::Vector2f(-1.0f, 1.0f));
 		}
 		else if (this->velocity.x > 0 && facingRight == false)
 		{
 			facingRight = true;
-			this->sprite.scale(-1.0f, 1.0f);
+			this->setSpriteScale(sf::Vector2f(1.0f, 1.0f));
 		}
 
 		this->move(velocity * time.asSeconds());

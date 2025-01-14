@@ -11,7 +11,7 @@ Platform::~Platform()
 
 void Platform::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	target.draw(this->sprite);
-	target.draw(this->hitBox);
+	target.draw(this->getSprite());
+	target.draw(this->getHitBox());
 }
 

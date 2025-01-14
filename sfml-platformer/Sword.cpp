@@ -5,11 +5,13 @@ Sword::Sword()
 	attackTimer(0.0f),
 	lastFacingRight(true)
 {
-	hitBox.setSize(sf::Vector2f(40.0f, 38.0f));
-	hitBox.setOrigin(0.0f, this->hitBox.getSize().y);
-	hitBox.setFillColor(sf::Color::Transparent);
+	//hitBox.setSize(sf::Vector2f(40.0f, 38.0f));
+	setHitBoxSize(sf::Vector2f(40.0f, 38.0f));
+	setHitBoxOrigin(sf::Vector2f(0.0f, this->getHitBox().getSize().y));
+	//hitBox.setOrigin(0.0f, this->hitBox.getSize().y);
+	//hitBox.setFillColor(sf::Color::Transparent);
 
-	this->setPosition(sf::Vector2f(200.0f, 200.0f));
+	//this->setPosition(sf::Vector2f(200.0f, 200.0f));
 }
 
 Sword::~Sword()
@@ -18,7 +20,7 @@ Sword::~Sword()
 
 void Sword::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	target.draw(this->hitBox);
+	target.draw(this->getHitBox());
 }
 
 void Sword::update(const sf::Time& time, const bool facingRight, std::vector<GameObject*>& gameObjects)
@@ -34,7 +36,7 @@ void Sword::update(const sf::Time& time, const bool facingRight, std::vector<Gam
 				continue;
 			}
 
-			sf::FloatRect swordBounds = this->hitBox.getGlobalBounds();
+			sf::FloatRect swordBounds = this->getHitBox().getGlobalBounds();
 			sf::FloatRect enemyBounds = i->getHitBox().getGlobalBounds();
 			Enemy* enemyPtr = dynamic_cast<Enemy*>(i);
 
@@ -54,7 +56,7 @@ void Sword::update(const sf::Time& time, const bool facingRight, std::vector<Gam
 	{
 		if (facingRight != lastFacingRight)
 		{
-			this->hitBox.scale(sf::Vector2f(-1.0f, 1.0f));
+			this->setHitBoxScale(sf::Vector2f(-1.0f, 1.0f));
 			lastFacingRight = facingRight;
 
 		}

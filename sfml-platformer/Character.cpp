@@ -68,14 +68,14 @@ Character::~Character()
 
 void Character::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	target.draw(this->sprite);
-	target.draw(this->hitBox);
+	target.draw(this->getSprite());
+	target.draw(this->getHitBox());
 }
 
 void Character::move(const sf::Vector2f offset)
 {
-	this->sprite.setPosition(this->sprite.getPosition() + offset);
-	this->hitBox.setPosition(this->hitBox.getPosition() + offset);
+	this->setSpritePosition(this->getSprite().getPosition() + offset);
+	this->setHitBoxPosition(this->getHitBox().getPosition() + offset);
 }
 
 void Character::resetPosition()
