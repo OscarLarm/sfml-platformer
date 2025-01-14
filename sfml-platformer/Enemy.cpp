@@ -78,17 +78,7 @@ Enemy::Enemy()
 {
 	this->alive = true;
 
-	spriteRect = sf::IntRect(0, 0, 96, 84);
-	this->animationPtr = new Animation(spriteRect);
-
-	texture.loadFromFile(ASSETS_DIRECTORY + "playerSheet.png");
-	sprite.setTexture(texture);
-	sprite.setTextureRect(spriteRect);
-	sprite.setOrigin(spriteRect.width / 2.0f, spriteRect.height);
-
-	hitBox.setSize(sf::Vector2f(24.0f, 36.0f));
-	hitBox.setOrigin(hitBox.getSize().x / 2.0f, hitBox.getSize().y);
-	hitBox.setFillColor(sf::Color::Transparent);
+	setGameObject("playerSheet.png", sf::IntRect(0, 0, 96, 84), sf::Vector2f(24.0f, 36.0f));
 
 	startPosition = this->getPosition();
 
@@ -127,7 +117,7 @@ void Enemy::update(const sf::Time& time, std::vector<GameObject*>& gameObjects)
 
 		collisionControl(time, gameObjects);
 
-		sprite.setTextureRect(animationPtr->updateAnimation(time.asSeconds(), state, velocity));
+		updateAnimation(time, state, velocity);
 
 		// gör till funktion i character?
 		if (this->velocity.x < 0 && facingRight == true)

@@ -28,7 +28,7 @@ private:
 public:
 	Animation(sf::IntRect spriteRect);
 	virtual ~Animation();
-	sf::IntRect updateAnimation(float timeAsSeconds, const std::string& currentState, sf::Vector2f velocity = sf::Vector2f(0.0f, 0.0f));
+	sf::IntRect update(float timeAsSeconds, const std::string& currentState, sf::Vector2f velocity = sf::Vector2f(0.0f, 0.0f));
 
 };
 #endif // !ANIMATION_H

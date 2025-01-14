@@ -34,6 +34,9 @@ public:
 	void setPosition(const sf::Vector2f& position);
 	void setScale(const sf::Vector2f& scale);
 	virtual void setWin(bool win);
+
+	void setGameObject(std::string textureFileName, sf::IntRect spriteRect, sf::Vector2f hitBoxSize);
+	void updateAnimation(sf::Time time, std::string currentState, sf::Vector2f velocity = sf::Vector2f(0.0f, 0.0f));
 };
 
 #endif // !GAMEOBJECT_H

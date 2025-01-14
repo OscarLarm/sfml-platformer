@@ -2,16 +2,7 @@
 
 Platform::Platform() 
 {
-	spriteRect = sf::IntRect(0, 0, 48, 16);
-
-	this->texture.loadFromFile(ASSETS_DIRECTORY + "tileSheet.png");
-	this->sprite.setTexture(this->texture);
-	this->sprite.setTextureRect(this->spriteRect);
-	this->sprite.setOrigin(this->spriteRect.width / 2.0f, spriteRect.height);
-
-	this->hitBox.setSize(sf::Vector2f(spriteRect.getSize().x, spriteRect.getSize().y));
-	hitBox.setOrigin(hitBox.getSize().x / 2.0f, hitBox.getSize().y);
-	this->hitBox.setFillColor(sf::Color::Transparent);
+	setGameObject("tileSheet.png", sf::IntRect(0, 0, 48, 16), sf::Vector2f(48.0f, 16.0f));
 }
 
 Platform::~Platform()

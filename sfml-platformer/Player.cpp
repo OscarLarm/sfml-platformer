@@ -127,18 +127,9 @@ Player::Player()
 	this->lives = 3;
 	this->startLives = this->lives;
 	this->alive = true;
-	spriteRect = sf::IntRect(0, 0, 96, 84);
-	this->animationPtr = new Animation(spriteRect);
 	this->sword = new Sword;
 
-	texture.loadFromFile(ASSETS_DIRECTORY + "playerSheetCombat.png");
-	sprite.setTexture(texture);
-	sprite.setTextureRect(spriteRect);
-	sprite.setOrigin(spriteRect.width / 2.0f, spriteRect.height);
-
-	hitBox.setSize(sf::Vector2f(16.0f, 36.0f));
-	hitBox.setOrigin(hitBox.getSize().x / 2.0f, hitBox.getSize().y);
-	hitBox.setFillColor(sf::Color::Transparent);
+	setGameObject("playerSheetCombat.png", sf::IntRect(0, 0, 96, 84), sf::Vector2f(16.0f, 36.0f));
 }
 
 Player::~Player()
@@ -183,7 +174,7 @@ void Player::update(const sf::Time& time, std::vector<GameObject*>& gameObjects)
 			}
 		}
 
-		sprite.setTextureRect(animationPtr->updateAnimation(time.asSeconds(), state, velocity));
+		updateAnimation(time, state, velocity);
 
 		collisionControl(time, gameObjects);
 

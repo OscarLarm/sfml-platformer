@@ -84,7 +84,7 @@ void Animation::portalAnimation()
 
 
 
-sf::IntRect Animation::updateAnimation(float timeAsSeconds, const std::string& currentState, sf::Vector2f velocity)
+sf::IntRect Animation::update(float timeAsSeconds, const std::string& currentState, sf::Vector2f velocity)
 {
 	if (currentState != previousState || currentState == "jumping")
 	{
