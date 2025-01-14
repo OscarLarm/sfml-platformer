@@ -2,7 +2,6 @@
 
 void Character::collisionPlatform(const sf::FloatRect& hitBoxBounds, const sf::FloatRect& platformBounds)
 {
-	// Vectical collision
 	if (
 		hitBoxBounds.top < platformBounds.top &&
 		hitBoxBounds.top + hitBoxBounds.height < platformBounds.top + platformBounds.height &&
@@ -23,7 +22,6 @@ void Character::collisionPlatform(const sf::FloatRect& hitBoxBounds, const sf::F
 		this->setPosition(sf::Vector2f(this->getPosition().x, platformBounds.top + platformBounds.height + hitBoxBounds.height));
 	}
 
-	// Horizontal collision
 	if (
 		hitBoxBounds.left < platformBounds.left &&
 		hitBoxBounds.left + hitBoxBounds.width < platformBounds.left + platformBounds.width &&

@@ -11,9 +11,6 @@ class Enemy : public Character
 private:
 	float targetPosition;
 	bool reachedTarget;
-	
-	//Animation* enemyAnimation;
-
 
 	void patrol(const sf::Time& time);
 	void collisionControl(const sf::Time& time, std::vector<GameObject*>& gameObjects) override;

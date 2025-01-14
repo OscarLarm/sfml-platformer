@@ -16,11 +16,10 @@ class Sword; // TEMPORARY CHANGED TO FORWARD DECLARATION, CIRCULAR INCLUDES.
 class Player : public Character
 {
 private:
-	float jumpForce;
-	//Animation* playerAnimation;
+	const float JUMP_FORCE = -350.0f;
 	
 	Sword* sword;
-	float swordCooldown;
+	const float SWORD_COOLDOWN = 0.5f;
 	float swordCooldownTimer;
 	bool swordReady;
 
@@ -35,10 +34,6 @@ public:
 	virtual ~Player();
 
 	void update(const sf::Time& time, std::vector<GameObject*>& gameObjects) override;
-	
-	Sword* getSword() const;
-
-	void resetState();
 };
 
 #endif // !PLAYER_H

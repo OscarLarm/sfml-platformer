@@ -2,9 +2,9 @@
 
 
 Level::Level()
-	: timer(0.0f),
-	win(false),
-	playerPtr(nullptr)
+	: win(false),
+	playerPtr(nullptr),
+	levelArray({0})
 {
 	this->backgroundTexture.loadFromFile("../assets/background.png");
 	this->backgroundSprite.setTexture(backgroundTexture);
@@ -22,8 +22,6 @@ Level::~Level()
 
 void Level::update(const sf::Time& timeElapsedLastFrame)
 {
-	this->timer += timeElapsedLastFrame.asSeconds();
-
 	for (auto* i : gameObjects)
 	{
 		if (i == nullptr)
@@ -127,7 +125,6 @@ void Level::load(const std::string& levelDataPath, const int column, const int r
 			levelIndex++;
 		}
 	}
-	this->timer = 0.0f;
 }
 
 void Level::reset()
@@ -158,11 +155,6 @@ Player* Level::getPlayer() const
 bool Level::getWin() const
 {
 	return this->win;
-}
-
-float Level::getTimer() const
-{
-	return this->timer;
 }
 
 void Level::setBackgroundPosition(const sf::View& gameView)

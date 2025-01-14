@@ -22,7 +22,6 @@ private:
 	std::vector<GameObject*> gameObjects;
 
 	Player* playerPtr;
-	float timer;
 	
 	bool win;
 
@@ -44,8 +43,6 @@ public:
 
 	Player* getPlayer() const;
 	bool getWin() const;
-	float getTimer() const;
-
 	void setBackgroundPosition(const sf::View& gameView);
 };
 

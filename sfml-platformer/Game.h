@@ -12,8 +12,8 @@
 class Game
 {
 private:
-	static const int VWIDTH = 1366;
-	static const int VHEIGHT = 768;
+	const int VWIDTH = 1366;
+	const int VHEIGHT = 768;
 	const std::string LEVEL_01_FILE_PATH = "../levels/level01.txt";
 
 	sf::RenderWindow window;

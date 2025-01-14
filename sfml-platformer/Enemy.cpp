@@ -74,7 +74,8 @@ void Enemy::collisionControl(const sf::Time& time, std::vector<GameObject*>& gam
 }
 
 Enemy::Enemy()
-	: reachedTarget(false)
+	: reachedTarget(false),
+	targetPosition(0.0f)
 {
 	this->alive = true;
 
@@ -90,10 +91,6 @@ Enemy::Enemy()
 	hitBox.setOrigin(hitBox.getSize().x / 2.0f, hitBox.getSize().y);
 	hitBox.setFillColor(sf::Color::Transparent);
 
-	//// Make hitbox visible
-	//hitBox.setOutlineColor(sf::Color::Red);
-	//hitBox.setOutlineThickness(1.0f);
-	
 	startPosition = this->getPosition();
 
 	this->moveSpeed = 70.0f;
@@ -115,7 +112,6 @@ void Enemy::update(const sf::Time& time, std::vector<GameObject*>& gameObjects)
 
 	if (this->lives == 0)
 	{
-		// NOTE: Later add a die() function which first plays a animation, and then sets alive to false once the animation is done.
 		this->alive = false;
 		return;
 	}
@@ -134,6 +130,7 @@ void Enemy::update(const sf::Time& time, std::vector<GameObject*>& gameObjects)
 
 		sprite.setTextureRect(animationPtr->updateAnimation(time.asSeconds(), state, velocity));
 
+		// gör till funktion i character?
 		if (this->velocity.x < 0 && facingRight == true)
 		{
 			facingRight = false;
@@ -147,18 +144,4 @@ void Enemy::update(const sf::Time& time, std::vector<GameObject*>& gameObjects)
 
 		this->move(velocity * time.asSeconds());
 	}
-
-	////Debug
-	//std::cout << std::endl << std::endl;
-	//std::cout << "------ENEMY------" << std::endl;
-	//std::cout << "Velocity: " << velocity.x << ", " << velocity.y << std::endl;
-	//std::cout << "Grounded: " << grounded << std::endl;
-	//std::cout << "State: " << state << std::endl;
-	//std::cout << "Position: " << getPosition().x << ", " << getPosition().y << std::endl;
-	//std::cout << "Start position: " << startPosition.x << ", " << startPosition.y << std::endl;
-	//std::cout << "Target position: " << targetPosition << std::endl;
-	//std::cout << "Lives: " << this->lives << std::endl;
-	//std::cout << "Alive: " << this->alive << std::endl;
-	//std::cout << "-----------------" << std::endl;
 }
-
