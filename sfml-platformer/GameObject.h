@@ -19,22 +19,22 @@ private:
 	Animation::States currentState;
 
 protected:
-	void updateAnimation(sf::Time time, Animation::States currentState, sf::Vector2f velocity = sf::Vector2f(0.0f, 0.0f));
+	void updateAnimation(const sf::Time& time, const Animation::States currentState, const sf::Vector2f& velocity = sf::Vector2f(0.0f, 0.0f));
 
 	sf::Sprite getSprite() const;
 	Animation::States getCurrentState() const;
 
 
-	void setGameObjectValues(std::string textureFileName, sf::IntRect spriteRect, sf::Vector2f hitBoxSize);
-	void setHitBoxSize(sf::Vector2f size);
-	void setHitBoxOrigin(sf::Vector2f position);
-	void setHitBoxScale(sf::Vector2f scale);
-	void setHitBoxPosition(sf::Vector2f position);
+	void setGameObjectValues(const std::string& textureFileName, const sf::IntRect& spriteRect, const sf::Vector2f& hitBoxSize);
+	void setHitBoxSize(const sf::Vector2f& size);
+	void setHitBoxOrigin(const sf::Vector2f& position);
+	void setHitBoxScale(const sf::Vector2f& scale);
+	void setHitBoxPosition(const sf::Vector2f& position);
 
-	void setSpriteScale(sf::Vector2f scale);
-	void setSpritePosition(sf::Vector2f position);
+	void setSpriteScale(const sf::Vector2f& scale);
+	void setSpritePosition(const sf::Vector2f& position);
 
-	void setCurrentState(Animation::States state);
+	void setCurrentState(const Animation::States state);
 
 	
 public:
@@ -49,7 +49,7 @@ public:
 
 	void setPosition(const sf::Vector2f& position);
 	void setScale(const sf::Vector2f& scale);
-	virtual void setWin(bool win);
+	virtual void setWin(const bool win);
 };
 
 #endif // !GAMEOBJECT_H

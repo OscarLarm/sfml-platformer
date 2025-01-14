@@ -20,9 +20,9 @@ void Animation::portalAnimation()
 	}
 }
 
-sf::IntRect Animation::update(float timeAsSeconds, States currentState, sf::Vector2f velocity)
+sf::IntRect Animation::update(const float timeAsSeconds, const States currentState, const sf::Vector2f& velocity)
 {
-	if (currentState != animationFrame.previousState || currentState == Animation::States::Jumping)
+	if (currentState != previousState || currentState == Animation::States::Jumping)
 	{
 		spriteRect.left = 0;
 	}
@@ -59,21 +59,21 @@ sf::IntRect Animation::update(float timeAsSeconds, States currentState, sf::Vect
 	return spriteRect;
 }
 
-void Animation::setFrameData(Animation::States state, sf::Vector2f velocity)
+void Animation::setFrameData(const Animation::States& state, const sf::Vector2f& velocity)
 {
 	switch (state)
 	{
 	case Animation::States::None:
-		animationFrame = { 0,0,0.0f,Animation::States::None };
+		animationFrame = { 0,0,0.0f };
 		break;
 	case Animation::States::Idle:
-		animationFrame = { 7,1,0.09f,Animation::States::Idle };
+		animationFrame = { 7,1,0.09f };
 		break;
 	case Animation::States::Running:
-		animationFrame = { 8,3,0.06f,Animation::States::Running };
+		animationFrame = { 8,3,0.06f };
 		break;
 	case Animation::States::Jumping:
-		animationFrame = { 1, 15, 0.01f, Animation::States::Jumping };
+		animationFrame = { 1, 15, 0.01f };
 
 		if (velocity.y >= -40.0f && velocity.y <= 60.0f)
 			animationFrame.row = 16;
@@ -82,30 +82,31 @@ void Animation::setFrameData(Animation::States state, sf::Vector2f velocity)
 		
 		break;
 	case Animation::States::IdleAttack:
-		animationFrame = { 8,9,0.04f,Animation::States::IdleAttack };
+		animationFrame = { 8,9,0.04f };
 		break;
 	case Animation::States::RunningAttack:
-		animationFrame = { 4,8,0.06f,Animation::States::RunningAttack };
+		animationFrame = { 4,8,0.06f };
 		break;
 	case Animation::States::JumpingAttack:
-		animationFrame = { 4,18,0.06f,Animation::States::JumpingAttack };
+		animationFrame = { 4,18,0.06f };
 		break;
 	case Animation::States::Patrol:
-		animationFrame = { 8,2,0.1f,Animation::States::Patrol };
+		animationFrame = { 8,2,0.1f };
 		break;
 	case Animation::States::Portal:
-		animationFrame = { 3, 1, 0.1f, Animation::States::Portal };
+		animationFrame = { 3, 1, 0.1f };
 		break;
 	default:
 		break;
 	}
+	previousState = state;
 }
 
 Animation::Animation(sf::IntRect spriteRect)
 	: spriteRect(spriteRect),
 	animationTimer(0.0f)
 {
-	animationFrame = {0,0,0.0f,Animation::States::None};
+	animationFrame = { 0,0,0.0f };
 }
 
 Animation::~Animation()

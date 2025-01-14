@@ -61,7 +61,7 @@ float Character::getMoveSpeed() const
 	return this->moveSpeed;
 }
 
-void Character::setVelocity(float x, float y)
+void Character::setVelocity(const float x, const float y)
 {
 	this->velocity.x = x;
 	this->velocity.y = y;
@@ -72,19 +72,19 @@ bool Character::isGrounded() const
 	return this->grounded;
 }
 
-void Character::setGrounded(bool grounded)
+void Character::setGrounded(const bool grounded)
 {
 	this->grounded = grounded;
 }
 
-void Character::setCharacterValues(int lives, float moveSpeed)
+void Character::setCharacterValues(const int lives, const float moveSpeed)
 {
 	this->startLives = lives;
 	this->lives = startLives;
 	this->moveSpeed = moveSpeed;
 }
 
-void Character::setAlive(bool alive)
+void Character::setAlive(const bool alive)
 {
 	this->alive = alive;
 }
@@ -101,7 +101,7 @@ bool Character::isFacingRight() const
 
 float Character::getGravity() const
 {
-	return this->gravity;
+	return this->GRAVITY;
 }
 
 void Character::setStartPosition(const sf::Vector2f& position)
@@ -118,11 +118,10 @@ sf::Vector2f Character::getStartPosition() const
 
 Character::Character()
 	: velocity(0, 0),
-	moveSpeed(150.0f),
-	gravity(900.0f),
+	moveSpeed(0.0f),
 	grounded(true),
 	facingRight(true),
-	lives(1),
+	lives(0),
 	startLives(this->lives),
 	alive(true),
 	gotHit(false),
@@ -140,7 +139,7 @@ void Character::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	target.draw(this->getHitBox());
 }
 
-void Character::move(const sf::Vector2f offset)
+void Character::move(const sf::Vector2f& offset)
 {
 	this->setSpritePosition(this->getSprite().getPosition() + offset);
 	this->setHitBoxPosition(this->getHitBox().getPosition() + offset);

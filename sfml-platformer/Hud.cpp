@@ -29,7 +29,7 @@ void Hud::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	target.draw(this->timerText);
 }
 
-void Hud::update(float timer, int lives, sf::View& gameView)
+void Hud::update(const float timer, const int lives, const sf::View& gameView)
 {
 	this->playerLivesStr = std::to_string(lives);
 	totTimeStr = std::to_string(static_cast<int>(timer));

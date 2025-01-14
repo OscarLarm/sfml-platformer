@@ -108,6 +108,7 @@ void Level::load(const std::string& levelDataPath, const int column, const int r
 			case 3:
 				gameObjectPtr = new Player;
 				this->playerPtr = static_cast<Player*>(gameObjectPtr);
+				playerPtr->setLevelLimitY(row * gridSize.y);
 				break;
 			case 4:
 				gameObjectPtr = new Enemy;

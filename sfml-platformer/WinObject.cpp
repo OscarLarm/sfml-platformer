@@ -20,7 +20,7 @@ void WinObject::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	target.draw(this->getHitBox());
 }
 
-bool WinObject::update(sf::Time time)
+bool WinObject::update(const sf::Time& time)
 {
 	updateAnimation(time, getCurrentState());
 

@@ -15,6 +15,7 @@ class Game
 private:
 	const sf::Vector2i WINDOW_SIZE = sf::Vector2i(1366, 768);
 	const std::string LEVEL_01_FILE_PATH = "../levels/level01.txt";
+
 	sf::RenderWindow window;
 	sf::Clock clock;
 	sf::Time timeElapsedLastFrame;

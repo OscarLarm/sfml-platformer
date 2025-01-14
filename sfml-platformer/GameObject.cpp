@@ -1,6 +1,6 @@
 #include "GameObject.h"
 
-void GameObject::setWin(bool win){
+void GameObject::setWin(const bool win){
 
 }
 
@@ -47,7 +47,7 @@ void GameObject::setPosition(const sf::Vector2f& position)
 	this->hitBox.setPosition(position);
 }
 
-void GameObject::setGameObjectValues(std::string textureFileName, sf::IntRect spriteRect, sf::Vector2f hitBoxSize)
+void GameObject::setGameObjectValues(const std::string& textureFileName, const sf::IntRect& spriteRect, const sf::Vector2f& hitBoxSize)
 {
 	this->spriteRect = spriteRect;
 	this->texture.loadFromFile(this->ASSETS_DIRECTORY + textureFileName);
@@ -62,42 +62,42 @@ void GameObject::setGameObjectValues(std::string textureFileName, sf::IntRect sp
 	this->animationPtr = new Animation(this->spriteRect);
 }
 
-void GameObject::updateAnimation(sf::Time time, Animation::States currentState, sf::Vector2f velocity)
+void GameObject::updateAnimation(const sf::Time& time, const Animation::States currentState, const sf::Vector2f& velocity)
 {
 	this->sprite.setTextureRect(this->animationPtr->update(time.asSeconds(), currentState, velocity));
 }
 
-void GameObject::setHitBoxSize(sf::Vector2f size)
+void GameObject::setHitBoxSize(const sf::Vector2f& size)
 {
 	this->hitBox.setSize(size);
 }
 
-void GameObject::setHitBoxOrigin(sf::Vector2f position)
+void GameObject::setHitBoxOrigin(const sf::Vector2f& position)
 {
 	this->hitBox.setOrigin(position);
 }
 
-void GameObject::setHitBoxScale(sf::Vector2f scale)
+void GameObject::setHitBoxScale(const sf::Vector2f& scale)
 {
 	this->hitBox.scale(scale);
 }
 
-void GameObject::setHitBoxPosition(sf::Vector2f position)
+void GameObject::setHitBoxPosition(const sf::Vector2f& position)
 {
 	this->hitBox.setPosition(position);
 }
 
-void GameObject::setSpriteScale(sf::Vector2f scale)
+void GameObject::setSpriteScale(const sf::Vector2f& scale)
 {
 	this->sprite.setScale(scale);
 }
 
-void GameObject::setSpritePosition(sf::Vector2f position)
+void GameObject::setSpritePosition(const sf::Vector2f& position)
 {
 	this->sprite.setPosition(position);
 }
 
-void GameObject::setCurrentState(Animation::States state)
+void GameObject::setCurrentState(const Animation::States state)
 {
 	this->currentState = state;
 }

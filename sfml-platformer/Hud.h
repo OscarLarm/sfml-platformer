@@ -21,7 +21,7 @@ public:
 	virtual ~Hud();
 
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
-	void update(float totTime, int lives, sf::View& gameView);
+	void update(const float timer, const int lives, const sf::View& gameView);
 };
 
 #endif // !HUD_H

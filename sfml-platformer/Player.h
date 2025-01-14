@@ -24,6 +24,8 @@ private:
 
 	float playerHitTimer;
 
+	float levelLimitY;
+
 	void playerControls(const sf::Time& time);
 	void collisionControl(const sf::Time& time, std::vector<GameObject*>& gameObjects) override;
 
@@ -32,6 +34,8 @@ public:
 	virtual ~Player();
 
 	void update(const sf::Time& time, std::vector<GameObject*>& gameObjects) override;
+
+	void setLevelLimitY(const float limit);
 };
 
 #endif // !PLAYER_H

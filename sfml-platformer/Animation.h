@@ -31,10 +31,11 @@ private:
 		int nrOfFrames;
 		int row;
 		float speed;
-		Animation::States previousState;
 	} animationFrame;
+	
+	Animation::States previousState;
 
-	void setFrameData(Animation::States state, sf::Vector2f velocity);
+	void setFrameData(const Animation::States& state, const sf::Vector2f& velocity);
 
 public:
 	Animation(sf::IntRect spriteRect);
@@ -42,6 +43,6 @@ public:
 	
 
 
-	sf::IntRect update(float timeAsSeconds, States currentState, sf::Vector2f velocity = sf::Vector2f(0.0f, 0.0f));
+	sf::IntRect update(const float timeAsSeconds, const States currentState, const sf::Vector2f& velocity = sf::Vector2f(0.0f, 0.0f));
 };
 #endif // !ANIMATION_H

@@ -9,9 +9,9 @@
 class Character : public GameObject
 {
 private:
+	const float GRAVITY = 900.0f;
 	float moveSpeed;
 	sf::Vector2f velocity;
-	float gravity;
 	bool grounded;
 	bool facingRight;
 	int lives;
@@ -24,7 +24,7 @@ private:
 protected:
 	virtual void collisionControl(const sf::Time& time, std::vector<GameObject*>& gameObjects) = 0;
 	void collisionPlatform(const sf::FloatRect& hitBoxBounds, const sf::FloatRect& platformBounds);
-	void move(const sf::Vector2f offset);
+	void move(const sf::Vector2f& offset);
 	void flip();
 
 	float getMoveSpeed() const;
@@ -34,11 +34,11 @@ protected:
 	bool isGrounded() const;
 	bool isFacingRight() const;
 
-	void setCharacterValues(int lives, float moveSpeed);
-	void setVelocity(float x, float y);
+	void setCharacterValues(const int lives, const float moveSpeed);
+	void setVelocity(const float x, const float y);
 	void setStartPosition(const sf::Vector2f& position);
-	void setGrounded(bool grounded);
-	void setAlive(bool alive);
+	void setGrounded(const bool grounded);
+	void setAlive(const bool alive);
 
 public:
 	Character();

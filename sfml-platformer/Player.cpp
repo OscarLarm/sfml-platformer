@@ -106,7 +106,7 @@ void Player::collisionControl(const sf::Time& time, std::vector<GameObject*>& ga
 			}
 		}
 	}
-	if (nextUpdateBounds.top > 900) // TODO: Change to actual level-height, not hardcoded
+	if (nextUpdateBounds.top + nextUpdateBounds.height > levelLimitY + 100.0f)
 	{
 		this->hit();
 	}
@@ -115,7 +115,8 @@ void Player::collisionControl(const sf::Time& time, std::vector<GameObject*>& ga
 Player::Player()
 	: swordCooldownTimer(0.0f),
 	swordReady(true),
-	playerHitTimer(0.0f)
+	playerHitTimer(0.0f),
+	levelLimitY(0.0f)
 {
 	this->setCharacterValues(PLAYER_LIVES, PLAYER_MOVESPEED);
 	this->setGameObjectValues("playerSheetCombat.png", sf::IntRect(0, 0, 96, 84), sf::Vector2f(16.0f, 36.0f));
@@ -176,4 +177,9 @@ void Player::update(const sf::Time& time, std::vector<GameObject*>& gameObjects)
 		//std::system("cls");
 		//std::cout << "Facingright: " << facingRight << std::endl;
 	}
+}
+
+void Player::setLevelLimitY(const float limit)
+{
+	this->levelLimitY = limit;
 }
