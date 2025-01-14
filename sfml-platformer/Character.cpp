@@ -42,10 +42,93 @@ void Character::collisionPlatform(const sf::FloatRect& hitBoxBounds, const sf::F
 	}
 }
 
+void Character::flip()
+{
+	if (this->velocity.x > 0.0f)
+	{
+		this->facingRight = true;
+		this->setSpriteScale(sf::Vector2f(1.0f, 1.0f));
+	}
+	else if (this->velocity.x < 0.0f)
+	{
+		this->facingRight = false;
+		this->setSpriteScale(sf::Vector2f(-1.0f, 1.0f));
+	}
+}
+
+float Character::getMoveSpeed() const
+{
+	return this->moveSpeed;
+}
+
+void Character::setVelocityX(float x)
+{
+	this->velocity.x = x;
+}
+
+void Character::setVelocityY(float y)
+{
+	this->velocity.y = y;
+}
+
+bool Character::isGrounded() const
+{
+	return this->grounded;
+}
+
+void Character::setGrounded(bool grounded)
+{
+	this->grounded = grounded;
+}
+
+void Character::setState(std::string state)
+{
+	this->state = state;
+}
+
+std::string Character::getState()
+{
+	return this->state;
+}
+
+void Character::setCharacterValues(int lives, float moveSpeed)
+{
+	this->startLives = lives;
+	this->lives = startLives;
+	this->moveSpeed = moveSpeed;
+}
+
+void Character::setAlive(bool alive)
+{
+	this->alive = alive;
+}
+
+void Character::setHit(bool hit)
+{
+	this->gotHit = hit;
+}
+
+bool Character::isFacingRight() const
+{
+	return this->facingRight;
+}
+
+float Character::getGravity() const
+{
+	return this->gravity;
+}
+
 void Character::setStartPosition(const sf::Vector2f& position)
 {
 	this->startPosition = position;
 }
+
+sf::Vector2f Character::getStartPosition() const
+{
+	return this->startPosition;
+}
+
+
 
 Character::Character()
 	: velocity(0, 0),
@@ -76,6 +159,8 @@ void Character::move(const sf::Vector2f offset)
 {
 	this->setSpritePosition(this->getSprite().getPosition() + offset);
 	this->setHitBoxPosition(this->getHitBox().getPosition() + offset);
+
+	this->flip();
 }
 
 void Character::resetPosition()

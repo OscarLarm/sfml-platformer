@@ -5,64 +5,66 @@ void Player::playerControls(const sf::Time& time)
 	if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::D)) &&
 		!(sf::Keyboard::isKeyPressed(sf::Keyboard::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::A)))
 	{
-		velocity.x = moveSpeed;
-		if (grounded && !sword->isAttacking())
+		this->setVelocityX(this->getMoveSpeed());
+		if (this->isGrounded() && !sword->isAttacking())
 		{
-			state = "running";
+			this->setState("running");
 		}
-		if (!facingRight)
-		{
-			this->setSpriteScale(sf::Vector2f(1.0f, 1.0f));
-			facingRight = true;
-		}
+		//if (!facingRight)
+		//{
+		//	this->setSpriteScale(sf::Vector2f(1.0f, 1.0f));
+		//	facingRight = true;
+		//}
 	}
 	else if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::A)) &&
 		!(sf::Keyboard::isKeyPressed(sf::Keyboard::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::D)))
 	{
-		velocity.x = -moveSpeed;
-		if (grounded && !sword->isAttacking())
+		this->setVelocityX(-this->getMoveSpeed());
+		if (this->isGrounded() && !sword->isAttacking())
 		{
-			state = "running";
+			this->setState("running");
 		}
-		if (facingRight)
-		{
-			this->setSpriteScale(sf::Vector2f(-1.0f, 1.0f));
+		//if (facingRight)
+		//{
+		//	this->setSpriteScale(sf::Vector2f(-1.0f, 1.0f));
 
-			facingRight = false;
-		}
+		//	facingRight = false;
+		//}
 	}
 	else
 	{
-		velocity.x = 0;
-		if (grounded && !sword->isAttacking())
+		this->setVelocityX(0.0f);
+		if (isGrounded() && !sword->isAttacking())
 		{
-			state = "idle";
+			this->setState("idle");
 		}
 	}
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && grounded)
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && this->isGrounded())
 	{
-		velocity.y = JUMP_FORCE;
-		grounded = false;
+		this->setVelocityY(this->JUMP_FORCE);
+		this->setGrounded(false);
 	}
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::J) && swordReady)
 	{
+		std::string state = this->getState();
+
 		if (state == "running")
 		{
-			state = "running-attack";
+			this->setState("running-attack");
 		}
 		else if (state == "jumping")
 		{
-			state = "jumping-attack";
+			this->setState("jumping-attack");
 		}
 		else
 		{
-			state = "idle-attack";
+			this->setState("idle-attack");
 		}
 
 		this->sword->attack();
-		swordReady = false;
+		this->swordReady = false;
 	}
 	if (!swordReady)
 	{
@@ -77,14 +79,14 @@ void Player::playerControls(const sf::Time& time)
 
 void Player::collisionControl(const sf::Time& time, std::vector<GameObject*>& gameObjects)
 {
-	this->grounded = false;
+	this->setGrounded(false);
 	float collisionOffset = 1.0f;
 
 	sf::FloatRect hitBoxBounds = this->getHitBox().getGlobalBounds();
 
 	sf::FloatRect nextUpdateBounds = hitBoxBounds;
-	nextUpdateBounds.left += velocity.x * time.asSeconds();
-	nextUpdateBounds.top += velocity.y * time.asSeconds() + collisionOffset;
+	nextUpdateBounds.left += this->getVelocity().x * time.asSeconds();
+	nextUpdateBounds.top += this->getVelocity().y * time.asSeconds() + collisionOffset;
 
 	for (auto* i : gameObjects)
 	{
@@ -125,12 +127,10 @@ Player::Player()
 	swordReady(true),
 	playerHitTimer(0.0f)
 {
-	this->lives = 3;
-	this->startLives = this->lives;
-	this->alive = true;
-	this->sword = new Sword;
+	this->setCharacterValues(PLAYER_LIVES, PLAYER_MOVESPEED);
+	this->setGameObjectValues("playerSheetCombat.png", sf::IntRect(0, 0, 96, 84), sf::Vector2f(16.0f, 36.0f));
 
-	setGameObject("playerSheetCombat.png", sf::IntRect(0, 0, 96, 84), sf::Vector2f(16.0f, 36.0f));
+	this->sword = new Sword;
 }
 
 Player::~Player()
@@ -140,14 +140,14 @@ Player::~Player()
 
 void Player::update(const sf::Time& time, std::vector<GameObject*>& gameObjects)
 {
-	if (this->startPosition == sf::Vector2f(0.0f, 0.0f))
+	if (this->getStartPosition() == sf::Vector2f(0.0f, 0.0f))
 	{
-		startPosition = this->getPosition();
+		this->setStartPosition(this->getPosition());
 	}
 	
-	if (this->lives == 0)
+	if (this->getLives() == 0)
 	{
-		this->alive = false;
+		this->setAlive(false);
 		return;
 	}
 	else
@@ -157,29 +157,30 @@ void Player::update(const sf::Time& time, std::vector<GameObject*>& gameObjects)
 		if (playerHitTimer >= this->PLAYER_HIT_INVINCIBLE_TIME)
 		{
 			this->playerHitTimer = 0.0f;
-			this->gotHit = false;
+			this->setHit(false);
 		}
-		this->alive = true;
+		this->setAlive(true);
 
 
 		playerControls(time);
-		sword->update(time, facingRight, gameObjects);
+		sword->update(time, this->isFacingRight(), gameObjects);
 
-		if (!grounded)
+		if (!this->isGrounded())
 		{
-			velocity.y += gravity * time.asSeconds();
+			//velocity.y += gravity * time.asSeconds();
+			this->setVelocityY(this->getVelocity().y + this->getGravity() * time.asSeconds());
 
 			if (!sword->isAttacking())
 			{
-				state = "jumping";
+				this->setState("jumping");
 			}
 		}
 
-		updateAnimation(time, state, velocity);
+		updateAnimation(time, this->getState(), this->getVelocity());
 
 		collisionControl(time, gameObjects);
 
-		this->move(velocity * time.asSeconds());
+		this->move(this->getVelocity() * time.asSeconds());
 		this->sword->setPosition(sf::Vector2f(this->getPosition().x, this->getPosition().y));
 
 		//std::system("cls");

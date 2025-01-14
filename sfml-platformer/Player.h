@@ -13,13 +13,15 @@ class Player : public Character
 {
 private:
 	const float JUMP_FORCE = -350.0f;
-	
-	Sword* sword;
+	const float PLAYER_LIVES = 3;
+	const float PLAYER_MOVESPEED = 150.0f;
 	const float SWORD_COOLDOWN = 0.5f;
+	const float PLAYER_HIT_INVINCIBLE_TIME = 0.1f;
+
+	Sword* sword;
 	float swordCooldownTimer;
 	bool swordReady;
 
-	const float PLAYER_HIT_INVINCIBLE_TIME = 0.1f;
 	float playerHitTimer;
 
 	void playerControls(const sf::Time& time);

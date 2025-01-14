@@ -7,6 +7,9 @@
 class Enemy : public Character
 {
 private:
+	const float ENEMY_LIVES = 1;
+	const float ENEMY_MOVESPEED = 70.0f;
+
 	float targetPosition;
 	bool reachedTarget;
 

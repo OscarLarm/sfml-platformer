@@ -6,42 +6,43 @@ void Enemy::patrol(const sf::Time& time)
 	{
 		if (this->getPosition().x < targetPosition)
 		{
-			this->velocity.x = moveSpeed;
-			state = "patrol";
+			this->setVelocityX(this->getMoveSpeed());
+			this->setState("patrol");
 		}
 		else
 		{
-			this->velocity.x = 0.0f;
-			state = "idle";
-			reachedTarget = true;
+			this->setVelocityX(0.0f);
+			this->setState("idle");
+			this->reachedTarget = true;
 		}
 	}
 	else if (reachedTarget)
 	{
-		if (this->getPosition().x > startPosition.x)
+		if (this->getPosition().x > this->getStartPosition().x)
 		{
-			this->velocity.x = -moveSpeed;
-			state = "patrol";
+			this->setVelocityX(-this->getMoveSpeed());
+			this->setState("patrol");
+
 		}
 		else
 		{
-			this->velocity.x = 0.0f;
-			state = "idle";
-			reachedTarget = false;
+			this->setVelocityX(0.0f);
+			this->setState("idle");
+			this->reachedTarget = false;
 		}
 	}
 }
 
 void Enemy::collisionControl(const sf::Time& time, std::vector<GameObject*>& gameObjects)
 {
-	this->grounded = false;
+	this->setGrounded(false);
 	float collisionOffset = 1.0f;
 
 	sf::FloatRect hitBoxBounds = this->getHitBox().getGlobalBounds();
 
 	sf::FloatRect nextUpdateBounds = hitBoxBounds;
-	nextUpdateBounds.left += velocity.x * time.asSeconds();
-	nextUpdateBounds.top += velocity.y * time.asSeconds() + collisionOffset;
+	nextUpdateBounds.left += this->getVelocity().x * time.asSeconds();
+	nextUpdateBounds.top += this->getVelocity().y * time.asSeconds() + collisionOffset;
 
 	for (auto* i : gameObjects)
 	{
@@ -76,13 +77,8 @@ Enemy::Enemy()
 	: reachedTarget(false),
 	targetPosition(0.0f)
 {
-	this->alive = true;
-
-	setGameObject("playerSheet.png", sf::IntRect(0, 0, 96, 84), sf::Vector2f(24.0f, 36.0f));
-
-	startPosition = this->getPosition();
-
-	this->moveSpeed = 70.0f;
+	this->setCharacterValues(ENEMY_LIVES, ENEMY_MOVESPEED);
+	setGameObjectValues("playerSheet.png", sf::IntRect(0, 0, 96, 84), sf::Vector2f(24.0f, 36.0f));
 }
 
 Enemy::~Enemy()
@@ -91,46 +87,47 @@ Enemy::~Enemy()
 
 void Enemy::update(const sf::Time& time, std::vector<GameObject*>& gameObjects)
 {
-	if (this->startPosition == sf::Vector2f(0.0f, 0.0f))
+	if (this->getStartPosition() == sf::Vector2f(0.0f, 0.0f))
 	{
-		startPosition = this->getPosition();
-		targetPosition = startPosition.x + 100.0f;
+		this->setStartPosition(this->getPosition());
+		this->targetPosition = this->getStartPosition().x + 100.0f;
 	}
 
-	this->gotHit = false;
+	this->setHit(false);
 
-	if (this->lives == 0)
+	if (this->getLives() == 0)
 	{
-		this->alive = false;
+		this->setAlive(false);
 		return;
 	}
 	else
 	{
-		this->alive = true;
+		this->setAlive(true);
 
 		patrol(time);
 
-		if (!grounded)
+		if (!this->isGrounded())
 		{
-			velocity.y += gravity * time.asSeconds();
+			this->setVelocityY(this->getVelocity().y + getGravity() * time.asSeconds());
+			//velocity.y += gravity * time.asSeconds();
 		}
 
 		collisionControl(time, gameObjects);
 
-		updateAnimation(time, state, velocity);
+		updateAnimation(time, this->getState(), this->getVelocity());
 
-		// gör till funktion i character?
-		if (this->velocity.x < 0 && facingRight == true)
-		{
-			facingRight = false;
-			this->setSpriteScale(sf::Vector2f(-1.0f, 1.0f));
-		}
-		else if (this->velocity.x > 0 && facingRight == false)
-		{
-			facingRight = true;
-			this->setSpriteScale(sf::Vector2f(1.0f, 1.0f));
-		}
+		//// gör till funktion i character?
+		//if (this->velocity.x < 0 && facingRight == true)
+		//{
+		//	facingRight = false;
+		//	this->setSpriteScale(sf::Vector2f(-1.0f, 1.0f));
+		//}
+		//else if (this->velocity.x > 0 && facingRight == false)
+		//{
+		//	facingRight = true;
+		//	this->setSpriteScale(sf::Vector2f(1.0f, 1.0f));
+		//}
 
-		this->move(velocity * time.asSeconds());
+		this->move(this->getVelocity() *time.asSeconds());
 	}
 }

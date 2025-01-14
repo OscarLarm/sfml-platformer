@@ -2,7 +2,7 @@
 
 Platform::Platform() 
 {
-	setGameObject("tileSheet.png", sf::IntRect(0, 0, 48, 16), sf::Vector2f(48.0f, 16.0f));
+	setGameObjectValues("tileSheet.png", sf::IntRect(0, 0, 48, 16), sf::Vector2f(48.0f, 16.0f));
 }
 
 Platform::~Platform()
