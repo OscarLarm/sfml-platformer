@@ -12,24 +12,19 @@ Level::Level()
 
 Level::~Level()
 {
-	for (auto& i : gameObjects)
-	{
-		delete i;
-	}
 	gameObjects.clear();
 }
 
 void Level::update(const sf::Time& timeElapsedLastFrame)
 {
-	for (auto* i : gameObjects)
+	for (auto& i : gameObjects)
 	{
 		if (i == nullptr)
 		{
 			continue;
 		}
 
-		Character* characterPtr = nullptr;
-		characterPtr = dynamic_cast<Character*>(i);
+		Character* characterPtr = dynamic_cast<Character*>(i.get());
 
 		if (characterPtr != nullptr)
 		{
@@ -37,7 +32,7 @@ void Level::update(const sf::Time& timeElapsedLastFrame)
 		}
 
 		WinObject* winObjectPtr = nullptr;
-		winObjectPtr = dynamic_cast<WinObject*>(i);
+		winObjectPtr = dynamic_cast<WinObject*>(i.get());
 
 		if (winObjectPtr != nullptr)
 		{
@@ -49,14 +44,14 @@ void Level::update(const sf::Time& timeElapsedLastFrame)
 void Level::render(sf::RenderWindow& gameWindow)
 {
 	gameWindow.draw(backgroundSprite);
-	for (auto* object : gameObjects)
+	for (auto& object : gameObjects)
 	{
 		if (object == nullptr)
 		{
 			continue;
 		}
 		Character* characterPtr = nullptr;
-		characterPtr = dynamic_cast<Character*>(object);
+		characterPtr = dynamic_cast<Character*>(object.get());
 
 		if (characterPtr == nullptr || 
 			characterPtr != nullptr && 
@@ -70,10 +65,10 @@ void Level::render(sf::RenderWindow& gameWindow)
 void Level::load(const std::string& levelDataPath, const int column, const int row, const sf::Vector2i& gridSize)
 {
 	this->win = false;
-	for (auto& i : gameObjects)
-	{
-		delete i;
-	}
+	//for (auto& i : gameObjects)
+	//{
+	//	delete i;
+	//}
 	gameObjects.clear();
 
 	this->gameObjects.resize(column * row);
@@ -94,35 +89,33 @@ void Level::load(const std::string& levelDataPath, const int column, const int r
 	{
 		for (int j = 0; j < column; j++)
 		{
-			GameObject* gameObjectPtr = nullptr;
-			switch (this->levelArray.data()[levelIndex])
+			//GameObject* gameObjectPtr = nullptr;
+			std::unique_ptr<GameObject> gameObjectPtr = nullptr;
+			switch (this->levelArray.data()[levelIndex++])
 			{
 			case 0:
 				break;
 			case 1:
-				gameObjectPtr = new Platform;
+				gameObjectPtr = std::make_unique<Platform>();
 				break;
 			case 2:
-				gameObjectPtr = new WinObject;
+				gameObjectPtr = std::make_unique<WinObject>();
 				break;
 			case 3:
-				gameObjectPtr = new Player;
-				this->playerPtr = static_cast<Player*>(gameObjectPtr);
+				gameObjectPtr = std::make_unique<Player>();
+				this->playerPtr = static_cast<Player*>(gameObjectPtr.get());
 				playerPtr->setLevelLimitY(row * gridSize.y);
 				break;
 			case 4:
-				gameObjectPtr = new Enemy;
+				gameObjectPtr = std::make_unique<Enemy>();
 				break;
 			}
 			
 			if (gameObjectPtr != nullptr)
 			{
 				gameObjectPtr->setPosition(sf::Vector2f(j * gridSize.x, i * gridSize.y));
-				gameObjects.push_back(gameObjectPtr);
+				gameObjects.push_back(std::move(gameObjectPtr));
 			}
-			gameObjectPtr = nullptr;
-
-			levelIndex++;
 		}
 	}
 }
@@ -132,14 +125,14 @@ void Level::reset()
 	for (auto& i : gameObjects)
 	{
 		Character* characterPtr = nullptr;
-		characterPtr = dynamic_cast<Character*>(i);
+		characterPtr = dynamic_cast<Character*>(i.get());
 
 		if (characterPtr != nullptr)
 		{
 			characterPtr->resetPosition();
 		}
 		
-		characterPtr = dynamic_cast<Enemy*>(i);
+		characterPtr = dynamic_cast<Enemy*>(i.get());
 		if (characterPtr != nullptr)
 		{
 			characterPtr->resetLives();

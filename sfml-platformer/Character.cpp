@@ -114,8 +114,6 @@ sf::Vector2f Character::getStartPosition() const
 	return this->startPosition;
 }
 
-
-
 Character::Character()
 	: velocity(0, 0),
 	moveSpeed(0.0f),

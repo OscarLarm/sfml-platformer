@@ -67,7 +67,7 @@ void Player::playerControls(const sf::Time& time)
 	}
 }
 
-void Player::collisionControl(const sf::Time& time, std::vector<GameObject*>& gameObjects)
+void Player::collisionControl(const sf::Time& time, std::vector<std::unique_ptr<GameObject>>& gameObjects)
 {
 	this->setGrounded(false);
 	float collisionOffset = 1.0f;
@@ -78,7 +78,7 @@ void Player::collisionControl(const sf::Time& time, std::vector<GameObject*>& ga
 	nextUpdateBounds.left += this->getVelocity().x * time.asSeconds();
 	nextUpdateBounds.top += this->getVelocity().y * time.asSeconds() + collisionOffset;
 
-	for (auto* i : gameObjects)
+	for (auto& i : gameObjects)
 	{
 		if (i == nullptr)
 		{
@@ -89,7 +89,7 @@ void Player::collisionControl(const sf::Time& time, std::vector<GameObject*>& ga
 		if (otherBounds.intersects(nextUpdateBounds))
 		{
 			GameObject* typePtr = nullptr;
-			typePtr = dynamic_cast<Platform*>(i);
+			typePtr = dynamic_cast<Platform*>(i.get());
 	
 			if (typePtr != nullptr)
 			{
@@ -97,7 +97,7 @@ void Player::collisionControl(const sf::Time& time, std::vector<GameObject*>& ga
 			}
 			else
 			{
-				typePtr = dynamic_cast<WinObject*>(i);
+				typePtr = dynamic_cast<WinObject*>(i.get());
 
 				if (typePtr != nullptr)
 				{
@@ -130,7 +130,7 @@ Player::~Player()
 	delete this->sword;
 }
 
-void Player::update(const sf::Time& time, std::vector<GameObject*>& gameObjects)
+void Player::update(const sf::Time& time, std::vector<std::unique_ptr<GameObject>>& gameObjects)
 {
 	if (this->getStartPosition() == sf::Vector2f(0.0f, 0.0f))
 	{

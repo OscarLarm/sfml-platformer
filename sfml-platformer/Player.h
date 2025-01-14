@@ -27,13 +27,13 @@ private:
 	float levelLimitY;
 
 	void playerControls(const sf::Time& time);
-	void collisionControl(const sf::Time& time, std::vector<GameObject*>& gameObjects) override;
+	void collisionControl(const sf::Time& time, std::vector<std::unique_ptr<GameObject>>& gameObjects) override;
 
 public:
 	Player();
 	virtual ~Player();
 
-	void update(const sf::Time& time, std::vector<GameObject*>& gameObjects) override;
+	void update(const sf::Time& time, std::vector<std::unique_ptr<GameObject>>& gameObjects) override;
 
 	void setLevelLimitY(const float limit);
 };
