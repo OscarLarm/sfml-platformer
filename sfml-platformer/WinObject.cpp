@@ -1,5 +1,4 @@
 #include "WinObject.h"
-#include <iostream>
 
 WinObject::WinObject()
 	: win(false)

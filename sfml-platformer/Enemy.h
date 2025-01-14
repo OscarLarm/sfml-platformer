@@ -1,9 +1,7 @@
 #ifndef ENEMY_H
 #define ENEMY_H
 
-#include "GameObject.h"
 #include "Character.h"
-#include "Animation.h"
 #include "Player.h"
 
 class Enemy : public Character

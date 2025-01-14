@@ -1,6 +1,5 @@
 #include "Level.h"
 
-
 Level::Level()
 	: win(false),
 	playerPtr(nullptr),

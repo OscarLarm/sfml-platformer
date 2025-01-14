@@ -1,5 +1,4 @@
 #include "Menu.h"
-#include <iostream>
 
 Menu::Menu(const sf::Vector2i& windowSize)
 	: windowSize(windowSize),

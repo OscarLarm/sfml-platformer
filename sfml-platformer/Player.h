@@ -2,16 +2,12 @@
 #define PLAYER_H
 
 #include <SFML/Graphics.hpp>
-#include "Animation.h"
-#include "Platform.h"
-#include <vector>
-#include "GameObject.h"
 #include "Character.h"
 #include "Enemy.h"
-#include "Sword.h" // TEMPORARY CHANGED TO FORWARD DECLARATION, CIRCULAR INCLUDES.
 #include "WinObject.h"
 
-class Sword; // TEMPORARY CHANGED TO FORWARD DECLARATION, CIRCULAR INCLUDES.
+#include "Sword.h"
+class Sword;
 
 class Player : public Character
 {

@@ -2,7 +2,6 @@
 #define GAMEOBJECT_H
 
 #include <SFML/Graphics.hpp>
-#include <vector>
 #include <string>
 #include "Animation.h"
 

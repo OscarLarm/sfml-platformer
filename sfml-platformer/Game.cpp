@@ -1,5 +1,4 @@
 #include "Game.h"
-#include <iostream>
 
 void Game::eventHandler()
 {
@@ -41,7 +40,7 @@ void Game::update()
 
 		this->totTime += timeElapsedLastFrame.asSeconds();
 		this->gameView.setCenter(playerPtr->getPosition().x, playerPtr->getPosition().y);
-		this->gameHud->update(this->totTime, this->playerPtr, this->gameView);
+		this->gameHud->update(this->totTime, this->playerPtr->getLives(), this->gameView);
 		this->level->setBackgroundPosition(this->gameView);
 
 		if (this->playerPtr->isHit())
@@ -110,7 +109,7 @@ void Game::render()
 }
 
 Game::Game()
-	:window(sf::VideoMode(WINDOW_SIZE.x, WINDOW_SIZE.y), "Platformer", sf::Style::Fullscreen),
+	:window(sf::VideoMode(WINDOW_SIZE.x, WINDOW_SIZE.y), "Platformer", sf::Style::Close),
 	totTime(0.0f),
 	playing(false),
 	menu(WINDOW_SIZE),

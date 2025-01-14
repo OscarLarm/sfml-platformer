@@ -6,9 +6,7 @@
 #include "GameObject.h"
 #include "Player.h"
 #include "Enemy.h"
-#include "Hud.h"
 #include "WinObject.h"
-//#include "TileMap.h"
 
 #include <vector>
 #include <string>
@@ -32,7 +30,6 @@ private:
 
 
 public:
-
 	Level();
 	virtual ~Level();
 

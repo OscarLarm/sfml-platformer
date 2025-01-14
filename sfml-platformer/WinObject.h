@@ -2,7 +2,6 @@
 #define WINOBJECT_H
 
 #include "GameObject.h"
-#include "Animation.h"
 
 class WinObject : public GameObject
 {

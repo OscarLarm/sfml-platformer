@@ -1,6 +1,4 @@
 #include "Player.h"
-#include <iostream>
-#include <string>
 
 void Player::playerControls(const sf::Time& time)
 {

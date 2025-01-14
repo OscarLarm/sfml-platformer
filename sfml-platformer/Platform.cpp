@@ -1,6 +1,4 @@
 #include "Platform.h"
-#include <iostream>
-#include <string>
 
 Platform::Platform() 
 {

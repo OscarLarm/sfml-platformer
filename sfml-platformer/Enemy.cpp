@@ -1,5 +1,4 @@
 #include "Enemy.h"
-#include <iostream>
 
 void Enemy::patrol(const sf::Time& time)
 {

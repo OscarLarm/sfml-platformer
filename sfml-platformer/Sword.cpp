@@ -1,5 +1,4 @@
 #include "Sword.h"
-#include <iostream>
 
 Sword::Sword()
 	: attacking(false),

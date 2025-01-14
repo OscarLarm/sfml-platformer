@@ -3,7 +3,7 @@
 
 #include "GameObject.h"
 #include "Platform.h"
-#include "Animation.h"
+#include <vector>
 
 class Character : public GameObject
 {
