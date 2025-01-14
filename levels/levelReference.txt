@@ -1,0 +1,5 @@
+0 = empty
+1 = platform
+2 = portal
+3 = player
+4 = enemy

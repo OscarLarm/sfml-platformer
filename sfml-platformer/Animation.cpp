@@ -11,7 +11,7 @@ void Animation::runningAnimation()
 {
 	numOfFrames = 8;
 	spriteRow = 3;
-	animationSpeed = 0.07f;
+	animationSpeed = 0.06f;
 }
 
 void Animation::patrolAnimation()

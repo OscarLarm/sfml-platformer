@@ -37,6 +37,6 @@ void Hud::update(float timer, Player* player, sf::View& gameView)
 	livesText.setString("HP: " + playerLivesStr);
 	timerText.setString("Time: " + totTimeStr);
 	
-	livesText.setPosition(gameView.getCenter().x - gameView.getSize().x / 2.5f, gameView.getCenter().y - gameView.getSize().y / 2.5f);
-	timerText.setPosition(gameView.getCenter().x - timerText.getGlobalBounds().width / 2, gameView.getCenter().y - gameView.getSize().y / 2.5f);
+	livesText.setPosition(gameView.getCenter().x + gameView.getSize().x / 2.5f - this->livesText.getGlobalBounds().width, gameView.getCenter().y - gameView.getSize().y / 2.5f);
+	timerText.setPosition(gameView.getCenter().x - gameView.getSize().x / 2.5f, gameView.getCenter().y - gameView.getSize().y / 2.5f);
 }

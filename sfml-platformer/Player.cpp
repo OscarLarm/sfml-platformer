@@ -160,8 +160,6 @@ void Player::update(const sf::Time& time, std::vector<GameObject*>& gameObjects)
 	{
 		startPosition = this->getPosition();
 	}
-
-	this->gotHit = false;
 	
 	if (this->lives == 0)
 	{
@@ -171,7 +169,15 @@ void Player::update(const sf::Time& time, std::vector<GameObject*>& gameObjects)
 	}
 	else
 	{
+		this->playerHitTimer += time.asSeconds();
+
+		if (playerHitTimer >= this->PLAYER_HIT_INVINCIBLE_TIME)
+		{
+			this->playerHitTimer = 0.0f;
+			this->gotHit = false;
+		}
 		this->alive = true;
+
 
 		playerControls(time);
 		sword->update(time, facingRight, gameObjects);
@@ -218,7 +224,7 @@ Sword* Player::getSword() const
 
 void Player::resetState()
 {
+	this->setPosition(startPosition);
 	this->alive = true;
 	this->lives = startLives;
-	this->setPosition(startPosition);
 }

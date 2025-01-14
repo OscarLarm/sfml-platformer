@@ -24,6 +24,9 @@ private:
 	float swordCooldownTimer;
 	bool swordReady;
 
+	const float PLAYER_HIT_INVINCIBLE_TIME = 0.1f;
+	float playerHitTimer;
+
 	void playerControls(const sf::Time& time);
 	void collisionControl(const sf::Time& time, std::vector<GameObject*>& gameObjects) override;
 

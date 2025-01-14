@@ -14,8 +14,7 @@ class Game
 private:
 	static const int VWIDTH = 1366;
 	static const int VHEIGHT = 768;
-
-	const sf::Vector2f LEVEL_SIZE;
+	const std::string LEVEL_01_FILE_PATH = "../levels/level01.txt";
 
 	sf::RenderWindow window;
 	sf::Clock clock;
@@ -38,13 +37,6 @@ private:
 	void update();
 	void render();
 
-	std::array<int, 50> level01 = {
-		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-		0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-	};
 
 public:
 	Game();
