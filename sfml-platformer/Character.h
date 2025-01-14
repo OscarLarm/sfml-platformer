@@ -8,6 +8,20 @@
 
 class Character : public GameObject
 {
+private:
+	float moveSpeed;
+	sf::Vector2f velocity;
+	float gravity;
+	bool grounded;
+	std::string state;
+	bool facingRight;
+	int lives;
+	int startLives;
+
+	bool alive;
+	bool gotHit;
+	sf::Vector2f startPosition;
+
 protected:
 	virtual void collisionControl(const sf::Time& time, std::vector<GameObject*>& gameObjects) = 0;
 	void collisionPlatform(const sf::FloatRect& hitBoxBounds, const sf::FloatRect& platformBounds);
@@ -30,22 +44,6 @@ protected:
 	void setState(std::string state);
 	void setGrounded(bool grounded);
 	void setAlive(bool alive);
-
-private:
-	float moveSpeed;
-	sf::Vector2f velocity;
-	float gravity;
-	bool grounded;
-	std::string state;
-	bool facingRight;
-	int lives;
-	int startLives;
-
-
-	bool alive;
-	bool gotHit;
-	sf::Vector2f startPosition;
-
 
 public:
 	Character();

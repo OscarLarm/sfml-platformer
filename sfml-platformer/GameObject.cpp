@@ -1,7 +1,7 @@
 #include "GameObject.h"
 
-void GameObject::setWin(bool win)
-{
+void GameObject::setWin(bool win){
+
 }
 
 bool GameObject::getWin() const
