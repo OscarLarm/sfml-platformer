@@ -8,15 +8,9 @@ void Player::playerControls(const sf::Time& time)
 		this->setVelocity(this->getMoveSpeed(), this->getVelocity().y);
 		if (this->isGrounded() && !sword->isAttacking())
 		{
-			//this->setState("running");
 			setCurrentState(Animation::States::Running);
 
 		}
-		//if (!facingRight)
-		//{
-		//	this->setSpriteScale(sf::Vector2f(1.0f, 1.0f));
-		//	facingRight = true;
-		//}
 	}
 	else if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::A)) &&
 		!(sf::Keyboard::isKeyPressed(sf::Keyboard::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::D)))
@@ -24,22 +18,14 @@ void Player::playerControls(const sf::Time& time)
 		this->setVelocity(-this->getMoveSpeed(), this->getVelocity().y);
 		if (this->isGrounded() && !sword->isAttacking())
 		{
-			//this->setState("running");
 			setCurrentState(Animation::States::Running);
 		}
-		//if (facingRight)
-		//{
-		//	this->setSpriteScale(sf::Vector2f(-1.0f, 1.0f));
-
-		//	facingRight = false;
-		//}
 	}
 	else
 	{
 		this->setVelocity(0.0f, this->getVelocity().y);
 		if (isGrounded() && !sword->isAttacking())
 		{
-			//this->setState("idle");
 			setCurrentState(Animation::States::Idle);
 		}
 	}
@@ -52,22 +38,18 @@ void Player::playerControls(const sf::Time& time)
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::J) && swordReady)
 	{
-		//std::string state = this->getState();
 		Animation::States state = getCurrentState();
 
 		if (state == Animation::States::Running)
 		{
-			//this->setState("running-attack");
 			setCurrentState(Animation::States::RunningAttack);
 		}
 		else if (state == Animation::States::Jumping)
 		{
-			//this->setState("jumping-attack");
 			setCurrentState(Animation::States::JumpingAttack);
 		}
 		else
 		{
-			//this->setState("idle-attack");
 			setCurrentState(Animation::States::IdleAttack);
 		}
 
@@ -176,12 +158,10 @@ void Player::update(const sf::Time& time, std::vector<GameObject*>& gameObjects)
 
 		if (!this->isGrounded())
 		{
-			//velocity.y += gravity * time.asSeconds();
 			this->setVelocity(this->getVelocity().x, this->getVelocity().y + this->getGravity() * time.asSeconds());
 
 			if (!sword->isAttacking())
 			{
-				//this->setState("jumping");
 				setCurrentState(Animation::States::Jumping);
 			}
 		}

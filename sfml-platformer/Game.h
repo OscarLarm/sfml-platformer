@@ -30,12 +30,18 @@ private:
 
 	bool playing;
 
-	int menuChoice;
+	enum MenuChoice
+	{
+		Main,
+		Defeat,
+		Victory,
+		Quit
+	};
+	MenuChoice currentMenu;
 
 	void eventHandler();
 	void update();
 	void render();
-
 
 public:
 	Game();

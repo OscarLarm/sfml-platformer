@@ -13,7 +13,6 @@ public:
 	virtual ~Platform();
 
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
-
 };
 
 #endif // !PLATFORM_H

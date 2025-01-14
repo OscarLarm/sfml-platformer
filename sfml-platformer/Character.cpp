@@ -77,16 +77,6 @@ void Character::setGrounded(bool grounded)
 	this->grounded = grounded;
 }
 
-//void Character::setState(std::string state)
-//{
-//	this->state = state;
-//}
-//
-//std::string Character::getState()
-//{
-//	return this->state;
-//}
-
 void Character::setCharacterValues(int lives, float moveSpeed)
 {
 	this->startLives = lives;

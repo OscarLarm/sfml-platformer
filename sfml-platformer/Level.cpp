@@ -95,7 +95,7 @@ void Level::load(const std::string& levelDataPath, const int column, const int r
 		for (int j = 0; j < column; j++)
 		{
 			GameObject* gameObjectPtr = nullptr;
-			switch (/*level[levelIndex]*/ this->levelArray.data()[levelIndex])
+			switch (this->levelArray.data()[levelIndex])
 			{
 			case 0:
 				break;
@@ -116,7 +116,7 @@ void Level::load(const std::string& levelDataPath, const int column, const int r
 			
 			if (gameObjectPtr != nullptr)
 			{
-				gameObjectPtr->setPosition(sf::Vector2f(j * gridSize.x, i * gridSize.y)); // Why do I need to use column for y and row for x?
+				gameObjectPtr->setPosition(sf::Vector2f(j * gridSize.x, i * gridSize.y));
 				gameObjects.push_back(gameObjectPtr);
 			}
 			gameObjectPtr = nullptr;

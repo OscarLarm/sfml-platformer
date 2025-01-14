@@ -13,7 +13,6 @@ private:
 	sf::Vector2f velocity;
 	float gravity;
 	bool grounded;
-	//std::string state;
 	bool facingRight;
 	int lives;
 	int startLives;
@@ -32,14 +31,12 @@ protected:
 	float getGravity() const;
 	sf::Vector2f getVelocity() const;
 	sf::Vector2f getStartPosition() const;
-	//std::string getState();
 	bool isGrounded() const;
 	bool isFacingRight() const;
 
 	void setCharacterValues(int lives, float moveSpeed);
 	void setVelocity(float x, float y);
 	void setStartPosition(const sf::Vector2f& position);
-	//void setState(std::string state);
 	void setGrounded(bool grounded);
 	void setAlive(bool alive);
 

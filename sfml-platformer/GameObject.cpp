@@ -106,6 +106,4 @@ void GameObject::setScale(const sf::Vector2f& scale)
 {
 	this->sprite.setScale(scale);
 	this->hitBox.setScale(scale);
-
-	//TODO: Make sword class scale.
 }

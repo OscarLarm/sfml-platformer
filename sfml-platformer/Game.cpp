@@ -6,7 +6,7 @@ void Game::eventHandler()
 	while (this->window.pollEvent(event))
 	{
 		if (event.type == sf::Event::Closed ||
-			this->menuChoice == -1)
+			this->currentMenu == Quit)
 		{
 			this->window.close();
 		}
@@ -22,7 +22,7 @@ void Game::eventHandler()
 			}
 			else if (event.key.code == sf::Keyboard::Escape)
 			{
-				this->menuChoice = -1;
+				this->currentMenu = Quit;
 			}
 		}
 	}
@@ -50,12 +50,12 @@ void Game::update()
 		if (!this->playerPtr->isAlive())
 		{
 			this->playing = false;
-			this->menuChoice = 1;
+			this->currentMenu = Defeat;
 		}
 		else if (this->level->getWin())
 		{
 			this->playing = false;
-			this->menuChoice = 2;
+			this->currentMenu = Victory;
 		}
 		else
 		{
@@ -71,21 +71,21 @@ void Game::render()
 	if (!playing)
 	{
 		window.setView(menuView);
-		switch (menuChoice)
+		switch (currentMenu)
 		{
-		case 0:
+		case Main:
 			this->menu.updateMenuText(
 				"Platformer", 
 				"Made in SFML", 
 				"start", "quit");
 			break;
-		case 1:
+		case Defeat:
 			this->menu.updateMenuText(
 				"Defeat", 
 				"You have been slain", 
 				"restart", "quit");
 			break;
-		case 2:
+		case Victory:
 			this->menu.updateMenuText(
 				"Success", 
 				"Time: " + std::to_string(static_cast<int>(totTime)) + " seconds", 
@@ -113,7 +113,7 @@ Game::Game()
 	totTime(0.0f),
 	playing(false),
 	menu(WINDOW_SIZE),
-	menuChoice(0),
+	currentMenu(Main),
 	playerPtr(nullptr),
 	menuView(sf::FloatRect(0.0f, 0.0f, WINDOW_SIZE.x, WINDOW_SIZE.y)),
 	gameView(sf::FloatRect(0.0f, 0.0f, WINDOW_SIZE.x / 1.75, WINDOW_SIZE.y / 1.75))

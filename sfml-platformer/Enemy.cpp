@@ -7,13 +7,11 @@ void Enemy::patrol(const sf::Time& time)
 		if (this->getPosition().x < targetPosition)
 		{
 			this->setVelocity(this->getMoveSpeed(), this->getVelocity().y);
-			//this->setState("patrol");
 			setCurrentState(Animation::States::Patrol);
 		}
 		else
 		{
 			this->setVelocity(0.0f, this->getVelocity().y);
-			//this->setState("idle");
 			setCurrentState(Animation::States::Patrol);
 			this->reachedTarget = true;
 		}
@@ -23,13 +21,11 @@ void Enemy::patrol(const sf::Time& time)
 		if (this->getPosition().x > this->getStartPosition().x)
 		{
 			this->setVelocity(-this->getMoveSpeed(), this->getVelocity().y);
-			//this->setState("patrol");
 			setCurrentState(Animation::States::Patrol);
 		}
 		else
 		{
 			this->setVelocity(0.0f, this->getVelocity().y);
-			//this->setState("idle");
 			setCurrentState(Animation::States::Idle);
 			this->reachedTarget = false;
 		}
@@ -112,7 +108,6 @@ void Enemy::update(const sf::Time& time, std::vector<GameObject*>& gameObjects)
 		if (!this->isGrounded())
 		{
 			this->setVelocity(this->getVelocity().x, this->getVelocity().y + getGravity() * time.asSeconds());
-			//velocity.y += gravity * time.asSeconds();
 		}
 
 		collisionControl(time, gameObjects);

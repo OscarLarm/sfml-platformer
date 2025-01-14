@@ -36,7 +36,6 @@ sf::IntRect Animation::update(float timeAsSeconds, States currentState, sf::Vect
 		{
 			portalAnimation();
 			animationTimer = 0.0f;
-			//previousState = currentState;
 		}
 	}
 	else
@@ -55,7 +54,6 @@ sf::IntRect Animation::update(float timeAsSeconds, States currentState, sf::Vect
 				spriteRect.left += spriteRect.width;
 			}
 			animationTimer = 0.0f;
-			//animationFrame.previousState = currentState;
 		}
 	}
 	return spriteRect;
