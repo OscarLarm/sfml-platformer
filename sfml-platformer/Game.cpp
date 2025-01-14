@@ -110,14 +110,14 @@ void Game::render()
 }
 
 Game::Game()
-	:window(sf::VideoMode(VWIDTH, VHEIGHT), "Platformer", sf::Style::Close),
+	:window(sf::VideoMode(WINDOW_SIZE.x, WINDOW_SIZE.y), "Platformer", sf::Style::Fullscreen),
 	totTime(0.0f),
 	playing(false),
-	menu(sf::Vector2i(VWIDTH, VHEIGHT)),
+	menu(WINDOW_SIZE),
 	menuChoice(0),
 	playerPtr(nullptr),
-	menuView(sf::FloatRect(0.0f, 0.0f, VWIDTH, VHEIGHT)),
-	gameView(sf::FloatRect(0.0f, 0.0f, VWIDTH / 1.75, VHEIGHT / 1.75))
+	menuView(sf::FloatRect(0.0f, 0.0f, WINDOW_SIZE.x, WINDOW_SIZE.y)),
+	gameView(sf::FloatRect(0.0f, 0.0f, WINDOW_SIZE.x / 1.75, WINDOW_SIZE.y / 1.75))
 {
 	this->window.setVerticalSyncEnabled(true); 
 	this->level = new Level();
