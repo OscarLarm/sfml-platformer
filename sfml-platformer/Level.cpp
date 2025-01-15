@@ -65,10 +65,6 @@ void Level::render(sf::RenderWindow& gameWindow)
 void Level::load(const std::string& levelDataPath, const int column, const int row, const sf::Vector2i& gridSize)
 {
 	this->win = false;
-	//for (auto& i : gameObjects)
-	//{
-	//	delete i;
-	//}
 	gameObjects.clear();
 
 	this->gameObjects.resize(column * row);
@@ -89,7 +85,6 @@ void Level::load(const std::string& levelDataPath, const int column, const int r
 	{
 		for (int j = 0; j < column; j++)
 		{
-			//GameObject* gameObjectPtr = nullptr;
 			std::unique_ptr<GameObject> gameObjectPtr = nullptr;
 			switch (this->levelArray.data()[levelIndex++])
 			{

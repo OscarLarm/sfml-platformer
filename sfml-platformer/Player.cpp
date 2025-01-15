@@ -173,9 +173,6 @@ void Player::update(const sf::Time& time, std::vector<std::unique_ptr<GameObject
 
 		this->move(this->getVelocity() * time.asSeconds());
 		this->sword->setPosition(sf::Vector2f(this->getPosition().x, this->getPosition().y));
-
-		//std::system("cls");
-		//std::cout << "Facingright: " << facingRight << std::endl;
 	}
 }
 

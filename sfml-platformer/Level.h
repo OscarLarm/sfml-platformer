@@ -24,8 +24,6 @@ private:
 	bool win;
 
 	std::array<int, 3200> levelArray;
-	// 	std::unique_ptr<int[]>levelArray;
-
 
 	sf::Sprite backgroundSprite;
 	sf::Texture backgroundTexture;

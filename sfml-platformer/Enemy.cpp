@@ -115,8 +115,5 @@ void Enemy::update(const sf::Time& time, std::vector<std::unique_ptr<GameObject>
 		updateAnimation(time, getCurrentState(), this->getVelocity());
 
 		this->move(this->getVelocity() *time.asSeconds());
-
-		//std::system("cls");
-		//std::cout << "CurrentState: " << static_cast<int>(getCurrentState()) << std::endl;
 	}
 }
