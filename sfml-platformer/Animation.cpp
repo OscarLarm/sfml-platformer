@@ -104,7 +104,8 @@ void Animation::setFrameData(const Animation::States& state, const sf::Vector2f&
 
 Animation::Animation(sf::IntRect spriteRect)
 	: spriteRect(spriteRect),
-	animationTimer(0.0f)
+	animationTimer(0.0f),
+	previousState(States::None)
 {
 	animationFrame = { 0,0,0.0f };
 }
