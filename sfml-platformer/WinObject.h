@@ -2,7 +2,6 @@
 #define WINOBJECT_H
 
 #include "GameObject.h"
-#include "Animation.h"
 
 class WinObject : public GameObject
 {
@@ -14,9 +13,9 @@ public:
 	virtual ~WinObject();
 
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
-	bool update(sf::Time time);
+	bool update(const sf::Time& time);
 
-	void setWin(bool win) override;
+	void setWin(const bool win) override;
 };
 
 #endif // !WINOBJECT_H

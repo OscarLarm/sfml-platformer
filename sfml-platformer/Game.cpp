@@ -1,5 +1,4 @@
 #include "Game.h"
-#include <iostream>
 
 void Game::eventHandler()
 {
@@ -7,7 +6,7 @@ void Game::eventHandler()
 	while (this->window.pollEvent(event))
 	{
 		if (event.type == sf::Event::Closed ||
-			this->menuChoice == -1)
+			this->currentMenu == Quit)
 		{
 			this->window.close();
 		}
@@ -17,13 +16,13 @@ void Game::eventHandler()
 			if (event.key.code == sf::Keyboard::Enter)
 			{
 				this->totTime = 0.0f;
-				this->level->load(/*level01.data(), */40, 20, sf::Vector2i(16, 16));
+				this->level->load(this->LEVEL_01_FILE_PATH, 80, 40, sf::Vector2i(32, 16));
 				this->playerPtr = level->getPlayer();
 				this->playing = true;
 			}
 			else if (event.key.code == sf::Keyboard::Escape)
 			{
-				this->menuChoice = -1;
+				this->currentMenu = Quit;
 			}
 		}
 	}
@@ -34,28 +33,29 @@ void Game::update()
 	this->timeElapsedLastFrame = this->clock.restart();
 	if (playing)
 	{
-		//if (playerPtr == nullptr)
-		//{
-		//	return;
-		//}
+		if (playerPtr == nullptr)
+		{
+			return;
+		}
 
-		totTime += timeElapsedLastFrame.asSeconds();
-		this->gameView.setCenter(playerPtr->getPosition().x, LEVEL_SIZE.y / 2);
-		this->gameHud->update(this->totTime, this->playerPtr, this->gameView);
+		this->totTime += timeElapsedLastFrame.asSeconds();
+		this->gameView.setCenter(playerPtr->getPosition().x, playerPtr->getPosition().y);
+		this->gameHud->update(this->totTime, this->playerPtr->getLives(), this->gameView);
+		this->level->setBackgroundPosition(this->gameView);
 
 		if (this->playerPtr->isHit())
 		{
-			level->reset();
+			this->level->reset();
 		}
 		if (!this->playerPtr->isAlive())
 		{
 			this->playing = false;
-			this->menuChoice = 1;
+			this->currentMenu = Defeat;
 		}
 		else if (this->level->getWin())
 		{
 			this->playing = false;
-			this->menuChoice = 2;
+			this->currentMenu = Victory;
 		}
 		else
 		{
@@ -71,19 +71,25 @@ void Game::render()
 	if (!playing)
 	{
 		window.setView(menuView);
-		switch (menuChoice)
+		switch (currentMenu)
 		{
-		case 0:
-			this->menu.updateMenuText("Platformer", "Made in SFML", "start", "quit");
-			break;
-		case 1:
-			this->menu.updateMenuText("Defeat", "You have been slain", "restart", "quit");
-			break;
-		case 2:
+		case Main:
 			this->menu.updateMenuText(
-				"Success", "Time: " + 
-				std::to_string(static_cast<int>(totTime)) +
-				" seconds", "restart", "quit");
+				"Platformer", 
+				"Made in SFML", 
+				"start", "quit");
+			break;
+		case Defeat:
+			this->menu.updateMenuText(
+				"Defeat", 
+				"You have been slain", 
+				"restart", "quit");
+			break;
+		case Victory:
+			this->menu.updateMenuText(
+				"Success", 
+				"Time: " + std::to_string(static_cast<int>(totTime)) + " seconds", 
+				"restart", "quit");
 			break;
 		default:
 			break;
@@ -93,7 +99,9 @@ void Game::render()
 	else
 	{
 		window.setView(gameView);
+
 		level->render(window);
+
 		window.draw(*this->gameHud);
 	}
 
@@ -101,19 +109,17 @@ void Game::render()
 }
 
 Game::Game()
-	:window(sf::VideoMode(VWIDTH, VHEIGHT), "Platformer"/*, sf::Style::Close*/),
-	LEVEL_SIZE(sf::Vector2f(640.0f, 320.0f)),
+	:window(sf::VideoMode(WINDOW_SIZE.x, WINDOW_SIZE.y), "Platformer", sf::Style::Close),
 	totTime(0.0f),
 	playing(false),
-	menu(sf::Vector2i(VWIDTH, VHEIGHT), "Platformer", "Made in SFML", "Start", "quit"),
-	menuChoice(0),
+	menu(WINDOW_SIZE),
+	currentMenu(Main),
 	playerPtr(nullptr),
-	menuView(sf::FloatRect(0.0f, 0.0f, VWIDTH, VHEIGHT)),
-	gameView(sf::FloatRect(0.0f, 0.0f, LEVEL_SIZE.x, LEVEL_SIZE.y))
+	menuView(sf::FloatRect(0.0f, 0.0f, WINDOW_SIZE.x, WINDOW_SIZE.y)),
+	gameView(sf::FloatRect(0.0f, 0.0f, WINDOW_SIZE.x / 1.75, WINDOW_SIZE.y / 1.75))
 {
 	this->window.setVerticalSyncEnabled(true); 
 	this->level = new Level();
-	//this->playerPtr = level->getPlayer();
 	this->gameHud = new Hud();
 }
 

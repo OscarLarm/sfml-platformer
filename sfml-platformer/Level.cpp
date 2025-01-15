@@ -1,38 +1,30 @@
 #include "Level.h"
 
-
 Level::Level()
-	: timer(0.0f),
-	win(false),
-	playerPtr(nullptr)
+	: win(false),
+	playerPtr(nullptr),
+	levelArray({0})
 {
-	//this->load(/*level01.data(),*/ 40, 20, sf::Vector2i(16, 16));
-	//hud = new Hud(this->getPlayer()); // Move to Game class, different from UML diagram.
+	this->backgroundTexture.loadFromFile("../assets/background.png");
+	this->backgroundSprite.setTexture(backgroundTexture);
+	this->backgroundSprite.setOrigin(this->backgroundSprite.getGlobalBounds().width / 2, this->backgroundSprite.getGlobalBounds().height / 2);
 }
 
 Level::~Level()
 {
-	for (auto& i : gameObjects)
-	{
-		delete i;
-	}
 	gameObjects.clear();
 }
 
 void Level::update(const sf::Time& timeElapsedLastFrame)
 {
-	this->timer += timeElapsedLastFrame.asSeconds();
-	//this->hud->update(this->timer);
-
-	for (auto* i : gameObjects)
+	for (auto& i : gameObjects)
 	{
 		if (i == nullptr)
 		{
 			continue;
 		}
 
-		Character* characterPtr = nullptr;
-		characterPtr = dynamic_cast<Character*>(i);
+		Character* characterPtr = dynamic_cast<Character*>(i.get());
 
 		if (characterPtr != nullptr)
 		{
@@ -40,7 +32,7 @@ void Level::update(const sf::Time& timeElapsedLastFrame)
 		}
 
 		WinObject* winObjectPtr = nullptr;
-		winObjectPtr = dynamic_cast<WinObject*>(i);
+		winObjectPtr = dynamic_cast<WinObject*>(i.get());
 
 		if (winObjectPtr != nullptr)
 		{
@@ -51,24 +43,15 @@ void Level::update(const sf::Time& timeElapsedLastFrame)
 
 void Level::render(sf::RenderWindow& gameWindow)
 {
-	//for (auto& i : gameObjects)
-	//{
-	//	if (i != nullptr)
-	//	{
-	//		gameWindow.draw(*i);
-	//	}
-	//}
-
-	//gameWindow.draw(*hud);
-	//gameWindow.draw(tileMap);
-	for (auto* object : gameObjects)
+	gameWindow.draw(backgroundSprite);
+	for (auto& object : gameObjects)
 	{
 		if (object == nullptr)
 		{
 			continue;
 		}
 		Character* characterPtr = nullptr;
-		characterPtr = dynamic_cast<Character*>(object);
+		characterPtr = dynamic_cast<Character*>(object.get());
 
 		if (characterPtr == nullptr || 
 			characterPtr != nullptr && 
@@ -79,16 +62,22 @@ void Level::render(sf::RenderWindow& gameWindow)
 	}
 }
 
-void Level::load(/*int* level,*/ const int column, const int row, const sf::Vector2i& gridSize)
+void Level::load(const std::string& levelDataPath, const int column, const int row, const sf::Vector2i& gridSize)
 {
 	this->win = false;
-	for (auto& i : gameObjects)
-	{
-		delete i;
-	}
 	gameObjects.clear();
 
 	this->gameObjects.resize(column * row);
+
+	std::ifstream levelFile(levelDataPath);
+	int levelObject;
+	int fileCounter = 0;
+	while (levelFile >> levelObject)
+	{
+		levelArray[fileCounter++] = levelObject;
+	}
+	levelFile.close();
+
 
 	int levelIndex = 0;
 
@@ -96,58 +85,34 @@ void Level::load(/*int* level,*/ const int column, const int row, const sf::Vect
 	{
 		for (int j = 0; j < column; j++)
 		{
-			GameObject* gameObjectPtr = nullptr;
-			switch (/*level[levelIndex]*/ this->level01.data()[levelIndex])
+			std::unique_ptr<GameObject> gameObjectPtr = nullptr;
+			switch (this->levelArray.data()[levelIndex++])
 			{
 			case 0:
 				break;
 			case 1:
-				gameObjectPtr = new Platform;
+				gameObjectPtr = std::make_unique<Platform>();
 				break;
 			case 2:
-				gameObjectPtr = new WinObject;
+				gameObjectPtr = std::make_unique<WinObject>();
 				break;
 			case 3:
-				gameObjectPtr = new Player;
-				this->playerPtr = static_cast<Player*>(gameObjectPtr);
+				gameObjectPtr = std::make_unique<Player>();
+				this->playerPtr = static_cast<Player*>(gameObjectPtr.get());
+				playerPtr->setLevelLimitY(row * gridSize.y);
 				break;
 			case 4:
-				gameObjectPtr = new Enemy;
+				gameObjectPtr = std::make_unique<Enemy>();
 				break;
 			}
 			
 			if (gameObjectPtr != nullptr)
 			{
-				gameObjectPtr->setPosition(sf::Vector2f(j * gridSize.x, i * gridSize.x)); // Why do I need to use column for y and row for x?
-				gameObjects.push_back(gameObjectPtr);
+				gameObjectPtr->setPosition(sf::Vector2f(j * gridSize.x, i * gridSize.y));
+				gameObjects.push_back(std::move(gameObjectPtr));
 			}
-			gameObjectPtr = nullptr;
-
-			levelIndex++;
 		}
 	}
-
-
-
-	/*reset();
-	for (auto& i : gameObjects)
-	{
-		Player* playerPtr = dynamic_cast<Player*>(i);
-		if (playerPtr != nullptr)
-		{
-			playerPtr->resetState();
-		}
-		else
-		{
-			WinObject* winObjectPtr = dynamic_cast<WinObject*>(i);
-			if (winObjectPtr != nullptr)
-			{
-				winObjectPtr->setWin(false);
-			}
-
-		}
-	}*/
-	this->timer = 0.0f;
 }
 
 void Level::reset()
@@ -155,14 +120,14 @@ void Level::reset()
 	for (auto& i : gameObjects)
 	{
 		Character* characterPtr = nullptr;
-		characterPtr = dynamic_cast<Character*>(i);
+		characterPtr = dynamic_cast<Character*>(i.get());
 
 		if (characterPtr != nullptr)
 		{
 			characterPtr->resetPosition();
 		}
 		
-		characterPtr = dynamic_cast<Enemy*>(i);
+		characterPtr = dynamic_cast<Enemy*>(i.get());
 		if (characterPtr != nullptr)
 		{
 			characterPtr->resetLives();
@@ -180,7 +145,8 @@ bool Level::getWin() const
 	return this->win;
 }
 
-float Level::getTimer() const
+void Level::setBackgroundPosition(const sf::View& gameView)
 {
-	return this->timer;
+	this->backgroundSprite.setPosition(gameView.getCenter());
+	this->backgroundSprite.setScale(2.5f, 2.5f);
 }

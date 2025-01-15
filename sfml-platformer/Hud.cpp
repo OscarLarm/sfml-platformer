@@ -1,5 +1,4 @@
 #include "Hud.h"
-#include <iostream>
 
 Hud::Hud()
 	: totTimeStr("na"),
@@ -30,13 +29,13 @@ void Hud::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	target.draw(this->timerText);
 }
 
-void Hud::update(float timer, Player* player, sf::View& gameView)
+void Hud::update(const float timer, const int lives, const sf::View& gameView)
 {
-	this->playerLivesStr = std::to_string(player->getLives());
+	this->playerLivesStr = std::to_string(lives);
 	totTimeStr = std::to_string(static_cast<int>(timer));
 	livesText.setString("HP: " + playerLivesStr);
 	timerText.setString("Time: " + totTimeStr);
 	
-	livesText.setPosition(gameView.getCenter().x - gameView.getSize().x / 2.5f, gameView.getCenter().y - gameView.getSize().y / 2.5f);
-	timerText.setPosition(gameView.getCenter().x - timerText.getGlobalBounds().width / 2, gameView.getCenter().y - gameView.getSize().y / 2.5f);
+	livesText.setPosition(gameView.getCenter().x + gameView.getSize().x / 2.5f - this->livesText.getGlobalBounds().width, gameView.getCenter().y - gameView.getSize().y / 2.5f);
+	timerText.setPosition(gameView.getCenter().x - gameView.getSize().x / 2.5f, gameView.getCenter().y - gameView.getSize().y / 2.5f);
 }

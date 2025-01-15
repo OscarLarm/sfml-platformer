@@ -2,40 +2,40 @@
 #define PLAYER_H
 
 #include <SFML/Graphics.hpp>
-#include "Animation.h"
-#include "Platform.h"
-#include <vector>
-#include "GameObject.h"
 #include "Character.h"
 #include "Enemy.h"
-#include "Sword.h" // TEMPORARY CHANGED TO FORWARD DECLARATION, CIRCULAR INCLUDES.
 #include "WinObject.h"
 
-class Sword; // TEMPORARY CHANGED TO FORWARD DECLARATION, CIRCULAR INCLUDES.
+#include "Sword.h"
+class Sword;
 
 class Player : public Character
 {
 private:
-	float jumpForce;
-	//Animation* playerAnimation;
-	
+	const float JUMP_FORCE = -350.0f;
+	const float PLAYER_LIVES = 3;
+	const float PLAYER_MOVESPEED = 150.0f;
+	const float SWORD_COOLDOWN = 0.5f;
+	const float PLAYER_HIT_INVINCIBLE_TIME = 0.1f;
+
 	Sword* sword;
-	float swordCooldown;
 	float swordCooldownTimer;
 	bool swordReady;
 
+	float playerHitTimer;
+
+	float levelLimitY;
+
 	void playerControls(const sf::Time& time);
-	void collisionControl(const sf::Time& time, std::vector<GameObject*>& gameObjects) override;
+	void collisionControl(const sf::Time& time, std::vector<std::unique_ptr<GameObject>>& gameObjects) override;
 
 public:
 	Player();
 	virtual ~Player();
 
-	void update(const sf::Time& time, std::vector<GameObject*>& gameObjects) override;
-	
-	Sword* getSword() const;
+	void update(const sf::Time& time, std::vector<std::unique_ptr<GameObject>>& gameObjects) override;
 
-	void resetState();
+	void setLevelLimitY(const float limit);
 };
 
 #endif // !PLAYER_H

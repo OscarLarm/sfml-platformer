@@ -7,21 +7,20 @@
 class Sword : public GameObject
 {
 private:
-	bool lastFacingDirection;
+	bool lastFacingRight;
 	bool attacking;
-	float attackDuration;
+	const float ATTACK_DURATION = 0.25f;
 	float attackTimer;
-	int damage;
+	const int DAMAGE = 1;
 
 public:
 	Sword();
 	~Sword();
 
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
-	void update(const sf::Time& time, const bool facingRight, std::vector<GameObject*>& gameObjects); // Make it override a virtual function. Possibly move virtual update from character to GameObjects
+	void update(const sf::Time& time, const bool facingRight, std::vector<std::unique_ptr<GameObject>>& gameObjects);
 
 	void attack();
-	void stopAttack();
 
 	bool isAttacking() const;
 };

@@ -1,22 +1,12 @@
 #include "Sword.h"
-#include <iostream>
 
 Sword::Sword()
 	: attacking(false),
-	attackDuration(0.25f),
 	attackTimer(0.0f),
-	lastFacingDirection(true),
-	damage(1)
+	lastFacingRight(true)
 {
-	hitBox.setSize(sf::Vector2f(40.0f, 38.0f));
-	hitBox.setOrigin(0.0f, this->hitBox.getSize().y);
-	hitBox.setFillColor(sf::Color::Transparent);
-
-	//// Make hitbox visible
-	//hitBox.setOutlineColor(sf::Color::Red);
-	//hitBox.setOutlineThickness(1.0f);
-
-	this->setPosition(sf::Vector2f(200.0f, 200.0f));
+	setHitBoxSize(sf::Vector2f(40.0f, 38.0f));
+	setHitBoxOrigin(sf::Vector2f(0.0f, this->getHitBox().getSize().y));
 }
 
 Sword::~Sword()
@@ -25,34 +15,33 @@ Sword::~Sword()
 
 void Sword::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	target.draw(this->hitBox);
+	target.draw(this->getHitBox());
 }
 
-void Sword::update(const sf::Time& time, const bool facingRight, std::vector<GameObject*>& gameObjects)
+void Sword::update(const sf::Time& time, const bool facingRight, std::vector<std::unique_ptr<GameObject>>& gameObjects)
 {
 	if (attacking)
 	{
-		//hitBox.setOutlineColor(sf::Color::White);
 		attackTimer += time.asSeconds();
 
-		for (auto* i : gameObjects)
+		for (auto& i : gameObjects)
 		{
 			if (i == nullptr)
 			{
 				continue;
 			}
 
-			sf::FloatRect swordBounds = this->hitBox.getGlobalBounds();
+			sf::FloatRect swordBounds = this->getHitBox().getGlobalBounds();
 			sf::FloatRect enemyBounds = i->getHitBox().getGlobalBounds();
-			Enemy* enemyPtr = dynamic_cast<Enemy*>(i);
+			Enemy* enemyPtr = dynamic_cast<Enemy*>(i.get());
 
 			if (enemyBounds.intersects(swordBounds) && enemyPtr != nullptr && enemyPtr->isAlive())
 			{
-				enemyPtr->hit(this->damage);
+				enemyPtr->hit(this->DAMAGE);
 			}
 		}
 
-		if (attackTimer >= attackDuration)
+		if (attackTimer >= ATTACK_DURATION)
 		{
 			this->attacking = false;
 			attackTimer = 0.0f;
@@ -60,11 +49,10 @@ void Sword::update(const sf::Time& time, const bool facingRight, std::vector<Gam
 	}
 	else if(!attacking)
 	{
-		//hitBox.setOutlineColor(sf::Color::Red);
-		if (facingRight != lastFacingDirection)
+		if (facingRight != lastFacingRight)
 		{
-			this->hitBox.scale(sf::Vector2f(-1.0f, 1.0f));
-			lastFacingDirection = facingRight;
+			this->setHitBoxScale(sf::Vector2f(-1.0f, 1.0f));
+			lastFacingRight = facingRight;
 
 		}
 	}
@@ -73,11 +61,6 @@ void Sword::update(const sf::Time& time, const bool facingRight, std::vector<Gam
 void Sword::attack()
 {
 	this->attacking = true;
-}
-
-void Sword::stopAttack()
-{
-	this->attacking = false;
 }
 
 bool Sword::isAttacking() const

@@ -8,14 +8,13 @@
 
 #include <vector>
 #include <string>
+#include <iostream>
 
 class Game
 {
 private:
-	static const int VWIDTH = 1366;
-	static const int VHEIGHT = 768;
-
-	const sf::Vector2f LEVEL_SIZE;
+	const sf::Vector2i WINDOW_SIZE = sf::Vector2i(1366, 768);
+	const std::string LEVEL_01_FILE_PATH = "../levels/level01.txt";
 
 	sf::RenderWindow window;
 	sf::Clock clock;
@@ -32,19 +31,18 @@ private:
 
 	bool playing;
 
-	int menuChoice;
+	enum MenuChoice
+	{
+		Main,
+		Defeat,
+		Victory,
+		Quit
+	};
+	MenuChoice currentMenu;
 
 	void eventHandler();
 	void update();
 	void render();
-
-	std::array<int, 50> level01 = {
-		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-		0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-		0, 0, 0, 0, 0, 0, 0, 0, 0, 0
-	};
 
 public:
 	Game();

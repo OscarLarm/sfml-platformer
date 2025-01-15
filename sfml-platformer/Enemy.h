@@ -1,28 +1,26 @@
 #ifndef ENEMY_H
 #define ENEMY_H
 
-#include "GameObject.h"
 #include "Character.h"
-#include "Animation.h"
 #include "Player.h"
 
 class Enemy : public Character
 {
 private:
+	const float ENEMY_LIVES = 1;
+	const float ENEMY_MOVESPEED = 70.0f;
+
 	float targetPosition;
 	bool reachedTarget;
-	
-	//Animation* enemyAnimation;
-
 
 	void patrol(const sf::Time& time);
-	void collisionControl(const sf::Time& time, std::vector<GameObject*>& gameObjects) override;
+	void collisionControl(const sf::Time& time, std::vector<std::unique_ptr<GameObject>>& gameObjects) override;
 
 public:
 	Enemy();
 	virtual ~Enemy();
 
-	void update(const sf::Time& time, std::vector<GameObject*>& gameObjects) override;
+	void update(const sf::Time& time, std::vector<std::unique_ptr<GameObject>>& gameObjects) override;
 
 };
 

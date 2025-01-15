@@ -1,5 +1,4 @@
 #include "Enemy.h"
-#include <iostream>
 
 void Enemy::patrol(const sf::Time& time)
 {
@@ -7,44 +6,44 @@ void Enemy::patrol(const sf::Time& time)
 	{
 		if (this->getPosition().x < targetPosition)
 		{
-			this->velocity.x = moveSpeed;
-			state = "patrol";
+			this->setVelocity(this->getMoveSpeed(), this->getVelocity().y);
+			setCurrentState(Animation::States::Patrol);
 		}
 		else
 		{
-			this->velocity.x = 0.0f;
-			state = "idle";
-			reachedTarget = true;
+			this->setVelocity(0.0f, this->getVelocity().y);
+			setCurrentState(Animation::States::Patrol);
+			this->reachedTarget = true;
 		}
 	}
 	else if (reachedTarget)
 	{
-		if (this->getPosition().x > startPosition.x)
+		if (this->getPosition().x > this->getStartPosition().x)
 		{
-			this->velocity.x = -moveSpeed;
-			state = "patrol";
+			this->setVelocity(-this->getMoveSpeed(), this->getVelocity().y);
+			setCurrentState(Animation::States::Patrol);
 		}
 		else
 		{
-			this->velocity.x = 0.0f;
-			state = "idle";
-			reachedTarget = false;
+			this->setVelocity(0.0f, this->getVelocity().y);
+			setCurrentState(Animation::States::Idle);
+			this->reachedTarget = false;
 		}
 	}
 }
 
-void Enemy::collisionControl(const sf::Time& time, std::vector<GameObject*>& gameObjects)
+void Enemy::collisionControl(const sf::Time& time, std::vector<std::unique_ptr<GameObject>>& gameObjects)
 {
-	this->grounded = false;
+	this->setGrounded(false);
 	float collisionOffset = 1.0f;
 
-	sf::FloatRect hitBoxBounds = hitBox.getGlobalBounds();
+	sf::FloatRect hitBoxBounds = this->getHitBox().getGlobalBounds();
 
 	sf::FloatRect nextUpdateBounds = hitBoxBounds;
-	nextUpdateBounds.left += velocity.x * time.asSeconds();
-	nextUpdateBounds.top += velocity.y * time.asSeconds() + collisionOffset;
+	nextUpdateBounds.left += this->getVelocity().x * time.asSeconds();
+	nextUpdateBounds.top += this->getVelocity().y * time.asSeconds() + collisionOffset;
 
-	for (auto* i : gameObjects)
+	for (auto& i : gameObjects)
 	{
 		if (i != nullptr)
 		{
@@ -53,7 +52,7 @@ void Enemy::collisionControl(const sf::Time& time, std::vector<GameObject*>& gam
 			if (otherBounds.intersects(nextUpdateBounds))
 			{
 				GameObject* typePtr = nullptr;
-				typePtr = dynamic_cast<Platform*>(i);
+				typePtr = dynamic_cast<Platform*>(i.get());
 
 				if (typePtr != nullptr)
 				{
@@ -61,7 +60,7 @@ void Enemy::collisionControl(const sf::Time& time, std::vector<GameObject*>& gam
 				}
 				else
 				{
-					Player* playerPtr = dynamic_cast<Player*>(i);
+					Player* playerPtr = dynamic_cast<Player*>(i.get());
 
 					if (playerPtr != nullptr && !playerPtr->isHit())
 					{
@@ -74,91 +73,47 @@ void Enemy::collisionControl(const sf::Time& time, std::vector<GameObject*>& gam
 }
 
 Enemy::Enemy()
-	: reachedTarget(false)
+	: reachedTarget(false),
+	targetPosition(0.0f)
 {
-	this->alive = true;
-
-	spriteRect = sf::IntRect(0, 0, 96, 84);
-	this->animationPtr = new Animation(spriteRect);
-
-	texture.loadFromFile(ASSETS_DIRECTORY + "playerSheet.png");
-	sprite.setTexture(texture);
-	sprite.setTextureRect(spriteRect);
-	sprite.setOrigin(spriteRect.width / 2.0f, spriteRect.height);
-
-	hitBox.setSize(sf::Vector2f(24.0f, 36.0f));
-	hitBox.setOrigin(hitBox.getSize().x / 2.0f, hitBox.getSize().y);
-	hitBox.setFillColor(sf::Color::Transparent);
-
-	//// Make hitbox visible
-	//hitBox.setOutlineColor(sf::Color::Red);
-	//hitBox.setOutlineThickness(1.0f);
-	
-	startPosition = this->getPosition();
-
-	this->moveSpeed = 70.0f;
+	this->setCharacterValues(ENEMY_LIVES, ENEMY_MOVESPEED);
+	setGameObjectValues("playerSheet.png", sf::IntRect(0, 0, 96, 84), sf::Vector2f(24.0f, 36.0f));
 }
 
 Enemy::~Enemy()
 {
 }
 
-void Enemy::update(const sf::Time& time, std::vector<GameObject*>& gameObjects)
+void Enemy::update(const sf::Time& time, std::vector<std::unique_ptr<GameObject>>& gameObjects)
 {
-	if (this->startPosition == sf::Vector2f(0.0f, 0.0f))
+	if (this->getStartPosition() == sf::Vector2f(0.0f, 0.0f))
 	{
-		startPosition = this->getPosition();
-		targetPosition = startPosition.x + 300.0f;
+		this->setStartPosition(this->getPosition());
+		this->targetPosition = this->getStartPosition().x + 100.0f;
 	}
 
-	this->gotHit = false;
+	this->setHit(false);
 
-	if (this->lives == 0)
+	if (this->getLives() == 0)
 	{
-		// NOTE: Later add a die() function which first plays a animation, and then sets alive to false once the animation is done.
-		this->alive = false;
+		this->setAlive(false);
 		return;
 	}
 	else
 	{
-		this->alive = true;
+		this->setAlive(true);
 
 		patrol(time);
 
-		if (!grounded)
+		if (!this->isGrounded())
 		{
-			velocity.y += gravity * time.asSeconds();
+			this->setVelocity(this->getVelocity().x, this->getVelocity().y + getGravity() * time.asSeconds());
 		}
 
 		collisionControl(time, gameObjects);
 
-		sprite.setTextureRect(animationPtr->updateAnimation(time.asSeconds(), state, velocity));
+		updateAnimation(time, getCurrentState(), this->getVelocity());
 
-		if (this->velocity.x < 0 && facingRight == true)
-		{
-			facingRight = false;
-			this->sprite.scale(-1.0f, 1.0f);
-		}
-		else if (this->velocity.x > 0 && facingRight == false)
-		{
-			facingRight = true;
-			this->sprite.scale(-1.0f, 1.0f);
-		}
-
-		this->move(velocity * time.asSeconds());
+		this->move(this->getVelocity() *time.asSeconds());
 	}
-
-	////Debug
-	//std::cout << std::endl << std::endl;
-	//std::cout << "------ENEMY------" << std::endl;
-	//std::cout << "Velocity: " << velocity.x << ", " << velocity.y << std::endl;
-	//std::cout << "Grounded: " << grounded << std::endl;
-	//std::cout << "State: " << state << std::endl;
-	//std::cout << "Position: " << getPosition().x << ", " << getPosition().y << std::endl;
-	//std::cout << "Start position: " << startPosition.x << ", " << startPosition.y << std::endl;
-	//std::cout << "Target position: " << targetPosition << std::endl;
-	//std::cout << "Lives: " << this->lives << std::endl;
-	//std::cout << "Alive: " << this->alive << std::endl;
-	//std::cout << "-----------------" << std::endl;
 }
-
