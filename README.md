@@ -1,10 +1,14 @@
-<h1 align="center">SFML Platformer</h1>
+<h1>SFML Platformer</h1>
 
 <p> A 2D platformer game developed with SFML as a final project for the course 'Object-oriented Programming in C++' at Blekinge Institute of Technology, BTH. </p>
 
-<p align="center">
-<img width=450 src="https://github.com/user-attachments/assets/8714f35c-76c8-4b94-a496-2f1b49b87fd7">
+<br>
+
+<p>
+<img width=500 src="https://github.com/user-attachments/assets/8714f35c-76c8-4b94-a496-2f1b49b87fd7">
 </p>
+
+[Overview](#overview) | [Controls](#controls) | [Textfile Level Editor](#textfile-level-editor) | [Asset Credits](#asset-credits) | [Class Diagram](#class-diagram)
 
 ---
 
