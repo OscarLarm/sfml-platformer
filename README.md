@@ -1,6 +1,6 @@
 <h1>SFML Platformer</h1>
 
-<p> A 2D platformer game developed with SFML as a final project for the course 'Object-oriented Programming in C++' at Blekinge Institute of Technology, BTH. </p>
+<p> A 2D platformer game developed with SFML for school.</p>
 
 <br>
 
